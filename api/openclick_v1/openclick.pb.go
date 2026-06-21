@@ -26,10 +26,46 @@ var File_proto_openclick_v1_openclick_proto protoreflect.FileDescriptor
 
 const file_proto_openclick_v1_openclick_proto_rawDesc = "" +
 	"\n" +
-	"\"proto/openclick/v1/openclick.proto\x12\x02v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17proto/common/ping.proto2\x8d\x01\n" +
-	"\vBaseService\x12~\n" +
-	"\x04Ping\x12\x0f.v1.PingRequest\x1a\x10.v1.PingResponse\"S\x92A6\n" +
-	"\x04Ping\x12\x0fPing the server\x1a\x1dCheck if the server is alive.\x82\xd3\xe4\x93\x02\x14\x12\x12/openclick/v1/pingB\x82\x03\x92A\xee\x02\x12\xf0\x01\n" +
+	"\"proto/openclick/v1/openclick.proto\x12\x02v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17proto/common/ping.proto\x1a proto/openclick/v1/project.proto\x1a\"proto/openclick/v1/dashboard.proto2\xc8\x12\n" +
+	"\vBaseService\x12x\n" +
+	"\x04Ping\x12\x0f.v1.PingRequest\x1a\x10.v1.PingResponse\"M\x92A6\n" +
+	"\x04Ping\x12\x0fPing the server\x1a\x1dCheck if the server is alive.\x82\xd3\xe4\x93\x02\x0e\x12\f/api/v1/ping\x12w\n" +
+	"\fListProjects\x12\x17.v1.ListProjectsRequest\x1a\x18.v1.ListProjectsResponse\"4\x92A\x19\n" +
+	"\bProjects\x12\rList projects\x82\xd3\xe4\x93\x02\x12\x12\x10/api/v1/projects\x12x\n" +
+	"\rCreateProject\x12\x18.v1.CreateProjectRequest\x1a\x13.v1.ProjectResponse\"8\x92A\x1a\n" +
+	"\bProjects\x12\x0eCreate project\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/projects\x12\x84\x01\n" +
+	"\n" +
+	"GetProject\x12\x15.v1.GetProjectRequest\x1a\x16.v1.GetProjectResponse\"G\x92A\x1f\n" +
+	"\bProjects\x12\x13Get project details\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/projects/{project_id}\x12\x85\x01\n" +
+	"\rUpdateProject\x12\x18.v1.UpdateProjectRequest\x1a\x13.v1.ProjectResponse\"E\x92A\x1a\n" +
+	"\bProjects\x12\x0eUpdate project\x82\xd3\xe4\x93\x02\":\x01*2\x1d/api/v1/projects/{project_id}\x12\x88\x01\n" +
+	"\rDeleteProject\x12\x18.v1.DeleteProjectRequest\x1a\x19.v1.DeleteProjectResponse\"B\x92A\x1a\n" +
+	"\bProjects\x12\x0eDelete project\x82\xd3\xe4\x93\x02\x1f*\x1d/api/v1/projects/{project_id}\x12\x93\x01\n" +
+	"\tAddMember\x12\x14.v1.AddMemberRequest\x1a\x15.v1.AddMemberResponse\"Y\x92A&\n" +
+	"\bProjects\x12\x1aAdd team member to project\x82\xd3\xe4\x93\x02*:\x01*\"%/api/v1/projects/{project_id}/members\x12\xa8\x01\n" +
+	"\fRemoveMember\x12\x17.v1.RemoveMemberRequest\x1a\x18.v1.RemoveMemberResponse\"e\x92A+\n" +
+	"\bProjects\x12\x1fRemove team member from project\x82\xd3\xe4\x93\x021*//api/v1/projects/{project_id}/members/{user_id}\x12\x99\x01\n" +
+	"\x0eListDashboards\x12\x19.v1.ListDashboardsRequest\x1a\x1a.v1.ListDashboardsResponse\"P\x92A\x1d\n" +
+	"\n" +
+	"Dashboards\x12\x0fList dashboards\x82\xd3\xe4\x93\x02*\x12(/api/v1/projects/{project_id}/dashboards\x12\x9a\x01\n" +
+	"\x0fCreateDashboard\x12\x1a.v1.CreateDashboardRequest\x1a\x15.v1.DashboardResponse\"T\x92A\x1e\n" +
+	"\n" +
+	"Dashboards\x12\x10Create dashboard\x82\xd3\xe4\x93\x02-:\x01*\"(/api/v1/projects/{project_id}/dashboards\x12\xa8\x01\n" +
+	"\fGetDashboard\x12\x17.v1.GetDashboardRequest\x1a\x18.v1.GetDashboardResponse\"e\x92A#\n" +
+	"\n" +
+	"Dashboards\x12\x15Get dashboard details\x82\xd3\xe4\x93\x029\x127/api/v1/projects/{project_id}/dashboards/{dashboard_id}\x12\xac\x01\n" +
+	"\x0fDeleteDashboard\x12\x1a.v1.DeleteDashboardRequest\x1a\x1b.v1.DeleteDashboardResponse\"`\x92A\x1e\n" +
+	"\n" +
+	"Dashboards\x12\x10Delete dashboard\x82\xd3\xe4\x93\x029*7/api/v1/projects/{project_id}/dashboards/{dashboard_id}\x12\xc0\x01\n" +
+	"\x13CreateDashboardItem\x12\x1e.v1.CreateDashboardItemRequest\x1a\x19.v1.DashboardItemResponse\"n\x92A#\n" +
+	"\n" +
+	"Dashboards\x12\x15Create dashboard item\x82\xd3\xe4\x93\x02B:\x01*\"=/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items\x12\xca\x01\n" +
+	"\x13UpdateDashboardItem\x12\x1e.v1.UpdateDashboardItemRequest\x1a\x19.v1.DashboardItemResponse\"x\x92A#\n" +
+	"\n" +
+	"Dashboards\x12\x15Update dashboard item\x82\xd3\xe4\x93\x02L:\x01*2G/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}\x12\xcd\x01\n" +
+	"\x13DeleteDashboardItem\x12\x1e.v1.DeleteDashboardItemRequest\x1a\x1f.v1.DeleteDashboardItemResponse\"u\x92A#\n" +
+	"\n" +
+	"Dashboards\x12\x15Delete dashboard item\x82\xd3\xe4\x93\x02I*G/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}B\x82\x03\x92A\xee\x02\x12\xf0\x01\n" +
 	"\x0eOpenClick APIs\x12\xd5\x01**OpenClick** is an open-source, self-hostable product analytics platform built for speed and low memory footprint. It provides event tracking, session replay, funnel analysis, feature flags, and cohort analytics.2\x06v1.0.0Z<\n" +
 	"\x19\n" +
 	"\x06UserID\x12\x0f\b\x02\x1a\tx-user-id \x02\n" +
@@ -43,17 +79,71 @@ const file_proto_openclick_v1_openclick_proto_rawDesc = "" +
 	"\x04Ping\x12\x16Health check endpointsZ\x0e./openclick_v1b\x06proto3"
 
 var file_proto_openclick_v1_openclick_proto_goTypes = []any{
-	(*PingRequest)(nil),  // 0: v1.PingRequest
-	(*PingResponse)(nil), // 1: v1.PingResponse
+	(*PingRequest)(nil),                 // 0: v1.PingRequest
+	(*ListProjectsRequest)(nil),         // 1: v1.ListProjectsRequest
+	(*CreateProjectRequest)(nil),        // 2: v1.CreateProjectRequest
+	(*GetProjectRequest)(nil),           // 3: v1.GetProjectRequest
+	(*UpdateProjectRequest)(nil),        // 4: v1.UpdateProjectRequest
+	(*DeleteProjectRequest)(nil),        // 5: v1.DeleteProjectRequest
+	(*AddMemberRequest)(nil),            // 6: v1.AddMemberRequest
+	(*RemoveMemberRequest)(nil),         // 7: v1.RemoveMemberRequest
+	(*ListDashboardsRequest)(nil),       // 8: v1.ListDashboardsRequest
+	(*CreateDashboardRequest)(nil),      // 9: v1.CreateDashboardRequest
+	(*GetDashboardRequest)(nil),         // 10: v1.GetDashboardRequest
+	(*DeleteDashboardRequest)(nil),      // 11: v1.DeleteDashboardRequest
+	(*CreateDashboardItemRequest)(nil),  // 12: v1.CreateDashboardItemRequest
+	(*UpdateDashboardItemRequest)(nil),  // 13: v1.UpdateDashboardItemRequest
+	(*DeleteDashboardItemRequest)(nil),  // 14: v1.DeleteDashboardItemRequest
+	(*PingResponse)(nil),                // 15: v1.PingResponse
+	(*ListProjectsResponse)(nil),        // 16: v1.ListProjectsResponse
+	(*ProjectResponse)(nil),             // 17: v1.ProjectResponse
+	(*GetProjectResponse)(nil),          // 18: v1.GetProjectResponse
+	(*DeleteProjectResponse)(nil),       // 19: v1.DeleteProjectResponse
+	(*AddMemberResponse)(nil),           // 20: v1.AddMemberResponse
+	(*RemoveMemberResponse)(nil),        // 21: v1.RemoveMemberResponse
+	(*ListDashboardsResponse)(nil),      // 22: v1.ListDashboardsResponse
+	(*DashboardResponse)(nil),           // 23: v1.DashboardResponse
+	(*GetDashboardResponse)(nil),        // 24: v1.GetDashboardResponse
+	(*DeleteDashboardResponse)(nil),     // 25: v1.DeleteDashboardResponse
+	(*DashboardItemResponse)(nil),       // 26: v1.DashboardItemResponse
+	(*DeleteDashboardItemResponse)(nil), // 27: v1.DeleteDashboardItemResponse
 }
 var file_proto_openclick_v1_openclick_proto_depIdxs = []int32{
-	0, // 0: v1.BaseService.Ping:input_type -> v1.PingRequest
-	1, // 1: v1.BaseService.Ping:output_type -> v1.PingResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: v1.BaseService.Ping:input_type -> v1.PingRequest
+	1,  // 1: v1.BaseService.ListProjects:input_type -> v1.ListProjectsRequest
+	2,  // 2: v1.BaseService.CreateProject:input_type -> v1.CreateProjectRequest
+	3,  // 3: v1.BaseService.GetProject:input_type -> v1.GetProjectRequest
+	4,  // 4: v1.BaseService.UpdateProject:input_type -> v1.UpdateProjectRequest
+	5,  // 5: v1.BaseService.DeleteProject:input_type -> v1.DeleteProjectRequest
+	6,  // 6: v1.BaseService.AddMember:input_type -> v1.AddMemberRequest
+	7,  // 7: v1.BaseService.RemoveMember:input_type -> v1.RemoveMemberRequest
+	8,  // 8: v1.BaseService.ListDashboards:input_type -> v1.ListDashboardsRequest
+	9,  // 9: v1.BaseService.CreateDashboard:input_type -> v1.CreateDashboardRequest
+	10, // 10: v1.BaseService.GetDashboard:input_type -> v1.GetDashboardRequest
+	11, // 11: v1.BaseService.DeleteDashboard:input_type -> v1.DeleteDashboardRequest
+	12, // 12: v1.BaseService.CreateDashboardItem:input_type -> v1.CreateDashboardItemRequest
+	13, // 13: v1.BaseService.UpdateDashboardItem:input_type -> v1.UpdateDashboardItemRequest
+	14, // 14: v1.BaseService.DeleteDashboardItem:input_type -> v1.DeleteDashboardItemRequest
+	15, // 15: v1.BaseService.Ping:output_type -> v1.PingResponse
+	16, // 16: v1.BaseService.ListProjects:output_type -> v1.ListProjectsResponse
+	17, // 17: v1.BaseService.CreateProject:output_type -> v1.ProjectResponse
+	18, // 18: v1.BaseService.GetProject:output_type -> v1.GetProjectResponse
+	17, // 19: v1.BaseService.UpdateProject:output_type -> v1.ProjectResponse
+	19, // 20: v1.BaseService.DeleteProject:output_type -> v1.DeleteProjectResponse
+	20, // 21: v1.BaseService.AddMember:output_type -> v1.AddMemberResponse
+	21, // 22: v1.BaseService.RemoveMember:output_type -> v1.RemoveMemberResponse
+	22, // 23: v1.BaseService.ListDashboards:output_type -> v1.ListDashboardsResponse
+	23, // 24: v1.BaseService.CreateDashboard:output_type -> v1.DashboardResponse
+	24, // 25: v1.BaseService.GetDashboard:output_type -> v1.GetDashboardResponse
+	25, // 26: v1.BaseService.DeleteDashboard:output_type -> v1.DeleteDashboardResponse
+	26, // 27: v1.BaseService.CreateDashboardItem:output_type -> v1.DashboardItemResponse
+	26, // 28: v1.BaseService.UpdateDashboardItem:output_type -> v1.DashboardItemResponse
+	27, // 29: v1.BaseService.DeleteDashboardItem:output_type -> v1.DeleteDashboardItemResponse
+	15, // [15:30] is the sub-list for method output_type
+	0,  // [0:15] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_proto_openclick_v1_openclick_proto_init() }
@@ -62,6 +152,8 @@ func file_proto_openclick_v1_openclick_proto_init() {
 		return
 	}
 	file_proto_common_ping_proto_init()
+	file_proto_openclick_v1_project_proto_init()
+	file_proto_openclick_v1_dashboard_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

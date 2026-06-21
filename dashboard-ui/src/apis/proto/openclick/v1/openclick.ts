@@ -18,6 +18,36 @@ import {
   type UntypedServiceImplementation,
 } from "@grpc/grpc-js";
 import { PingRequest, PingResponse } from "../../common/ping";
+import {
+  CreateDashboardItemRequest,
+  CreateDashboardRequest,
+  DashboardItemResponse,
+  DashboardResponse,
+  DeleteDashboardItemRequest,
+  DeleteDashboardItemResponse,
+  DeleteDashboardRequest,
+  DeleteDashboardResponse,
+  GetDashboardRequest,
+  GetDashboardResponse,
+  ListDashboardsRequest,
+  ListDashboardsResponse,
+  UpdateDashboardItemRequest,
+} from "./dashboard";
+import {
+  AddMemberRequest,
+  AddMemberResponse,
+  CreateProjectRequest,
+  DeleteProjectRequest,
+  DeleteProjectResponse,
+  GetProjectRequest,
+  GetProjectResponse,
+  ListProjectsRequest,
+  ListProjectsResponse,
+  ProjectResponse,
+  RemoveMemberRequest,
+  RemoveMemberResponse,
+  UpdateProjectRequest,
+} from "./project";
 
 export const protobufPackage = "v1";
 
@@ -33,11 +63,170 @@ export const BaseServiceService = {
     responseSerialize: (value: PingResponse): Buffer => Buffer.from(PingResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer): PingResponse => PingResponse.decode(value),
   },
+  /** Projects */
+  listProjects: {
+    path: "/v1.BaseService/ListProjects" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ListProjectsRequest): Buffer => Buffer.from(ListProjectsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ListProjectsRequest => ListProjectsRequest.decode(value),
+    responseSerialize: (value: ListProjectsResponse): Buffer =>
+      Buffer.from(ListProjectsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ListProjectsResponse => ListProjectsResponse.decode(value),
+  },
+  createProject: {
+    path: "/v1.BaseService/CreateProject" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: CreateProjectRequest): Buffer => Buffer.from(CreateProjectRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): CreateProjectRequest => CreateProjectRequest.decode(value),
+    responseSerialize: (value: ProjectResponse): Buffer => Buffer.from(ProjectResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ProjectResponse => ProjectResponse.decode(value),
+  },
+  getProject: {
+    path: "/v1.BaseService/GetProject" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: GetProjectRequest): Buffer => Buffer.from(GetProjectRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): GetProjectRequest => GetProjectRequest.decode(value),
+    responseSerialize: (value: GetProjectResponse): Buffer => Buffer.from(GetProjectResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): GetProjectResponse => GetProjectResponse.decode(value),
+  },
+  updateProject: {
+    path: "/v1.BaseService/UpdateProject" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: UpdateProjectRequest): Buffer => Buffer.from(UpdateProjectRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): UpdateProjectRequest => UpdateProjectRequest.decode(value),
+    responseSerialize: (value: ProjectResponse): Buffer => Buffer.from(ProjectResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ProjectResponse => ProjectResponse.decode(value),
+  },
+  deleteProject: {
+    path: "/v1.BaseService/DeleteProject" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: DeleteProjectRequest): Buffer => Buffer.from(DeleteProjectRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): DeleteProjectRequest => DeleteProjectRequest.decode(value),
+    responseSerialize: (value: DeleteProjectResponse): Buffer =>
+      Buffer.from(DeleteProjectResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DeleteProjectResponse => DeleteProjectResponse.decode(value),
+  },
+  addMember: {
+    path: "/v1.BaseService/AddMember" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: AddMemberRequest): Buffer => Buffer.from(AddMemberRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): AddMemberRequest => AddMemberRequest.decode(value),
+    responseSerialize: (value: AddMemberResponse): Buffer => Buffer.from(AddMemberResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): AddMemberResponse => AddMemberResponse.decode(value),
+  },
+  removeMember: {
+    path: "/v1.BaseService/RemoveMember" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: RemoveMemberRequest): Buffer => Buffer.from(RemoveMemberRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): RemoveMemberRequest => RemoveMemberRequest.decode(value),
+    responseSerialize: (value: RemoveMemberResponse): Buffer =>
+      Buffer.from(RemoveMemberResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): RemoveMemberResponse => RemoveMemberResponse.decode(value),
+  },
+  /** Dashboards */
+  listDashboards: {
+    path: "/v1.BaseService/ListDashboards" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ListDashboardsRequest): Buffer =>
+      Buffer.from(ListDashboardsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ListDashboardsRequest => ListDashboardsRequest.decode(value),
+    responseSerialize: (value: ListDashboardsResponse): Buffer =>
+      Buffer.from(ListDashboardsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ListDashboardsResponse => ListDashboardsResponse.decode(value),
+  },
+  createDashboard: {
+    path: "/v1.BaseService/CreateDashboard" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: CreateDashboardRequest): Buffer =>
+      Buffer.from(CreateDashboardRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): CreateDashboardRequest => CreateDashboardRequest.decode(value),
+    responseSerialize: (value: DashboardResponse): Buffer => Buffer.from(DashboardResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DashboardResponse => DashboardResponse.decode(value),
+  },
+  getDashboard: {
+    path: "/v1.BaseService/GetDashboard" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: GetDashboardRequest): Buffer => Buffer.from(GetDashboardRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): GetDashboardRequest => GetDashboardRequest.decode(value),
+    responseSerialize: (value: GetDashboardResponse): Buffer =>
+      Buffer.from(GetDashboardResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): GetDashboardResponse => GetDashboardResponse.decode(value),
+  },
+  deleteDashboard: {
+    path: "/v1.BaseService/DeleteDashboard" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: DeleteDashboardRequest): Buffer =>
+      Buffer.from(DeleteDashboardRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): DeleteDashboardRequest => DeleteDashboardRequest.decode(value),
+    responseSerialize: (value: DeleteDashboardResponse): Buffer =>
+      Buffer.from(DeleteDashboardResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DeleteDashboardResponse => DeleteDashboardResponse.decode(value),
+  },
+  createDashboardItem: {
+    path: "/v1.BaseService/CreateDashboardItem" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: CreateDashboardItemRequest): Buffer =>
+      Buffer.from(CreateDashboardItemRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): CreateDashboardItemRequest => CreateDashboardItemRequest.decode(value),
+    responseSerialize: (value: DashboardItemResponse): Buffer =>
+      Buffer.from(DashboardItemResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DashboardItemResponse => DashboardItemResponse.decode(value),
+  },
+  updateDashboardItem: {
+    path: "/v1.BaseService/UpdateDashboardItem" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: UpdateDashboardItemRequest): Buffer =>
+      Buffer.from(UpdateDashboardItemRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): UpdateDashboardItemRequest => UpdateDashboardItemRequest.decode(value),
+    responseSerialize: (value: DashboardItemResponse): Buffer =>
+      Buffer.from(DashboardItemResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DashboardItemResponse => DashboardItemResponse.decode(value),
+  },
+  deleteDashboardItem: {
+    path: "/v1.BaseService/DeleteDashboardItem" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: DeleteDashboardItemRequest): Buffer =>
+      Buffer.from(DeleteDashboardItemRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): DeleteDashboardItemRequest => DeleteDashboardItemRequest.decode(value),
+    responseSerialize: (value: DeleteDashboardItemResponse): Buffer =>
+      Buffer.from(DeleteDashboardItemResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DeleteDashboardItemResponse => DeleteDashboardItemResponse.decode(value),
+  },
 } as const;
 
 export interface BaseServiceServer extends UntypedServiceImplementation {
   /** Ping is a simple GET request that returns a Pong message. */
   ping: handleUnaryCall<PingRequest, PingResponse>;
+  /** Projects */
+  listProjects: handleUnaryCall<ListProjectsRequest, ListProjectsResponse>;
+  createProject: handleUnaryCall<CreateProjectRequest, ProjectResponse>;
+  getProject: handleUnaryCall<GetProjectRequest, GetProjectResponse>;
+  updateProject: handleUnaryCall<UpdateProjectRequest, ProjectResponse>;
+  deleteProject: handleUnaryCall<DeleteProjectRequest, DeleteProjectResponse>;
+  addMember: handleUnaryCall<AddMemberRequest, AddMemberResponse>;
+  removeMember: handleUnaryCall<RemoveMemberRequest, RemoveMemberResponse>;
+  /** Dashboards */
+  listDashboards: handleUnaryCall<ListDashboardsRequest, ListDashboardsResponse>;
+  createDashboard: handleUnaryCall<CreateDashboardRequest, DashboardResponse>;
+  getDashboard: handleUnaryCall<GetDashboardRequest, GetDashboardResponse>;
+  deleteDashboard: handleUnaryCall<DeleteDashboardRequest, DeleteDashboardResponse>;
+  createDashboardItem: handleUnaryCall<CreateDashboardItemRequest, DashboardItemResponse>;
+  updateDashboardItem: handleUnaryCall<UpdateDashboardItemRequest, DashboardItemResponse>;
+  deleteDashboardItem: handleUnaryCall<DeleteDashboardItemRequest, DeleteDashboardItemResponse>;
 }
 
 export interface BaseServiceClient extends Client {
@@ -53,6 +242,218 @@ export interface BaseServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: PingResponse) => void,
+  ): ClientUnaryCall;
+  /** Projects */
+  listProjects(
+    request: ListProjectsRequest,
+    callback: (error: ServiceError | null, response: ListProjectsResponse) => void,
+  ): ClientUnaryCall;
+  listProjects(
+    request: ListProjectsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListProjectsResponse) => void,
+  ): ClientUnaryCall;
+  listProjects(
+    request: ListProjectsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListProjectsResponse) => void,
+  ): ClientUnaryCall;
+  createProject(
+    request: CreateProjectRequest,
+    callback: (error: ServiceError | null, response: ProjectResponse) => void,
+  ): ClientUnaryCall;
+  createProject(
+    request: CreateProjectRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ProjectResponse) => void,
+  ): ClientUnaryCall;
+  createProject(
+    request: CreateProjectRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ProjectResponse) => void,
+  ): ClientUnaryCall;
+  getProject(
+    request: GetProjectRequest,
+    callback: (error: ServiceError | null, response: GetProjectResponse) => void,
+  ): ClientUnaryCall;
+  getProject(
+    request: GetProjectRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetProjectResponse) => void,
+  ): ClientUnaryCall;
+  getProject(
+    request: GetProjectRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetProjectResponse) => void,
+  ): ClientUnaryCall;
+  updateProject(
+    request: UpdateProjectRequest,
+    callback: (error: ServiceError | null, response: ProjectResponse) => void,
+  ): ClientUnaryCall;
+  updateProject(
+    request: UpdateProjectRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ProjectResponse) => void,
+  ): ClientUnaryCall;
+  updateProject(
+    request: UpdateProjectRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ProjectResponse) => void,
+  ): ClientUnaryCall;
+  deleteProject(
+    request: DeleteProjectRequest,
+    callback: (error: ServiceError | null, response: DeleteProjectResponse) => void,
+  ): ClientUnaryCall;
+  deleteProject(
+    request: DeleteProjectRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DeleteProjectResponse) => void,
+  ): ClientUnaryCall;
+  deleteProject(
+    request: DeleteProjectRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DeleteProjectResponse) => void,
+  ): ClientUnaryCall;
+  addMember(
+    request: AddMemberRequest,
+    callback: (error: ServiceError | null, response: AddMemberResponse) => void,
+  ): ClientUnaryCall;
+  addMember(
+    request: AddMemberRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: AddMemberResponse) => void,
+  ): ClientUnaryCall;
+  addMember(
+    request: AddMemberRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: AddMemberResponse) => void,
+  ): ClientUnaryCall;
+  removeMember(
+    request: RemoveMemberRequest,
+    callback: (error: ServiceError | null, response: RemoveMemberResponse) => void,
+  ): ClientUnaryCall;
+  removeMember(
+    request: RemoveMemberRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: RemoveMemberResponse) => void,
+  ): ClientUnaryCall;
+  removeMember(
+    request: RemoveMemberRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: RemoveMemberResponse) => void,
+  ): ClientUnaryCall;
+  /** Dashboards */
+  listDashboards(
+    request: ListDashboardsRequest,
+    callback: (error: ServiceError | null, response: ListDashboardsResponse) => void,
+  ): ClientUnaryCall;
+  listDashboards(
+    request: ListDashboardsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListDashboardsResponse) => void,
+  ): ClientUnaryCall;
+  listDashboards(
+    request: ListDashboardsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListDashboardsResponse) => void,
+  ): ClientUnaryCall;
+  createDashboard(
+    request: CreateDashboardRequest,
+    callback: (error: ServiceError | null, response: DashboardResponse) => void,
+  ): ClientUnaryCall;
+  createDashboard(
+    request: CreateDashboardRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DashboardResponse) => void,
+  ): ClientUnaryCall;
+  createDashboard(
+    request: CreateDashboardRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DashboardResponse) => void,
+  ): ClientUnaryCall;
+  getDashboard(
+    request: GetDashboardRequest,
+    callback: (error: ServiceError | null, response: GetDashboardResponse) => void,
+  ): ClientUnaryCall;
+  getDashboard(
+    request: GetDashboardRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetDashboardResponse) => void,
+  ): ClientUnaryCall;
+  getDashboard(
+    request: GetDashboardRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetDashboardResponse) => void,
+  ): ClientUnaryCall;
+  deleteDashboard(
+    request: DeleteDashboardRequest,
+    callback: (error: ServiceError | null, response: DeleteDashboardResponse) => void,
+  ): ClientUnaryCall;
+  deleteDashboard(
+    request: DeleteDashboardRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DeleteDashboardResponse) => void,
+  ): ClientUnaryCall;
+  deleteDashboard(
+    request: DeleteDashboardRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DeleteDashboardResponse) => void,
+  ): ClientUnaryCall;
+  createDashboardItem(
+    request: CreateDashboardItemRequest,
+    callback: (error: ServiceError | null, response: DashboardItemResponse) => void,
+  ): ClientUnaryCall;
+  createDashboardItem(
+    request: CreateDashboardItemRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DashboardItemResponse) => void,
+  ): ClientUnaryCall;
+  createDashboardItem(
+    request: CreateDashboardItemRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DashboardItemResponse) => void,
+  ): ClientUnaryCall;
+  updateDashboardItem(
+    request: UpdateDashboardItemRequest,
+    callback: (error: ServiceError | null, response: DashboardItemResponse) => void,
+  ): ClientUnaryCall;
+  updateDashboardItem(
+    request: UpdateDashboardItemRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DashboardItemResponse) => void,
+  ): ClientUnaryCall;
+  updateDashboardItem(
+    request: UpdateDashboardItemRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DashboardItemResponse) => void,
+  ): ClientUnaryCall;
+  deleteDashboardItem(
+    request: DeleteDashboardItemRequest,
+    callback: (error: ServiceError | null, response: DeleteDashboardItemResponse) => void,
+  ): ClientUnaryCall;
+  deleteDashboardItem(
+    request: DeleteDashboardItemRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DeleteDashboardItemResponse) => void,
+  ): ClientUnaryCall;
+  deleteDashboardItem(
+    request: DeleteDashboardItemRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DeleteDashboardItemResponse) => void,
   ): ClientUnaryCall;
 }
 

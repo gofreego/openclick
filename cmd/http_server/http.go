@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/gofreego/openclick/api/openclick_v1"
 	"github.com/gofreego/openclick/internal/configs"
@@ -50,9 +51,18 @@ func (a *HTTPServer) Run(ctx context.Context) error {
 	analyticsDB := repository.GetAnalyticsInstance(ctx, &a.cfg.Repository)
 	service := service.NewService(ctx, &a.cfg.Service, repo, analyticsDB)
 
-	mux := runtime.NewServeMux()
+	mux := runtime.NewServeMux(
+		runtime.WithIncomingHeaderMatcher(func(key string) (string, bool) {
+			switch key {
+			case "X-User-Id", "X-User-Perms":
+				return strings.ToLower(key), true
+			default:
+				return runtime.DefaultHeaderMatcher(key)
+			}
+		}),
+	)
 
-	api.RegisterSwaggerHandler(ctx, mux, "/openclick/v1/swagger", "./api/docs/proto", "/openclick/v1/openclick.swagger.json")
+	api.RegisterSwaggerHandler(ctx, mux, "/api/v1/swagger", "./api/docs/proto", "/openclick/v1/openclick.swagger.json")
 	err := openclick_v1.RegisterBaseServiceHandlerServer(ctx, mux, service)
 	if err != nil {
 		logger.Panic(ctx, "failed to register ping service : %v", err)
@@ -60,14 +70,14 @@ func (a *HTTPServer) Run(ctx context.Context) error {
 
 	// Register debug endpoints if enabled
 	if a.cfg.Debug.Enabled {
-		debug.RegisterDebugHandlersWithGateway(ctx, &a.cfg.Debug, mux, a.cfg.Logger.AppName, string(a.cfg.Logger.Build), "/openclick/v1")
+		debug.RegisterDebugHandlersWithGateway(ctx, &a.cfg.Debug, mux, a.cfg.Logger.AppName, string(a.cfg.Logger.Build), "/api/v1")
 	}
 
 	finalHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
 
 		// Direct API requests to grpc-gateway mux
-		if len(path) >= 14 && path[:14] == "/openclick/v1/" {
+		if len(path) >= 4 && path[:4] == "/api" {
 			mux.ServeHTTP(w, r)
 			return
 		}
@@ -87,9 +97,9 @@ func (a *HTTPServer) Run(ctx context.Context) error {
 	}
 
 	logger.Info(ctx, "Starting HTTP server on port %d", a.cfg.Server.HTTPPort)
-	logger.Info(ctx, "Swagger UI is available at `http://localhost:%d/openclick/v1/swagger`", a.cfg.Server.HTTPPort)
+	logger.Info(ctx, "Swagger UI is available at `http://localhost:%d/api/v1/swagger`", a.cfg.Server.HTTPPort)
 	if a.cfg.Debug.Enabled {
-		logger.Info(ctx, "Debug dashboard available at `http://localhost:%d/openclick/v1/debug`", a.cfg.Server.HTTPPort)
+		logger.Info(ctx, "Debug dashboard available at `http://localhost:%d/api/v1/debug`", a.cfg.Server.HTTPPort)
 	}
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
 	err = a.server.ListenAndServe()

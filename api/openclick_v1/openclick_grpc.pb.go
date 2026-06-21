@@ -19,7 +19,21 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BaseService_Ping_FullMethodName = "/v1.BaseService/Ping"
+	BaseService_Ping_FullMethodName                = "/v1.BaseService/Ping"
+	BaseService_ListProjects_FullMethodName        = "/v1.BaseService/ListProjects"
+	BaseService_CreateProject_FullMethodName       = "/v1.BaseService/CreateProject"
+	BaseService_GetProject_FullMethodName          = "/v1.BaseService/GetProject"
+	BaseService_UpdateProject_FullMethodName       = "/v1.BaseService/UpdateProject"
+	BaseService_DeleteProject_FullMethodName       = "/v1.BaseService/DeleteProject"
+	BaseService_AddMember_FullMethodName           = "/v1.BaseService/AddMember"
+	BaseService_RemoveMember_FullMethodName        = "/v1.BaseService/RemoveMember"
+	BaseService_ListDashboards_FullMethodName      = "/v1.BaseService/ListDashboards"
+	BaseService_CreateDashboard_FullMethodName     = "/v1.BaseService/CreateDashboard"
+	BaseService_GetDashboard_FullMethodName        = "/v1.BaseService/GetDashboard"
+	BaseService_DeleteDashboard_FullMethodName     = "/v1.BaseService/DeleteDashboard"
+	BaseService_CreateDashboardItem_FullMethodName = "/v1.BaseService/CreateDashboardItem"
+	BaseService_UpdateDashboardItem_FullMethodName = "/v1.BaseService/UpdateDashboardItem"
+	BaseService_DeleteDashboardItem_FullMethodName = "/v1.BaseService/DeleteDashboardItem"
 )
 
 // BaseServiceClient is the client API for BaseService service.
@@ -28,6 +42,22 @@ const (
 type BaseServiceClient interface {
 	// Ping is a simple GET request that returns a Pong message.
 	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
+	// Projects
+	ListProjects(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ListProjectsResponse, error)
+	CreateProject(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*ProjectResponse, error)
+	GetProject(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*GetProjectResponse, error)
+	UpdateProject(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*ProjectResponse, error)
+	DeleteProject(ctx context.Context, in *DeleteProjectRequest, opts ...grpc.CallOption) (*DeleteProjectResponse, error)
+	AddMember(ctx context.Context, in *AddMemberRequest, opts ...grpc.CallOption) (*AddMemberResponse, error)
+	RemoveMember(ctx context.Context, in *RemoveMemberRequest, opts ...grpc.CallOption) (*RemoveMemberResponse, error)
+	// Dashboards
+	ListDashboards(ctx context.Context, in *ListDashboardsRequest, opts ...grpc.CallOption) (*ListDashboardsResponse, error)
+	CreateDashboard(ctx context.Context, in *CreateDashboardRequest, opts ...grpc.CallOption) (*DashboardResponse, error)
+	GetDashboard(ctx context.Context, in *GetDashboardRequest, opts ...grpc.CallOption) (*GetDashboardResponse, error)
+	DeleteDashboard(ctx context.Context, in *DeleteDashboardRequest, opts ...grpc.CallOption) (*DeleteDashboardResponse, error)
+	CreateDashboardItem(ctx context.Context, in *CreateDashboardItemRequest, opts ...grpc.CallOption) (*DashboardItemResponse, error)
+	UpdateDashboardItem(ctx context.Context, in *UpdateDashboardItemRequest, opts ...grpc.CallOption) (*DashboardItemResponse, error)
+	DeleteDashboardItem(ctx context.Context, in *DeleteDashboardItemRequest, opts ...grpc.CallOption) (*DeleteDashboardItemResponse, error)
 }
 
 type baseServiceClient struct {
@@ -48,12 +78,168 @@ func (c *baseServiceClient) Ping(ctx context.Context, in *PingRequest, opts ...g
 	return out, nil
 }
 
+func (c *baseServiceClient) ListProjects(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ListProjectsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListProjectsResponse)
+	err := c.cc.Invoke(ctx, BaseService_ListProjects_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) CreateProject(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*ProjectResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectResponse)
+	err := c.cc.Invoke(ctx, BaseService_CreateProject_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) GetProject(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*GetProjectResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetProjectResponse)
+	err := c.cc.Invoke(ctx, BaseService_GetProject_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) UpdateProject(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*ProjectResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectResponse)
+	err := c.cc.Invoke(ctx, BaseService_UpdateProject_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) DeleteProject(ctx context.Context, in *DeleteProjectRequest, opts ...grpc.CallOption) (*DeleteProjectResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteProjectResponse)
+	err := c.cc.Invoke(ctx, BaseService_DeleteProject_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) AddMember(ctx context.Context, in *AddMemberRequest, opts ...grpc.CallOption) (*AddMemberResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddMemberResponse)
+	err := c.cc.Invoke(ctx, BaseService_AddMember_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) RemoveMember(ctx context.Context, in *RemoveMemberRequest, opts ...grpc.CallOption) (*RemoveMemberResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RemoveMemberResponse)
+	err := c.cc.Invoke(ctx, BaseService_RemoveMember_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) ListDashboards(ctx context.Context, in *ListDashboardsRequest, opts ...grpc.CallOption) (*ListDashboardsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListDashboardsResponse)
+	err := c.cc.Invoke(ctx, BaseService_ListDashboards_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) CreateDashboard(ctx context.Context, in *CreateDashboardRequest, opts ...grpc.CallOption) (*DashboardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DashboardResponse)
+	err := c.cc.Invoke(ctx, BaseService_CreateDashboard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) GetDashboard(ctx context.Context, in *GetDashboardRequest, opts ...grpc.CallOption) (*GetDashboardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetDashboardResponse)
+	err := c.cc.Invoke(ctx, BaseService_GetDashboard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) DeleteDashboard(ctx context.Context, in *DeleteDashboardRequest, opts ...grpc.CallOption) (*DeleteDashboardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteDashboardResponse)
+	err := c.cc.Invoke(ctx, BaseService_DeleteDashboard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) CreateDashboardItem(ctx context.Context, in *CreateDashboardItemRequest, opts ...grpc.CallOption) (*DashboardItemResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DashboardItemResponse)
+	err := c.cc.Invoke(ctx, BaseService_CreateDashboardItem_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) UpdateDashboardItem(ctx context.Context, in *UpdateDashboardItemRequest, opts ...grpc.CallOption) (*DashboardItemResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DashboardItemResponse)
+	err := c.cc.Invoke(ctx, BaseService_UpdateDashboardItem_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) DeleteDashboardItem(ctx context.Context, in *DeleteDashboardItemRequest, opts ...grpc.CallOption) (*DeleteDashboardItemResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteDashboardItemResponse)
+	err := c.cc.Invoke(ctx, BaseService_DeleteDashboardItem_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BaseServiceServer is the server API for BaseService service.
 // All implementations must embed UnimplementedBaseServiceServer
 // for forward compatibility.
 type BaseServiceServer interface {
 	// Ping is a simple GET request that returns a Pong message.
 	Ping(context.Context, *PingRequest) (*PingResponse, error)
+	// Projects
+	ListProjects(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error)
+	CreateProject(context.Context, *CreateProjectRequest) (*ProjectResponse, error)
+	GetProject(context.Context, *GetProjectRequest) (*GetProjectResponse, error)
+	UpdateProject(context.Context, *UpdateProjectRequest) (*ProjectResponse, error)
+	DeleteProject(context.Context, *DeleteProjectRequest) (*DeleteProjectResponse, error)
+	AddMember(context.Context, *AddMemberRequest) (*AddMemberResponse, error)
+	RemoveMember(context.Context, *RemoveMemberRequest) (*RemoveMemberResponse, error)
+	// Dashboards
+	ListDashboards(context.Context, *ListDashboardsRequest) (*ListDashboardsResponse, error)
+	CreateDashboard(context.Context, *CreateDashboardRequest) (*DashboardResponse, error)
+	GetDashboard(context.Context, *GetDashboardRequest) (*GetDashboardResponse, error)
+	DeleteDashboard(context.Context, *DeleteDashboardRequest) (*DeleteDashboardResponse, error)
+	CreateDashboardItem(context.Context, *CreateDashboardItemRequest) (*DashboardItemResponse, error)
+	UpdateDashboardItem(context.Context, *UpdateDashboardItemRequest) (*DashboardItemResponse, error)
+	DeleteDashboardItem(context.Context, *DeleteDashboardItemRequest) (*DeleteDashboardItemResponse, error)
 	mustEmbedUnimplementedBaseServiceServer()
 }
 
@@ -66,6 +252,48 @@ type UnimplementedBaseServiceServer struct{}
 
 func (UnimplementedBaseServiceServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedBaseServiceServer) ListProjects(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListProjects not implemented")
+}
+func (UnimplementedBaseServiceServer) CreateProject(context.Context, *CreateProjectRequest) (*ProjectResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateProject not implemented")
+}
+func (UnimplementedBaseServiceServer) GetProject(context.Context, *GetProjectRequest) (*GetProjectResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetProject not implemented")
+}
+func (UnimplementedBaseServiceServer) UpdateProject(context.Context, *UpdateProjectRequest) (*ProjectResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateProject not implemented")
+}
+func (UnimplementedBaseServiceServer) DeleteProject(context.Context, *DeleteProjectRequest) (*DeleteProjectResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteProject not implemented")
+}
+func (UnimplementedBaseServiceServer) AddMember(context.Context, *AddMemberRequest) (*AddMemberResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AddMember not implemented")
+}
+func (UnimplementedBaseServiceServer) RemoveMember(context.Context, *RemoveMemberRequest) (*RemoveMemberResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RemoveMember not implemented")
+}
+func (UnimplementedBaseServiceServer) ListDashboards(context.Context, *ListDashboardsRequest) (*ListDashboardsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListDashboards not implemented")
+}
+func (UnimplementedBaseServiceServer) CreateDashboard(context.Context, *CreateDashboardRequest) (*DashboardResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateDashboard not implemented")
+}
+func (UnimplementedBaseServiceServer) GetDashboard(context.Context, *GetDashboardRequest) (*GetDashboardResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetDashboard not implemented")
+}
+func (UnimplementedBaseServiceServer) DeleteDashboard(context.Context, *DeleteDashboardRequest) (*DeleteDashboardResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteDashboard not implemented")
+}
+func (UnimplementedBaseServiceServer) CreateDashboardItem(context.Context, *CreateDashboardItemRequest) (*DashboardItemResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateDashboardItem not implemented")
+}
+func (UnimplementedBaseServiceServer) UpdateDashboardItem(context.Context, *UpdateDashboardItemRequest) (*DashboardItemResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateDashboardItem not implemented")
+}
+func (UnimplementedBaseServiceServer) DeleteDashboardItem(context.Context, *DeleteDashboardItemRequest) (*DeleteDashboardItemResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteDashboardItem not implemented")
 }
 func (UnimplementedBaseServiceServer) mustEmbedUnimplementedBaseServiceServer() {}
 func (UnimplementedBaseServiceServer) testEmbeddedByValue()                     {}
@@ -106,6 +334,258 @@ func _BaseService_Ping_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BaseService_ListProjects_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).ListProjects(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_ListProjects_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).ListProjects(ctx, req.(*ListProjectsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_CreateProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).CreateProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_CreateProject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).CreateProject(ctx, req.(*CreateProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_GetProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).GetProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_GetProject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).GetProject(ctx, req.(*GetProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_UpdateProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).UpdateProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_UpdateProject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).UpdateProject(ctx, req.(*UpdateProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_DeleteProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).DeleteProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_DeleteProject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).DeleteProject(ctx, req.(*DeleteProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_AddMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddMemberRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).AddMember(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_AddMember_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).AddMember(ctx, req.(*AddMemberRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_RemoveMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveMemberRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).RemoveMember(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_RemoveMember_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).RemoveMember(ctx, req.(*RemoveMemberRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_ListDashboards_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListDashboardsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).ListDashboards(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_ListDashboards_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).ListDashboards(ctx, req.(*ListDashboardsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_CreateDashboard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateDashboardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).CreateDashboard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_CreateDashboard_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).CreateDashboard(ctx, req.(*CreateDashboardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_GetDashboard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDashboardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).GetDashboard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_GetDashboard_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).GetDashboard(ctx, req.(*GetDashboardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_DeleteDashboard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteDashboardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).DeleteDashboard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_DeleteDashboard_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).DeleteDashboard(ctx, req.(*DeleteDashboardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_CreateDashboardItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateDashboardItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).CreateDashboardItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_CreateDashboardItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).CreateDashboardItem(ctx, req.(*CreateDashboardItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_UpdateDashboardItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDashboardItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).UpdateDashboardItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_UpdateDashboardItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).UpdateDashboardItem(ctx, req.(*UpdateDashboardItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_DeleteDashboardItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteDashboardItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).DeleteDashboardItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_DeleteDashboardItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).DeleteDashboardItem(ctx, req.(*DeleteDashboardItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BaseService_ServiceDesc is the grpc.ServiceDesc for BaseService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -116,6 +596,62 @@ var BaseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _BaseService_Ping_Handler,
+		},
+		{
+			MethodName: "ListProjects",
+			Handler:    _BaseService_ListProjects_Handler,
+		},
+		{
+			MethodName: "CreateProject",
+			Handler:    _BaseService_CreateProject_Handler,
+		},
+		{
+			MethodName: "GetProject",
+			Handler:    _BaseService_GetProject_Handler,
+		},
+		{
+			MethodName: "UpdateProject",
+			Handler:    _BaseService_UpdateProject_Handler,
+		},
+		{
+			MethodName: "DeleteProject",
+			Handler:    _BaseService_DeleteProject_Handler,
+		},
+		{
+			MethodName: "AddMember",
+			Handler:    _BaseService_AddMember_Handler,
+		},
+		{
+			MethodName: "RemoveMember",
+			Handler:    _BaseService_RemoveMember_Handler,
+		},
+		{
+			MethodName: "ListDashboards",
+			Handler:    _BaseService_ListDashboards_Handler,
+		},
+		{
+			MethodName: "CreateDashboard",
+			Handler:    _BaseService_CreateDashboard_Handler,
+		},
+		{
+			MethodName: "GetDashboard",
+			Handler:    _BaseService_GetDashboard_Handler,
+		},
+		{
+			MethodName: "DeleteDashboard",
+			Handler:    _BaseService_DeleteDashboard_Handler,
+		},
+		{
+			MethodName: "CreateDashboardItem",
+			Handler:    _BaseService_CreateDashboardItem_Handler,
+		},
+		{
+			MethodName: "UpdateDashboardItem",
+			Handler:    _BaseService_UpdateDashboardItem_Handler,
+		},
+		{
+			MethodName: "DeleteDashboardItem",
+			Handler:    _BaseService_DeleteDashboardItem_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

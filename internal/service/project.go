@@ -2,106 +2,82 @@ package service
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"net/http"
 	"strings"
-	"time"
 
 	"github.com/gofreego/goutils/logger"
 	"github.com/gofreego/openclick/api/openclick_v1"
 	"github.com/gofreego/openclick/internal/models/dao"
 	"github.com/gofreego/openclick/internal/models/filter"
 	"github.com/gofreego/openclick/pkg/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ProjectService — all project-related service methods
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ListProjects handles GET /api/v1/projects
-func (s *Service) ListProjects(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) ListProjects(ctx context.Context, req *openclick_v1.ListProjectsRequest) (*openclick_v1.ListProjectsResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "projects:read") {
-		writeError(w, http.StatusForbidden, "missing permission: projects:read", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "projects:read") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: projects:read")
 	}
 
 	projects, err := s.repo.ListProjectsByUserID(ctx, userID)
 	if err != nil {
 		logger.Error(ctx, "list projects: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to list projects", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to list projects")
 	}
 
-	type projectResponse struct {
-		ID        string    `json:"id"`
-		Name      string    `json:"name"`
-		APIKey    string    `json:"api_key"`
-		Timezone  string    `json:"timezone"`
-		CreatedAt time.Time `json:"created_at"`
-	}
-	var results []projectResponse
+	var results []*openclick_v1.ProjectResponse
 	for _, p := range projects {
-		results = append(results, projectResponse{
-			ID:        p.ID,
+		results = append(results, &openclick_v1.ProjectResponse{
+			Id:        p.ID,
 			Name:      p.Name,
-			APIKey:    p.APIKey,
+			ApiKey:    p.APIKey,
+			SecretKey: p.SecretKey,
 			Timezone:  p.Timezone,
-			CreatedAt: p.CreatedAt,
+			CreatedAt: timestamppb.New(p.CreatedAt),
+			UpdatedAt: timestamppb.New(p.UpdatedAt),
 		})
 	}
 	if results == nil {
-		results = []projectResponse{}
+		results = []*openclick_v1.ProjectResponse{}
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{"results": results})
+	return &openclick_v1.ListProjectsResponse{Results: results}, nil
 }
 
-// CreateProject handles POST /api/v1/projects
-func (s *Service) CreateProject(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) CreateProject(ctx context.Context, req *openclick_v1.CreateProjectRequest) (*openclick_v1.ProjectResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "projects:write") {
-		writeError(w, http.StatusForbidden, "missing permission: projects:write", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "projects:write") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: projects:write")
 	}
 
-	var body struct {
-		Name     string `json:"name"`
-		Timezone string `json:"timezone"`
+	if req.Name == "" {
+		return nil, status.Error(codes.InvalidArgument, "name is required")
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
-	}
-	if body.Name == "" {
-		writeError(w, http.StatusBadRequest, "name is required", "VALIDATION_ERROR")
-		return
-	}
-	if body.Timezone == "" {
-		body.Timezone = "UTC"
+	if req.Timezone == "" {
+		req.Timezone = "UTC"
 	}
 
 	p := &dao.Project{
-		Name:      body.Name,
+		Name:      req.Name,
 		APIKey:    utils.GeneratePublicKey(),
 		SecretKey: utils.GenerateSecretKey(),
-		Timezone:  body.Timezone,
+		Timezone:  req.Timezone,
 	}
 	created, err := s.repo.CreateProject(ctx, p)
 	if err != nil {
 		logger.Error(ctx, "create project: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to create project", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to create project")
 	}
 
 	// Auto-add creator as owner
@@ -114,233 +90,202 @@ func (s *Service) CreateProject(w http.ResponseWriter, r *http.Request) {
 		logger.Error(ctx, "add project owner: %v", err)
 	}
 
-	writeJSON(w, http.StatusCreated, map[string]interface{}{
-		"id":         created.ID,
-		"name":       created.Name,
-		"api_key":    created.APIKey,
-		"secret_key": created.SecretKey,
-		"timezone":   created.Timezone,
-		"created_at": created.CreatedAt,
-	})
+	return &openclick_v1.ProjectResponse{
+		Id:        created.ID,
+		Name:      created.Name,
+		ApiKey:    created.APIKey,
+		SecretKey: created.SecretKey,
+		Timezone:  created.Timezone,
+		CreatedAt: timestamppb.New(created.CreatedAt),
+		UpdatedAt: timestamppb.New(created.UpdatedAt),
+	}, nil
 }
 
-// GetProject handles GET /api/v1/projects/:project_id
-func (s *Service) GetProject(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "projects:read") {
-		writeError(w, http.StatusForbidden, "missing permission: projects:read", "FORBIDDEN")
-		return
-	}
-
-	ok, _ := s.repo.IsProjectMember(ctx, projectID, userID)
-	if !ok {
-		writeError(w, http.StatusForbidden, "not a member of this project", "FORBIDDEN")
-		return
-	}
-
-	project, err := s.repo.GetProjectByID(ctx, projectID)
+func (s *Service) GetProject(ctx context.Context, req *openclick_v1.GetProjectRequest) (*openclick_v1.GetProjectResponse, error) {
+	userID, err := s.getUserID(ctx)
 	if err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+		return nil, err
+	}
+	if !s.hasPermission(ctx, "projects:read") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: projects:read")
 	}
 
-	members, err := s.repo.GetProjectMembers(ctx, projectID)
+	ok, _ := s.repo.IsProjectMember(ctx, req.ProjectId, userID)
+	if !ok {
+		return nil, status.Error(codes.PermissionDenied, "not a member of this project")
+	}
+
+	project, err := s.repo.GetProjectByID(ctx, req.ProjectId)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+
+	members, err := s.repo.GetProjectMembers(ctx, req.ProjectId)
 	if err != nil {
 		logger.Error(ctx, "get project members: %v", err)
 	}
 
-	type memberResponse struct {
-		UserID    string    `json:"user_id"`
-		Role      string    `json:"role"`
-		CreatedAt time.Time `json:"created_at"`
-	}
-	var memberList []memberResponse
+	var memberList []*openclick_v1.ProjectMemberResponse
 	for _, m := range members {
-		memberList = append(memberList, memberResponse{UserID: m.UserID, Role: m.Role, CreatedAt: m.CreatedAt})
+		memberList = append(memberList, &openclick_v1.ProjectMemberResponse{
+			UserId:    m.UserID,
+			Role:      m.Role,
+			CreatedAt: timestamppb.New(m.CreatedAt),
+		})
 	}
 	if memberList == nil {
-		memberList = []memberResponse{}
+		memberList = []*openclick_v1.ProjectMemberResponse{}
 	}
 
-	writeJSON(w, http.StatusOK, map[string]interface{}{
-		"id":         project.ID,
-		"name":       project.Name,
-		"api_key":    project.APIKey,
-		"secret_key": project.SecretKey,
-		"timezone":   project.Timezone,
-		"created_at": project.CreatedAt,
-		"members":    memberList,
-	})
+	return &openclick_v1.GetProjectResponse{
+		Id:        project.ID,
+		Name:      project.Name,
+		ApiKey:    project.APIKey,
+		SecretKey: project.SecretKey,
+		Timezone:  project.Timezone,
+		CreatedAt: timestamppb.New(project.CreatedAt),
+		Members:   memberList,
+	}, nil
 }
 
-// UpdateProject handles PATCH /api/v1/projects/:project_id
-func (s *Service) UpdateProject(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "projects:write") {
-		writeError(w, http.StatusForbidden, "missing permission: projects:write", "FORBIDDEN")
-		return
-	}
-	ok, _ := s.repo.IsProjectMember(ctx, projectID, userID)
-	if !ok {
-		writeError(w, http.StatusForbidden, "not a member of this project", "FORBIDDEN")
-		return
-	}
-
-	project, err := s.repo.GetProjectByID(ctx, projectID)
+func (s *Service) UpdateProject(ctx context.Context, req *openclick_v1.UpdateProjectRequest) (*openclick_v1.ProjectResponse, error) {
+	userID, err := s.getUserID(ctx)
 	if err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+		return nil, err
+	}
+	if !s.hasPermission(ctx, "projects:write") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: projects:write")
+	}
+	ok, _ := s.repo.IsProjectMember(ctx, req.ProjectId, userID)
+	if !ok {
+		return nil, status.Error(codes.PermissionDenied, "not a member of this project")
 	}
 
-	var body struct {
-		Name     *string `json:"name"`
-		Timezone *string `json:"timezone"`
+	project, err := s.repo.GetProjectByID(ctx, req.ProjectId)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
+
+	if req.Name != nil {
+		project.Name = *req.Name
 	}
-	if body.Name != nil {
-		project.Name = *body.Name
-	}
-	if body.Timezone != nil {
-		project.Timezone = *body.Timezone
+	if req.Timezone != nil {
+		project.Timezone = *req.Timezone
 	}
 
 	updated, err := s.repo.UpdateProject(ctx, project)
 	if err != nil {
 		logger.Error(ctx, "update project: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to update project", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to update project")
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{
-		"id":         updated.ID,
-		"name":       updated.Name,
-		"api_key":    updated.APIKey,
-		"secret_key": updated.SecretKey,
-		"timezone":   updated.Timezone,
-		"created_at": updated.CreatedAt,
-		"updated_at": updated.UpdatedAt,
-	})
+	return &openclick_v1.ProjectResponse{
+		Id:        updated.ID,
+		Name:      updated.Name,
+		ApiKey:    updated.APIKey,
+		SecretKey: updated.SecretKey,
+		Timezone:  updated.Timezone,
+		CreatedAt: timestamppb.New(updated.CreatedAt),
+		UpdatedAt: timestamppb.New(updated.UpdatedAt),
+	}, nil
 }
 
-// DeleteProject handles DELETE /api/v1/projects/:project_id
-func (s *Service) DeleteProject(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) DeleteProject(ctx context.Context, req *openclick_v1.DeleteProjectRequest) (*openclick_v1.DeleteProjectResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "projects:delete") {
-		writeError(w, http.StatusForbidden, "missing permission: projects:delete", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "projects:delete") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: projects:delete")
 	}
-	ok, _ := s.repo.IsProjectMember(ctx, projectID, userID)
-	if !ok {
-		writeError(w, http.StatusForbidden, "not a member of this project", "FORBIDDEN")
-		return
+	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
+		return nil, err
 	}
-	if err := s.repo.DeleteProject(ctx, projectID); err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+	if err := s.repo.DeleteProject(ctx, req.ProjectId); err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
-	w.WriteHeader(http.StatusNoContent)
+	return &openclick_v1.DeleteProjectResponse{}, nil
 }
 
-// AddMember handles POST /api/v1/projects/:project_id/members
-func (s *Service) AddMember(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) AddMember(ctx context.Context, req *openclick_v1.AddMemberRequest) (*openclick_v1.AddMemberResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "members:write") {
-		writeError(w, http.StatusForbidden, "missing permission: members:write", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "members:write") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: members:write")
 	}
-	ok, _ := s.repo.IsProjectMember(ctx, projectID, userID)
+	ok, _ := s.repo.IsProjectMember(ctx, req.ProjectId, userID)
 	if !ok {
-		writeError(w, http.StatusForbidden, "not a member of this project", "FORBIDDEN")
-		return
+		return nil, status.Error(codes.PermissionDenied, "not a member of this project")
 	}
 
-	var body struct {
-		UserID string `json:"user_id"`
-		Role   string `json:"role"`
+	if req.UserId == "" {
+		return nil, status.Error(codes.InvalidArgument, "user_id is required")
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
-	}
-	if body.UserID == "" {
-		writeError(w, http.StatusBadRequest, "user_id is required", "VALIDATION_ERROR")
-		return
-	}
-	if body.Role == "" {
-		body.Role = "member"
+	if req.Role == "" {
+		req.Role = "member"
 	}
 
 	m, err := s.repo.AddProjectMember(ctx, &dao.ProjectMember{
-		ProjectID: projectID,
-		UserID:    body.UserID,
-		Role:      body.Role,
+		ProjectID: req.ProjectId,
+		UserID:    req.UserId,
+		Role:      req.Role,
 	})
 	if err != nil {
 		logger.Error(ctx, "add project member: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to add member", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to add member")
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{
-		"user_id":    m.UserID,
-		"role":       m.Role,
-		"created_at": m.CreatedAt,
-	})
+	return &openclick_v1.AddMemberResponse{
+		UserId:    m.UserID,
+		Role:      m.Role,
+		CreatedAt: timestamppb.New(m.CreatedAt),
+	}, nil
 }
 
-// RemoveMember handles DELETE /api/v1/projects/:project_id/members/:user_id
-func (s *Service) RemoveMember(w http.ResponseWriter, r *http.Request, projectID, targetUserID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) RemoveMember(ctx context.Context, req *openclick_v1.RemoveMemberRequest) (*openclick_v1.RemoveMemberResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "members:write") {
-		writeError(w, http.StatusForbidden, "missing permission: members:write", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "members:write") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: members:write")
 	}
-	ok, _ := s.repo.IsProjectMember(ctx, projectID, userID)
+	ok, _ := s.repo.IsProjectMember(ctx, req.ProjectId, userID)
 	if !ok {
-		writeError(w, http.StatusForbidden, "not a member of this project", "FORBIDDEN")
-		return
+		return nil, status.Error(codes.PermissionDenied, "not a member of this project")
 	}
-	if err := s.repo.RemoveProjectMember(ctx, projectID, targetUserID); err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+	if err := s.repo.RemoveProjectMember(ctx, req.ProjectId, req.UserId); err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
-	w.WriteHeader(http.StatusNoContent)
+	return &openclick_v1.RemoveMemberResponse{}, nil
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-// hasPermission checks if x-user-perms header contains the given scope
-func hasPermission(r *http.Request, scope string) bool {
-	perms := r.Header.Get("x-user-perms")
-	for _, p := range strings.Split(perms, ",") {
+func (s *Service) getUserID(ctx context.Context) (string, error) {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return "", status.Error(codes.Unauthenticated, "missing metadata")
+	}
+	ids := md.Get("x-user-id")
+	if len(ids) == 0 || ids[0] == "" {
+		return "", status.Error(codes.Unauthenticated, "x-user-id header is required")
+	}
+	return ids[0], nil
+}
+
+func (s *Service) hasPermission(ctx context.Context, scope string) bool {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return false
+	}
+	perms := md.Get("x-user-perms")
+	if len(perms) == 0 {
+		return false
+	}
+	for _, p := range strings.Split(perms[0], ",") {
 		if strings.TrimSpace(p) == scope {
 			return true
 		}
@@ -348,29 +293,14 @@ func hasPermission(r *http.Request, scope string) bool {
 	return false
 }
 
-// writeJSON encodes val as JSON and writes it to the ResponseWriter
-func writeJSON(w http.ResponseWriter, status int, val interface{}) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(val)
-}
-
-// writeError writes a standard error JSON response
-func writeError(w http.ResponseWriter, status int, message, code string) {
-	writeJSON(w, status, map[string]string{"error": message, "code": code})
-}
-
-// assertMembership checks that projectID is valid and userID is a member — returns false on failure
-func (s *Service) assertMembership(ctx context.Context, w http.ResponseWriter, projectID, userID string) bool {
+// validateMembership checks that projectID is valid and userID is a member
+func (s *Service) validateMembership(ctx context.Context, projectID, userID string) error {
 	ok, err := s.repo.IsProjectMember(ctx, projectID, userID)
 	if err != nil || !ok {
-		writeError(w, http.StatusForbidden, "not a member of this project", "FORBIDDEN")
-		return false
+		return status.Error(codes.PermissionDenied, "not a member of this project")
 	}
-	return true
+	return nil
 }
 
-// Ensure unused imports are kept (filter is used indirectly via type reference in interface)
+// Ensure unused imports are kept
 var _ = filter.ProjectFilter{}
-var _ = fmt.Sprintf
-var _ = openclick_v1.UnimplementedBaseServiceServer{}

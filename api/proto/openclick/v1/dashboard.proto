@@ -1,0 +1,85 @@
+syntax = "proto3";
+package v1;
+
+option go_package = "./openclick_v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
+
+message DashboardResponse {
+  string id = 1;
+  string name = 2;
+  int32 item_count = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
+message DashboardItemResponse {
+  string id = 1;
+  string dashboard_id = 2;
+  string name = 3;
+  string type = 4;
+  google.protobuf.Struct query = 5;
+  google.protobuf.Struct position = 6;
+}
+
+message ListDashboardsRequest {
+  string project_id = 1;
+}
+
+message ListDashboardsResponse {
+  repeated DashboardResponse results = 1;
+}
+
+message CreateDashboardRequest {
+  string project_id = 1;
+  string name = 2;
+}
+
+message GetDashboardRequest {
+  string project_id = 1;
+  string dashboard_id = 2;
+}
+
+message GetDashboardResponse {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3;
+  repeated DashboardItemResponse items = 4;
+}
+
+message DeleteDashboardRequest {
+  string project_id = 1;
+  string dashboard_id = 2;
+}
+
+message DeleteDashboardResponse {
+}
+
+message CreateDashboardItemRequest {
+  string project_id = 1;
+  string dashboard_id = 2;
+  string name = 3;
+  string type = 4;
+  google.protobuf.Struct query = 5;
+  google.protobuf.Struct position = 6;
+}
+
+message UpdateDashboardItemRequest {
+  string project_id = 1;
+  string dashboard_id = 2;
+  string item_id = 3;
+  optional string name = 4;
+  optional string type = 5;
+  google.protobuf.Struct query = 6;
+  google.protobuf.Struct position = 7;
+}
+
+message DeleteDashboardItemRequest {
+  string project_id = 1;
+  string dashboard_id = 2;
+  string item_id = 3;
+}
+
+message DeleteDashboardItemResponse {
+}

@@ -2,6 +2,9 @@ package service
 
 import (
 	"context"
+	"encoding/json"
+	"net/http"
+	"strings"
 
 	"github.com/gofreego/openclick/api/openclick_v1"
 	"github.com/gofreego/openclick/internal/models/dao"
@@ -105,4 +108,37 @@ func NewService(ctx context.Context, cfg *Config, repo Repository, analyticsDB A
 		svc.ingest = NewIngestBuffer(ctx, analyticsDB, 1000)
 	}
 	return svc
+}
+
+// hasPermission checks if x-user-perms header contains the given scope (LEGACY HTTP)
+func hasPermission(r *http.Request, scope string) bool {
+	perms := r.Header.Get("x-user-perms")
+	for _, p := range strings.Split(perms, ",") {
+		if strings.TrimSpace(p) == scope {
+			return true
+		}
+	}
+	return false
+}
+
+// assertMembership checks that projectID is valid and userID is a member (LEGACY HTTP)
+func (s *Service) assertMembership(ctx context.Context, w http.ResponseWriter, projectID, userID string) bool {
+	ok, err := s.repo.IsProjectMember(ctx, projectID, userID)
+	if err != nil || !ok {
+		writeError(w, http.StatusForbidden, "not a member of this project", "FORBIDDEN")
+		return false
+	}
+	return true
+}
+
+// writeJSON encodes val as JSON and writes it to the ResponseWriter
+func writeJSON(w http.ResponseWriter, status int, val interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(val)
+}
+
+// writeError writes a standard error JSON response
+func writeError(w http.ResponseWriter, status int, message, code string) {
+	writeJSON(w, status, map[string]string{"error": message, "code": code})
 }

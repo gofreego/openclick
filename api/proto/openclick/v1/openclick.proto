@@ -6,6 +6,8 @@ option go_package = "./openclick_v1";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "proto/common/ping.proto";
+import "proto/openclick/v1/project.proto";
+import "proto/openclick/v1/dashboard.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
@@ -54,12 +56,160 @@ service BaseService {
     // Ping is a simple GET request that returns a Pong message.
     rpc Ping (PingRequest) returns (PingResponse) {
         option (google.api.http) = {
-            get: "/openclick/v1/ping"
+            get: "/api/v1/ping"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Ping"
             summary: "Ping the server"
             description: "Check if the server is alive."
+        };
+    }
+
+    // Projects
+    rpc ListProjects (ListProjectsRequest) returns (ListProjectsResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Projects"
+            summary: "List projects"
+        };
+    }
+
+    rpc CreateProject (CreateProjectRequest) returns (ProjectResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Projects"
+            summary: "Create project"
+        };
+    }
+
+    rpc GetProject (GetProjectRequest) returns (GetProjectResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Projects"
+            summary: "Get project details"
+        };
+    }
+
+    rpc UpdateProject (UpdateProjectRequest) returns (ProjectResponse) {
+        option (google.api.http) = {
+            patch: "/api/v1/projects/{project_id}"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Projects"
+            summary: "Update project"
+        };
+    }
+
+    rpc DeleteProject (DeleteProjectRequest) returns (DeleteProjectResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/projects/{project_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Projects"
+            summary: "Delete project"
+        };
+    }
+
+    rpc AddMember (AddMemberRequest) returns (AddMemberResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/members"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Projects"
+            summary: "Add team member to project"
+        };
+    }
+
+    rpc RemoveMember (RemoveMemberRequest) returns (RemoveMemberResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/projects/{project_id}/members/{user_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Projects"
+            summary: "Remove team member from project"
+        };
+    }
+
+    // Dashboards
+    rpc ListDashboards (ListDashboardsRequest) returns (ListDashboardsResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}/dashboards"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Dashboards"
+            summary: "List dashboards"
+        };
+    }
+
+    rpc CreateDashboard (CreateDashboardRequest) returns (DashboardResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/dashboards"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Dashboards"
+            summary: "Create dashboard"
+        };
+    }
+
+    rpc GetDashboard (GetDashboardRequest) returns (GetDashboardResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}/dashboards/{dashboard_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Dashboards"
+            summary: "Get dashboard details"
+        };
+    }
+
+    rpc DeleteDashboard (DeleteDashboardRequest) returns (DeleteDashboardResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/projects/{project_id}/dashboards/{dashboard_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Dashboards"
+            summary: "Delete dashboard"
+        };
+    }
+
+    rpc CreateDashboardItem (CreateDashboardItemRequest) returns (DashboardItemResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Dashboards"
+            summary: "Create dashboard item"
+        };
+    }
+
+    rpc UpdateDashboardItem (UpdateDashboardItemRequest) returns (DashboardItemResponse) {
+        option (google.api.http) = {
+            patch: "/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Dashboards"
+            summary: "Update dashboard item"
+        };
+    }
+
+    rpc DeleteDashboardItem (DeleteDashboardItemRequest) returns (DeleteDashboardItemResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Dashboards"
+            summary: "Delete dashboard item"
         };
     }
 }
