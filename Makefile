@@ -49,6 +49,14 @@ setup:
 migrate:
 	sql-migrator ./migrator.yaml
 
+migrate-clickhouse:
+	@echo "Running ClickHouse migrations..."
+	@for f in resources/migrations/clickhouse/*.sql; do \
+		echo "Executing $$f..."; \
+		docker exec -i openclick_clickhouse clickhouse-client -n -d openclick --user clickhouse --password clickhouse < "$$f"; \
+	done
+	@echo "ClickHouse migrations completed."
+
 migrate-down:
 	@sed 's/Action: up/Action: down/' migrator.yaml > migrator_down.yaml
 	sql-migrator ./migrator_down.yaml
