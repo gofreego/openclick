@@ -35,3 +35,22 @@ setup:
 	@echo "Compiling proto files..."
 	sh ./api/protoc.sh
 	go mod tidy
+
+migrate:
+	sql-migrator ./migrator.yaml
+
+migrate-down:
+	@sed 's/Action: up/Action: down/' migrator.yaml > migrator_down.yaml
+	sql-migrator ./migrator_down.yaml
+	@rm migrator_down.yaml
+
+redeploy:
+	@echo "Redeploying the application"
+	@echo "Pulling latest changes from git"
+	git pull
+	@echo "Building the docker imamge"
+	docker compose build
+	@echo "Stopping existing docker containers"
+	docker compose down
+	@echo "Starting the docker containers"
+	docker compose up -d

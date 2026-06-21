@@ -27,17 +27,21 @@ Repository:
     Name: Postgres
     Postgres:
       primary:
-        Host: 192.168.1.100
-        Port: 5432
+        Host: localhost
+        Port: 5434
         Username: "admin"
         Password: OSwfiTlc1r5W7Z
-        DBName: opengate
+        DBName: openclick
         SSLMode: disable
         MaxOpenConns: 10
         MaxIdleConns: 5
         ConnMaxLifetime: 5m
         ConnMaxIdleTime: 5m
       replica: []
+  ClickHouse:
+    DSN: "clickhouse://default:@localhost:9000/openclick"
+    MaxOpenConns: 10
+    MaxIdleConns: 5
 Service: {}
 Debug:
   Enabled: true
