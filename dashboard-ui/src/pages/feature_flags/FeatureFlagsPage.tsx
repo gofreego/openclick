@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
-import { Typography, Box, Paper, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Switch, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
+import { Typography, Box, Paper, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Switch, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material'
 import { featureFlagService } from '../../services/featureFlagService'
 import type { FeatureFlag } from '../../services/featureFlagService'
-import { projectService } from '../../services/projectService'
-import type { Project } from '../../services/projectService'
+import { useCurrentProject } from '../../hooks/useCurrentProject'
 import { useNotification } from '@gofreego/tsutils'
 import { PageHeader } from '../../components/PageHeader'
 
 export function FeatureFlagsPage() {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [selectedProjectId, setSelectedProjectId] = useState<string>('')
+  const selectedProjectId = useCurrentProject()
   const [flags, setFlags] = useState<FeatureFlag[]>([])
   const [open, setOpen] = useState(false)
   const notify = useNotification()
@@ -18,18 +16,6 @@ export function FeatureFlagsPage() {
   const [key, setKey] = useState('')
   const [name, setName] = useState('')
   const [rolloutPct, setRolloutPct] = useState(100)
-
-  const loadProjects = async () => {
-    try {
-      const res = await projectService.list()
-      setProjects(res.results || [])
-      if (res.results && res.results.length > 0) {
-        setSelectedProjectId(res.results[0].id)
-      }
-    } catch (err: any) {
-      notify.error('Failed to load projects')
-    }
-  }
 
   const loadFlags = async (projectId: string) => {
     if (!projectId) return
@@ -41,9 +27,7 @@ export function FeatureFlagsPage() {
     }
   }
 
-  useEffect(() => {
-    loadProjects()
-  }, [])
+
 
   useEffect(() => {
     if (selectedProjectId) {
@@ -84,21 +68,7 @@ export function FeatureFlagsPage() {
         infoTitle="About Feature Flags"
         infoDescription="Feature Flags allow you to safely deploy new features to your application without releasing them to all users immediately. You can control the rollout percentage, toggle features on and off instantly without a code deployment, and use them for A/B testing."
         action={
-          <Box display="flex" gap={2}>
-            <FormControl size="small" sx={{ minWidth: 200 }}>
-              <InputLabel>Project</InputLabel>
-              <Select
-                label="Project"
-                value={selectedProjectId}
-                onChange={(e) => setSelectedProjectId(e.target.value)}
-              >
-                {projects.map(p => (
-                  <MenuItem key={p.id} value={p.id}>{p.name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <Button variant="contained" color="primary" onClick={() => setOpen(true)} disabled={!selectedProjectId}>Create Flag</Button>
-          </Box>
+          <Button variant="contained" color="primary" onClick={() => setOpen(true)} disabled={!selectedProjectId}>Create Flag</Button>
         }
       />
 

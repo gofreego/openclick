@@ -1,29 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Typography, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
+import { Typography, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import { personService } from '../../services/personService'
 import type { Person } from '../../services/personService'
-import { projectService } from '../../services/projectService'
-import type { Project } from '../../services/projectService'
+import { useCurrentProject } from '../../hooks/useCurrentProject'
 import { useNotification } from '@gofreego/tsutils'
 import { PageHeader } from '../../components/PageHeader'
 
 export function PersonsPage() {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [selectedProjectId, setSelectedProjectId] = useState<string>('')
+  const selectedProjectId = useCurrentProject()
   const [persons, setPersons] = useState<Person[]>([])
   const notify = useNotification()
-
-  const loadProjects = async () => {
-    try {
-      const res = await projectService.list()
-      setProjects(res.results || [])
-      if (res.results && res.results.length > 0) {
-        setSelectedProjectId(res.results[0].id)
-      }
-    } catch (err: any) {
-      notify.error('Failed to load projects')
-    }
-  }
 
   const loadPersons = async (projectId: string) => {
     if (!projectId) return
@@ -35,9 +21,7 @@ export function PersonsPage() {
     }
   }
 
-  useEffect(() => {
-    loadProjects()
-  }, [])
+
 
   useEffect(() => {
     if (selectedProjectId) {
@@ -50,21 +34,7 @@ export function PersonsPage() {
       <PageHeader 
         title="Persons & Cohorts" 
         infoTitle="About Persons & Cohorts"
-        infoDescription="This page lists all the distinct users (persons) tracked in your project. A person represents a single individual interacting with your application, tying together their anonymous and identified events. You can group persons into cohorts based on shared properties."
-        action={
-          <FormControl size="small" sx={{ minWidth: 200 }}>
-            <InputLabel>Project</InputLabel>
-            <Select
-              label="Project"
-              value={selectedProjectId}
-              onChange={(e) => setSelectedProjectId(e.target.value)}
-            >
-              {projects.map(p => (
-                <MenuItem key={p.id} value={p.id}>{p.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        }
+        infoDescription="Persons represent the unique users of your application. You can track their properties, see their complete event history, and group them into cohorts based on their behavior or attributes."
       />
 
       {selectedProjectId ? (

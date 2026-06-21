@@ -11,6 +11,9 @@ import TimelineIcon from '@mui/icons-material/Timeline' // For events
 import PeopleIcon from '@mui/icons-material/People' // For persons
 import FlagIcon from '@mui/icons-material/Flag' // For feature flags
 
+// Components
+import { ProjectSelector } from './components/ProjectSelector'
+
 // Pages
 import { DashboardPage } from './pages/dashboard/DashboardPage'
 import { ProjectsPage } from './pages/projects/ProjectsPage'
@@ -90,6 +93,7 @@ function App() {
                     isBrowserRouter={false}
                     style={{ height: '100vh' }}
                     header={<SidebarHeader title="OpenClick" homePath="/" />}
+                    footer={<ProjectSelector />}
                   />
                 </ProtectedRoute>
               }
