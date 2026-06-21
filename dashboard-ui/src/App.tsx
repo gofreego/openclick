@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import { ThemeProvider, SidebarLayout, NotificationProvider, LoginCallbackPage, ProtectedRoute } from '@gofreego/tsutils'
+import { ThemeProvider, SidebarLayout, NotificationProvider, LoginCallbackPage, ProtectedRoute, SidebarHeader } from '@gofreego/tsutils'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+
 
 // Icons
 import DashboardIcon from '@mui/icons-material/Dashboard'
+
 import AccountTreeIcon from '@mui/icons-material/AccountTree' // For projects
 import TimelineIcon from '@mui/icons-material/Timeline' // For events
 import PeopleIcon from '@mui/icons-material/People' // For persons
@@ -22,7 +24,7 @@ const LOGIN_URL = import.meta.env.VITE_LOGIN_URL as string || 'http://localhost:
 
 function App() {
   const [isInitialized, setIsInitialized] = useState(false);
-  
+
   useEffect(() => {
     authService.initializeAuth()
     setIsInitialized(true);
@@ -82,10 +84,17 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute sessionManager={sessionManager} loginUrl={LOGIN_URL} callbackPath="/openclick/login-callback">
-                  <SidebarLayout menuItems={menuItems} isRouter={true} isBrowserRouter={false} style={{ height: '100vh' }} />
+                  <SidebarLayout
+                    menuItems={menuItems}
+                    isRouter={true}
+                    isBrowserRouter={false}
+                    style={{ height: '100vh' }}
+                    header={<SidebarHeader title="OpenClick" homePath="/" />}
+                  />
                 </ProtectedRoute>
               }
             >
+              <Route index element={<Navigate to="/openclick/dashboard" replace />} />
               <Route path="openclick/dashboard" element={<DashboardPage />} />
               <Route path="openclick/projects" element={<ProjectsPage />} />
               <Route path="openclick/events" element={<EventsPage />} />
