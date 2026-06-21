@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/gofreego/openclick/internal/constants"
+
 	"context"
 
 	"github.com/gofreego/goutils/logger"
@@ -17,7 +19,7 @@ import (
 // ─────────────────────────────────────────────────────────────────────────────
 
 func (s *Service) QueryTrends(ctx context.Context, req *openclick_v1.QueryTrendsRequest) (*openclick_v1.QueryTrendsResponse, error) {
-	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "analytics:read"); err != nil {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, constants.PermAnalyticsRead); err != nil {
 		return nil, err
 	}
 
@@ -61,7 +63,7 @@ func (s *Service) QueryTrends(ctx context.Context, req *openclick_v1.QueryTrends
 }
 
 func (s *Service) QueryFunnel(ctx context.Context, req *openclick_v1.QueryFunnelRequest) (*openclick_v1.QueryFunnelResponse, error) {
-	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "analytics:read"); err != nil {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, constants.PermAnalyticsRead); err != nil {
 		return nil, err
 	}
 
@@ -109,7 +111,7 @@ func (s *Service) QueryFunnel(ctx context.Context, req *openclick_v1.QueryFunnel
 }
 
 func (s *Service) QueryRetention(ctx context.Context, req *openclick_v1.QueryRetentionRequest) (*openclick_v1.QueryRetentionResponse, error) {
-	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "analytics:read"); err != nil {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, constants.PermAnalyticsRead); err != nil {
 		return nil, err
 	}
 
@@ -162,7 +164,7 @@ func (s *Service) QueryRetention(ctx context.Context, req *openclick_v1.QueryRet
 }
 
 func (s *Service) QueryPaths(ctx context.Context, req *openclick_v1.QueryPathsRequest) (*openclick_v1.QueryPathsResponse, error) {
-	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "analytics:read"); err != nil {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, constants.PermAnalyticsRead); err != nil {
 		return nil, err
 	}
 
@@ -203,7 +205,7 @@ func (s *Service) QueryPaths(ctx context.Context, req *openclick_v1.QueryPathsRe
 }
 
 func (s *Service) QueryEvents(ctx context.Context, req *openclick_v1.QueryEventsRequest) (*openclick_v1.QueryEventsResponse, error) {
-	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "events:read"); err != nil {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, constants.PermEventsRead); err != nil {
 		return nil, err
 	}
 
@@ -261,7 +263,7 @@ func (s *Service) QueryEvents(ctx context.Context, req *openclick_v1.QueryEvents
 // ─────────────────────────────────────────────────────────────────────────────
 
 func (s *Service) ListSessions(ctx context.Context, req *openclick_v1.ListSessionsRequest) (*openclick_v1.ListSessionsResponse, error) {
-	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "replay:read"); err != nil {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, constants.PermReplayRead); err != nil {
 		return nil, err
 	}
 
@@ -326,7 +328,7 @@ func (s *Service) ListSessions(ctx context.Context, req *openclick_v1.ListSessio
 }
 
 func (s *Service) GetSession(ctx context.Context, req *openclick_v1.GetSessionRequest) (*openclick_v1.SessionResponse, error) {
-	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "replay:read"); err != nil {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, constants.PermReplayRead); err != nil {
 		return nil, err
 	}
 
@@ -342,7 +344,7 @@ func (s *Service) GetSession(ctx context.Context, req *openclick_v1.GetSessionRe
 }
 
 func (s *Service) GetSessionChunks(ctx context.Context, req *openclick_v1.GetSessionChunksRequest) (*openclick_v1.GetSessionChunksResponse, error) {
-	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "replay:read"); err != nil {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, constants.PermReplayRead); err != nil {
 		return nil, err
 	}
 
@@ -379,7 +381,7 @@ func (s *Service) GetSessionChunks(ctx context.Context, req *openclick_v1.GetSes
 }
 
 func (s *Service) DeleteSession(ctx context.Context, req *openclick_v1.DeleteSessionRequest) (*openclick_v1.DeleteSessionResponse, error) {
-	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "replay:delete"); err != nil {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, constants.PermReplayDelete); err != nil {
 		return nil, err
 	}
 

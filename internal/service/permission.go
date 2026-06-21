@@ -17,6 +17,15 @@ func (s *Service) ListPermissions(ctx context.Context, req *openclick_v1.ListPer
 		{Key: constants.PermDashboardsWrite, Description: "Create and update dashboards"},
 		{Key: constants.PermDashboardsDelete, Description: "Delete dashboards"},
 		{Key: constants.PermMembersWrite, Description: "Manage project members"},
+		{Key: constants.PermAnalyticsRead, Description: "Read access to analytics"},
+		{Key: constants.PermEventsRead, Description: "Read access to events"},
+		{Key: constants.PermReplayRead, Description: "Read access to session replays"},
+		{Key: constants.PermReplayDelete, Description: "Delete session replays"},
+		{Key: constants.PermPersonsRead, Description: "Read access to persons and cohorts"},
+		{Key: constants.PermPersonsDelete, Description: "Delete persons and cohorts"},
+		{Key: constants.PermFlagsRead, Description: "Read access to feature flags"},
+		{Key: constants.PermFlagsWrite, Description: "Create and update feature flags"},
+		{Key: constants.PermFlagsDelete, Description: "Delete feature flags"},
 	}
 
 	return &openclick_v1.ListPermissionsResponse{

@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/gofreego/openclick/internal/constants"
+
 	"context"
 	"crypto/sha256"
 	"encoding/json"
@@ -23,7 +25,7 @@ import (
 // ─────────────────────────────────────────────────────────────────────────────
 
 func (s *Service) ListFeatureFlags(ctx context.Context, req *openclick_v1.ListFeatureFlagsRequest) (*openclick_v1.ListFeatureFlagsResponse, error) {
-	if err := s.checkFlagAuth(ctx, req.ProjectId, "flags:read"); err != nil {
+	if err := s.checkFlagAuth(ctx, req.ProjectId, constants.PermFlagsRead); err != nil {
 		return nil, err
 	}
 
@@ -45,7 +47,7 @@ func (s *Service) ListFeatureFlags(ctx context.Context, req *openclick_v1.ListFe
 }
 
 func (s *Service) CreateFeatureFlag(ctx context.Context, req *openclick_v1.CreateFeatureFlagRequest) (*openclick_v1.FeatureFlagResponse, error) {
-	if err := s.checkFlagAuth(ctx, req.ProjectId, "flags:write"); err != nil {
+	if err := s.checkFlagAuth(ctx, req.ProjectId, constants.PermFlagsWrite); err != nil {
 		return nil, err
 	}
 
@@ -75,7 +77,7 @@ func (s *Service) CreateFeatureFlag(ctx context.Context, req *openclick_v1.Creat
 }
 
 func (s *Service) UpdateFeatureFlag(ctx context.Context, req *openclick_v1.UpdateFeatureFlagRequest) (*openclick_v1.FeatureFlagResponse, error) {
-	if err := s.checkFlagAuth(ctx, req.ProjectId, "flags:write"); err != nil {
+	if err := s.checkFlagAuth(ctx, req.ProjectId, constants.PermFlagsWrite); err != nil {
 		return nil, err
 	}
 
@@ -107,7 +109,7 @@ func (s *Service) UpdateFeatureFlag(ctx context.Context, req *openclick_v1.Updat
 }
 
 func (s *Service) DeleteFeatureFlag(ctx context.Context, req *openclick_v1.DeleteFeatureFlagRequest) (*openclick_v1.DeleteFeatureFlagResponse, error) {
-	if err := s.checkFlagAuth(ctx, req.ProjectId, "flags:delete"); err != nil {
+	if err := s.checkFlagAuth(ctx, req.ProjectId, constants.PermFlagsDelete); err != nil {
 		return nil, err
 	}
 

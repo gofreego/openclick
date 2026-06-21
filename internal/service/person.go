@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/gofreego/openclick/internal/constants"
+
 	"context"
 
 	"github.com/gofreego/goutils/logger"
@@ -18,7 +20,7 @@ import (
 // ─────────────────────────────────────────────────────────────────────────────
 
 func (s *Service) ListPersons(ctx context.Context, req *openclick_v1.ListPersonsRequest) (*openclick_v1.ListPersonsResponse, error) {
-	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:read"); err != nil {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, constants.PermPersonsRead); err != nil {
 		return nil, err
 	}
 
@@ -59,7 +61,7 @@ func (s *Service) ListPersons(ctx context.Context, req *openclick_v1.ListPersons
 }
 
 func (s *Service) GetPerson(ctx context.Context, req *openclick_v1.GetPersonRequest) (*openclick_v1.GetPersonResponse, error) {
-	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:read"); err != nil {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, constants.PermPersonsRead); err != nil {
 		return nil, err
 	}
 
@@ -107,7 +109,7 @@ func (s *Service) GetPerson(ctx context.Context, req *openclick_v1.GetPersonRequ
 }
 
 func (s *Service) DeletePerson(ctx context.Context, req *openclick_v1.DeletePersonRequest) (*openclick_v1.DeletePersonResponse, error) {
-	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:delete"); err != nil {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, constants.PermPersonsDelete); err != nil {
 		return nil, err
 	}
 
@@ -122,7 +124,7 @@ func (s *Service) DeletePerson(ctx context.Context, req *openclick_v1.DeletePers
 // ─────────────────────────────────────────────────────────────────────────────
 
 func (s *Service) ListCohorts(ctx context.Context, req *openclick_v1.ListCohortsRequest) (*openclick_v1.ListCohortsResponse, error) {
-	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:read"); err != nil {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, constants.PermPersonsRead); err != nil {
 		return nil, err
 	}
 
@@ -153,7 +155,7 @@ func (s *Service) ListCohorts(ctx context.Context, req *openclick_v1.ListCohorts
 }
 
 func (s *Service) CreateCohort(ctx context.Context, req *openclick_v1.CreateCohortRequest) (*openclick_v1.CohortResponse, error) {
-	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:read"); err != nil {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, constants.PermPersonsRead); err != nil {
 		return nil, err
 	}
 
@@ -189,7 +191,7 @@ func (s *Service) CreateCohort(ctx context.Context, req *openclick_v1.CreateCoho
 }
 
 func (s *Service) DeleteCohort(ctx context.Context, req *openclick_v1.DeleteCohortRequest) (*openclick_v1.DeleteCohortResponse, error) {
-	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:delete"); err != nil {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, constants.PermPersonsDelete); err != nil {
 		return nil, err
 	}
 
