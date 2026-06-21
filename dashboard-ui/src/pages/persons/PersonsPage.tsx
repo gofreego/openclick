@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Typography, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import { personService } from '../../services/personService'
 import type { Person } from '../../services/personService'
-import { useCurrentProject } from '../../hooks/useCurrentProject'
+import { useCurrentProject } from '../../contexts/ProjectContext'
 import { useNotification } from '@gofreego/tsutils'
 import { PageHeader } from '../../components/PageHeader'
 
@@ -31,8 +31,8 @@ export function PersonsPage() {
 
   return (
     <Box sx={{ p: 3 }}>
-      <PageHeader 
-        title="Persons & Cohorts" 
+      <PageHeader
+        title="Persons & Cohorts"
         infoTitle="About Persons & Cohorts"
         infoDescription="Persons represent the unique users of your application. You can track their properties, see their complete event history, and group them into cohorts based on their behavior or attributes."
       />

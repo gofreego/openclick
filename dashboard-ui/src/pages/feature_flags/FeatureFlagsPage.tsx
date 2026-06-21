@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Typography, Box, Paper, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Switch, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material'
 import { featureFlagService } from '../../services/featureFlagService'
 import type { FeatureFlag } from '../../services/featureFlagService'
-import { useCurrentProject } from '../../hooks/useCurrentProject'
+import { useCurrentProject } from '../../contexts/ProjectContext'
 import { useNotification } from '@gofreego/tsutils'
 import { PageHeader } from '../../components/PageHeader'
 

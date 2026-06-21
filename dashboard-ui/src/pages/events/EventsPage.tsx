@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Typography, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material'
 import { eventService } from '../../services/eventService'
 import type { Event } from '../../services/eventService'
-import { useCurrentProject } from '../../hooks/useCurrentProject'
+import { useCurrentProject } from '../../contexts/ProjectContext'
 import { useNotification } from '@gofreego/tsutils'
 import { PageHeader } from '../../components/PageHeader'
 

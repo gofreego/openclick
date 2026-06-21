@@ -13,6 +13,7 @@ import FlagIcon from '@mui/icons-material/Flag' // For feature flags
 
 // Components
 import { ProjectSelector } from './components/ProjectSelector'
+import { ProjectProvider } from './contexts/ProjectContext'
 
 // Pages
 import { DashboardPage } from './pages/dashboard/DashboardPage'
@@ -80,34 +81,36 @@ function App() {
   return (
     <ThemeProvider>
       <NotificationProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/openclick/login-callback" element={<LoginCallbackPage authService={authService} navigateTo="/openclick/dashboard" onLoginFailed={handleLoginFailed} />} />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute sessionManager={sessionManager} loginUrl={LOGIN_URL} callbackPath="/openclick/login-callback">
-                  <SidebarLayout
-                    menuItems={menuItems}
-                    isRouter={true}
-                    isBrowserRouter={false}
-                    style={{ height: '100vh' }}
-                    header={<SidebarHeader title="OpenClick" homePath="/" />}
-                    footer={<ProjectSelector />}
-                  />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate to="/openclick/dashboard" replace />} />
-              <Route path="openclick/dashboard" element={<DashboardPage />} />
-              <Route path="openclick/projects" element={<ProjectsPage />} />
-              <Route path="openclick/events" element={<EventsPage />} />
-              <Route path="openclick/persons" element={<PersonsPage />} />
-              <Route path="openclick/feature-flags" element={<FeatureFlagsPage />} />
-              <Route path="*" element={<Navigate to="/openclick/dashboard" replace />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <ProjectProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/openclick/login-callback" element={<LoginCallbackPage authService={authService} navigateTo="/openclick/dashboard" onLoginFailed={handleLoginFailed} />} />
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute sessionManager={sessionManager} loginUrl={LOGIN_URL} callbackPath="/openclick/login-callback">
+                    <SidebarLayout
+                      menuItems={menuItems}
+                      isRouter={true}
+                      isBrowserRouter={false}
+                      style={{ height: '100vh' }}
+                      header={<SidebarHeader title="OpenClick" homePath="/" />}
+                      footer={<ProjectSelector />}
+                    />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<Navigate to="/openclick/dashboard" replace />} />
+                <Route path="openclick/dashboard" element={<DashboardPage />} />
+                <Route path="openclick/projects" element={<ProjectsPage />} />
+                <Route path="openclick/events" element={<EventsPage />} />
+                <Route path="openclick/persons" element={<PersonsPage />} />
+                <Route path="openclick/feature-flags" element={<FeatureFlagsPage />} />
+                <Route path="*" element={<Navigate to="/openclick/dashboard" replace />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </ProjectProvider>
       </NotificationProvider>
     </ThemeProvider>
   )

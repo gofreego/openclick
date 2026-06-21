@@ -4,12 +4,12 @@ import type { SelectChangeEvent } from '@mui/material';
 import { projectService } from '../services/projectService';
 import type { Project } from '../services/projectService';
 import { useNotification } from '@gofreego/tsutils';
+import { useCurrentProject, useSetCurrentProject } from '../contexts/ProjectContext';
 
 export function ProjectSelector() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedProjectId, setSelectedProjectId] = useState<string>(
-    () => localStorage.getItem('selectedProjectId') || ''
-  );
+  const selectedProjectId = useCurrentProject();
+  const setSelectedProjectId = useSetCurrentProject();
   const [loading, setLoading] = useState(true);
   const notify = useNotification();
 
@@ -25,8 +25,6 @@ export function ProjectSelector() {
           if (list.length > 0 && !selectedProjectId) {
             const defaultId = list[0].id;
             setSelectedProjectId(defaultId);
-            localStorage.setItem('selectedProjectId', defaultId);
-            window.dispatchEvent(new Event('projectChanged'));
           }
         }
       } catch (err: unknown) {
@@ -48,8 +46,6 @@ export function ProjectSelector() {
   const handleChange = (event: SelectChangeEvent) => {
     const val = event.target.value as string;
     setSelectedProjectId(val);
-    localStorage.setItem('selectedProjectId', val);
-    window.dispatchEvent(new Event('projectChanged'));
   };
 
 
