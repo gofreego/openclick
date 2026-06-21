@@ -24,8 +24,9 @@ type Configuration struct {
 }
 
 type Server struct {
-	GRPCPort int `yaml:"GRPCPort"`
-	HTTPPort int `yaml:"HTTPPort"`
+	GRPCPort   int  `yaml:"GRPCPort"`
+	HTTPPort   int  `yaml:"HTTPPort"`
+	EnableCORS bool `yaml:"EnableCORS"`
 }
 
 func LoadConfig(ctx context.Context, path string, env string) *Configuration {

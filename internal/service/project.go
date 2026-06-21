@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofreego/goutils/logger"
 	"github.com/gofreego/openclick/api/openclick_v1"
+	"github.com/gofreego/openclick/internal/constants"
 	"github.com/gofreego/openclick/internal/models/dao"
 	"github.com/gofreego/openclick/internal/models/filter"
 	"github.com/gofreego/openclick/pkg/utils"
@@ -24,7 +25,7 @@ func (s *Service) ListProjects(ctx context.Context, req *openclick_v1.ListProjec
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "projects:read") {
+	if !s.hasPermission(ctx, constants.PermProjectsRead) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: projects:read")
 	}
 
@@ -57,7 +58,7 @@ func (s *Service) CreateProject(ctx context.Context, req *openclick_v1.CreatePro
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "projects:write") {
+	if !s.hasPermission(ctx, constants.PermProjectsWrite) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: projects:write")
 	}
 
@@ -106,7 +107,7 @@ func (s *Service) GetProject(ctx context.Context, req *openclick_v1.GetProjectRe
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "projects:read") {
+	if !s.hasPermission(ctx, constants.PermProjectsRead) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: projects:read")
 	}
 
@@ -153,7 +154,7 @@ func (s *Service) UpdateProject(ctx context.Context, req *openclick_v1.UpdatePro
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "projects:write") {
+	if !s.hasPermission(ctx, constants.PermProjectsWrite) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: projects:write")
 	}
 	ok, _ := s.repo.IsProjectMember(ctx, req.ProjectId, userID)
@@ -194,7 +195,7 @@ func (s *Service) DeleteProject(ctx context.Context, req *openclick_v1.DeletePro
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "projects:delete") {
+	if !s.hasPermission(ctx, constants.PermProjectsDelete) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: projects:delete")
 	}
 	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
@@ -211,7 +212,7 @@ func (s *Service) AddMember(ctx context.Context, req *openclick_v1.AddMemberRequ
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "members:write") {
+	if !s.hasPermission(ctx, constants.PermMembersWrite) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: members:write")
 	}
 	ok, _ := s.repo.IsProjectMember(ctx, req.ProjectId, userID)
@@ -247,7 +248,7 @@ func (s *Service) RemoveMember(ctx context.Context, req *openclick_v1.RemoveMemb
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "members:write") {
+	if !s.hasPermission(ctx, constants.PermMembersWrite) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: members:write")
 	}
 	ok, _ := s.repo.IsProjectMember(ctx, req.ProjectId, userID)

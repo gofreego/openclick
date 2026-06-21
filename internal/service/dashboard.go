@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofreego/goutils/logger"
 	"github.com/gofreego/openclick/api/openclick_v1"
+	"github.com/gofreego/openclick/internal/constants"
 	"github.com/gofreego/openclick/internal/models/dao"
 	"github.com/gofreego/openclick/internal/models/filter"
 	"google.golang.org/grpc/codes"
@@ -23,7 +24,7 @@ func (s *Service) ListDashboards(ctx context.Context, req *openclick_v1.ListDash
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "dashboards:read") {
+	if !s.hasPermission(ctx, constants.PermDashboardsRead) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:read")
 	}
 	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
@@ -60,7 +61,7 @@ func (s *Service) CreateDashboard(ctx context.Context, req *openclick_v1.CreateD
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "dashboards:write") {
+	if !s.hasPermission(ctx, constants.PermDashboardsWrite) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:write")
 	}
 	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
@@ -94,7 +95,7 @@ func (s *Service) GetDashboard(ctx context.Context, req *openclick_v1.GetDashboa
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "dashboards:read") {
+	if !s.hasPermission(ctx, constants.PermDashboardsRead) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:read")
 	}
 	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
@@ -127,7 +128,7 @@ func (s *Service) DeleteDashboard(ctx context.Context, req *openclick_v1.DeleteD
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "dashboards:delete") {
+	if !s.hasPermission(ctx, constants.PermDashboardsDelete) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:delete")
 	}
 	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
@@ -149,7 +150,7 @@ func (s *Service) CreateDashboardItem(ctx context.Context, req *openclick_v1.Cre
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "dashboards:write") {
+	if !s.hasPermission(ctx, constants.PermDashboardsWrite) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:write")
 	}
 	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
@@ -194,7 +195,7 @@ func (s *Service) UpdateDashboardItem(ctx context.Context, req *openclick_v1.Upd
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "dashboards:write") {
+	if !s.hasPermission(ctx, constants.PermDashboardsWrite) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:write")
 	}
 	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
@@ -229,7 +230,7 @@ func (s *Service) DeleteDashboardItem(ctx context.Context, req *openclick_v1.Del
 	if err != nil {
 		return nil, err
 	}
-	if !s.hasPermission(ctx, "dashboards:delete") {
+	if !s.hasPermission(ctx, constants.PermDashboardsDelete) {
 		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:delete")
 	}
 	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {

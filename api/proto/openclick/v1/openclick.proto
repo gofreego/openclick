@@ -12,6 +12,7 @@ import "proto/openclick/v1/analytics.proto";
 import "proto/openclick/v1/person.proto";
 import "proto/openclick/v1/feature_flag.proto";
 import "proto/openclick/v1/ingest.proto";
+import "proto/openclick/v1/permission.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
@@ -66,6 +67,17 @@ service BaseService {
             tags: "Ping"
             summary: "Ping the server"
             description: "Check if the server is alive."
+        };
+    }
+
+    // Permissions
+    rpc ListPermissions (ListPermissionsRequest) returns (ListPermissionsResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/permissions"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Permissions"
+            summary: "List permissions"
         };
     }
 

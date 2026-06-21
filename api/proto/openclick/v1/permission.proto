@@ -1,0 +1,15 @@
+syntax = "proto3";
+package v1;
+
+option go_package = "./openclick_v1";
+
+message Permission {
+    string key = 1;
+    string description = 2;
+}
+
+message ListPermissionsRequest {}
+
+message ListPermissionsResponse {
+    repeated Permission permissions = 1;
+}

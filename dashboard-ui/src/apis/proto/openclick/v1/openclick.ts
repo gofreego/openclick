@@ -78,6 +78,7 @@ import {
   IngestReplayRequest,
   IngestReplayResponse,
 } from "./ingest";
+import { ListPermissionsRequest, ListPermissionsResponse } from "./permission";
 import {
   CohortResponse,
   CreateCohortRequest,
@@ -121,6 +122,18 @@ export const BaseServiceService = {
     requestDeserialize: (value: Buffer): PingRequest => PingRequest.decode(value),
     responseSerialize: (value: PingResponse): Buffer => Buffer.from(PingResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer): PingResponse => PingResponse.decode(value),
+  },
+  /** Permissions */
+  listPermissions: {
+    path: "/v1.BaseService/ListPermissions" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ListPermissionsRequest): Buffer =>
+      Buffer.from(ListPermissionsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ListPermissionsRequest => ListPermissionsRequest.decode(value),
+    responseSerialize: (value: ListPermissionsResponse): Buffer =>
+      Buffer.from(ListPermissionsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ListPermissionsResponse => ListPermissionsResponse.decode(value),
   },
   /** Projects */
   listProjects: {
@@ -526,6 +539,8 @@ export const BaseServiceService = {
 export interface BaseServiceServer extends UntypedServiceImplementation {
   /** Ping is a simple GET request that returns a Pong message. */
   ping: handleUnaryCall<PingRequest, PingResponse>;
+  /** Permissions */
+  listPermissions: handleUnaryCall<ListPermissionsRequest, ListPermissionsResponse>;
   /** Projects */
   listProjects: handleUnaryCall<ListProjectsRequest, ListProjectsResponse>;
   createProject: handleUnaryCall<CreateProjectRequest, ProjectResponse>;
@@ -587,6 +602,22 @@ export interface BaseServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: PingResponse) => void,
+  ): ClientUnaryCall;
+  /** Permissions */
+  listPermissions(
+    request: ListPermissionsRequest,
+    callback: (error: ServiceError | null, response: ListPermissionsResponse) => void,
+  ): ClientUnaryCall;
+  listPermissions(
+    request: ListPermissionsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListPermissionsResponse) => void,
+  ): ClientUnaryCall;
+  listPermissions(
+    request: ListPermissionsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListPermissionsResponse) => void,
   ): ClientUnaryCall;
   /** Projects */
   listProjects(

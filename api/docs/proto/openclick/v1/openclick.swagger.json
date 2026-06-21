@@ -190,6 +190,29 @@
         ]
       }
     },
+    "/api/v1/permissions": {
+      "get": {
+        "summary": "List permissions",
+        "operationId": "BaseService_ListPermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListPermissionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Permissions"
+        ]
+      }
+    },
     "/api/v1/ping": {
       "get": {
         "summary": "Ping the server",
@@ -2382,6 +2405,18 @@
         }
       }
     },
+    "v1ListPermissionsResponse": {
+      "type": "object",
+      "properties": {
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Permission"
+          }
+        }
+      }
+    },
     "v1ListPersonsResponse": {
       "type": "object",
       "properties": {
@@ -2448,6 +2483,17 @@
           "type": "string"
         },
         "name": {
+          "type": "string"
+        }
+      }
+    },
+    "v1Permission": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "description": {
           "type": "string"
         }
       }

@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	BaseService_Ping_FullMethodName                = "/v1.BaseService/Ping"
+	BaseService_ListPermissions_FullMethodName     = "/v1.BaseService/ListPermissions"
 	BaseService_ListProjects_FullMethodName        = "/v1.BaseService/ListProjects"
 	BaseService_CreateProject_FullMethodName       = "/v1.BaseService/CreateProject"
 	BaseService_GetProject_FullMethodName          = "/v1.BaseService/GetProject"
@@ -68,6 +69,8 @@ const (
 type BaseServiceClient interface {
 	// Ping is a simple GET request that returns a Pong message.
 	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
+	// Permissions
+	ListPermissions(ctx context.Context, in *ListPermissionsRequest, opts ...grpc.CallOption) (*ListPermissionsResponse, error)
 	// Projects
 	ListProjects(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ListProjectsResponse, error)
 	CreateProject(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*ProjectResponse, error)
@@ -128,6 +131,16 @@ func (c *baseServiceClient) Ping(ctx context.Context, in *PingRequest, opts ...g
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PingResponse)
 	err := c.cc.Invoke(ctx, BaseService_Ping_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) ListPermissions(ctx context.Context, in *ListPermissionsRequest, opts ...grpc.CallOption) (*ListPermissionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPermissionsResponse)
+	err := c.cc.Invoke(ctx, BaseService_ListPermissions_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -540,6 +553,8 @@ func (c *baseServiceClient) IngestReplay(ctx context.Context, in *IngestReplayRe
 type BaseServiceServer interface {
 	// Ping is a simple GET request that returns a Pong message.
 	Ping(context.Context, *PingRequest) (*PingResponse, error)
+	// Permissions
+	ListPermissions(context.Context, *ListPermissionsRequest) (*ListPermissionsResponse, error)
 	// Projects
 	ListProjects(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error)
 	CreateProject(context.Context, *CreateProjectRequest) (*ProjectResponse, error)
@@ -598,6 +613,9 @@ type UnimplementedBaseServiceServer struct{}
 
 func (UnimplementedBaseServiceServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedBaseServiceServer) ListPermissions(context.Context, *ListPermissionsRequest) (*ListPermissionsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListPermissions not implemented")
 }
 func (UnimplementedBaseServiceServer) ListProjects(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListProjects not implemented")
@@ -754,6 +772,24 @@ func _BaseService_Ping_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BaseServiceServer).Ping(ctx, req.(*PingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_ListPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).ListPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_ListPermissions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).ListPermissions(ctx, req.(*ListPermissionsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1488,6 +1524,10 @@ var BaseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _BaseService_Ping_Handler,
+		},
+		{
+			MethodName: "ListPermissions",
+			Handler:    _BaseService_ListPermissions_Handler,
 		},
 		{
 			MethodName: "ListProjects",
