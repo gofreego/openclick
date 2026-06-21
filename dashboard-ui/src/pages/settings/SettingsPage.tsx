@@ -6,13 +6,12 @@ import { useNotification } from '@gofreego/tsutils'
 import { PageHeader } from '../../components/PageHeader'
 
 interface Permission {
-  id: string
-  name: string
+  key: string
   description?: string
 }
 
 interface ListPermissionsResponse {
-  results: Permission[]
+  permissions: Permission[]
 }
 
 export function SettingsPage() {
@@ -23,7 +22,7 @@ export function SettingsPage() {
   useEffect(() => {
     setLoading(true)
     httpClient.get<ListPermissionsResponse>('/api/v1/permissions')
-      .then(res => setPermissions(res.data?.results || []))
+      .then(res => setPermissions(res.data?.permissions || []))
       .catch(() => notify.error('Failed to load permissions'))
       .finally(() => setLoading(false))
   }, [])
@@ -52,12 +51,11 @@ export function SettingsPage() {
         {!loading && permissions.length > 0 && (
           <List dense>
             {permissions.map((perm) => (
-              <ListItem key={perm.id} divider>
+              <ListItem key={perm.key} divider>
                 <ListItemText
                   primary={
                     <Box display="flex" alignItems="center" gap={1}>
-                      <Chip label={perm.id} size="small" variant="outlined" sx={{ fontFamily: 'monospace' }} />
-                      <Typography variant="body2" fontWeight={500}>{perm.name}</Typography>
+                      <Chip label={perm.key} size="small" variant="outlined" sx={{ fontFamily: 'monospace' }} />
                     </Box>
                   }
                   secondary={perm.description}
