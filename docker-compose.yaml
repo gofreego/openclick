@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  openclick:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: openclick:latest
+    container_name: openclick
+    restart: always
+    ports:
+      - "8085:8085"
+      - "8086:8086"
+    depends_on:
+      - postgres
+      - clickhouse
