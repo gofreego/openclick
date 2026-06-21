@@ -21,6 +21,175 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/alias": {
+      "post": {
+        "summary": "Alias user",
+        "operationId": "BaseService_Alias",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AliasResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AliasRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Ingestion"
+        ]
+      }
+    },
+    "/api/v1/batch": {
+      "post": {
+        "summary": "Batch capture events",
+        "operationId": "BaseService_BatchCapture",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BatchCaptureResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1BatchCaptureRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Ingestion"
+        ]
+      }
+    },
+    "/api/v1/decide": {
+      "get": {
+        "summary": "Decide flags",
+        "operationId": "BaseService_Decide",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DecideResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "apiKey",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "distinctId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Feature Flags"
+        ]
+      }
+    },
+    "/api/v1/e": {
+      "post": {
+        "summary": "Capture event",
+        "operationId": "BaseService_CaptureEvent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CaptureEventResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CaptureEventRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Ingestion"
+        ]
+      }
+    },
+    "/api/v1/identify": {
+      "post": {
+        "summary": "Identify user",
+        "operationId": "BaseService_Identify",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1IdentifyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1IdentifyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Ingestion"
+        ]
+      }
+    },
     "/api/v1/ping": {
       "get": {
         "summary": "Ping the server",
@@ -202,6 +371,111 @@
         ],
         "tags": [
           "Projects"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/cohorts": {
+      "get": {
+        "summary": "List cohorts",
+        "operationId": "BaseService_ListCohorts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListCohortsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Cohorts"
+        ]
+      },
+      "post": {
+        "summary": "Create cohort",
+        "operationId": "BaseService_CreateCohort",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CohortResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BaseServiceCreateCohortBody"
+            }
+          }
+        ],
+        "tags": [
+          "Cohorts"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/cohorts/{cohortId}": {
+      "delete": {
+        "summary": "Delete cohort",
+        "operationId": "BaseService_DeleteCohort",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteCohortResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cohortId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Cohorts"
         ]
       }
     },
@@ -482,6 +756,193 @@
         ]
       }
     },
+    "/api/v1/projects/{projectId}/feature-flags": {
+      "get": {
+        "summary": "List feature flags",
+        "operationId": "BaseService_ListFeatureFlags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListFeatureFlagsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Feature Flags"
+        ]
+      },
+      "post": {
+        "summary": "Create feature flag",
+        "operationId": "BaseService_CreateFeatureFlag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1FeatureFlagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BaseServiceCreateFeatureFlagBody"
+            }
+          }
+        ],
+        "tags": [
+          "Feature Flags"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/feature-flags/evaluate": {
+      "post": {
+        "summary": "Evaluate flags",
+        "operationId": "BaseService_EvaluateFlags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1EvaluateFlagsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BaseServiceEvaluateFlagsBody"
+            }
+          }
+        ],
+        "tags": [
+          "Feature Flags"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/feature-flags/{flagId}": {
+      "delete": {
+        "summary": "Delete feature flag",
+        "operationId": "BaseService_DeleteFeatureFlag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteFeatureFlagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "flagId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Feature Flags"
+        ]
+      },
+      "patch": {
+        "summary": "Update feature flag",
+        "operationId": "BaseService_UpdateFeatureFlag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1FeatureFlagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "flagId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BaseServiceUpdateFeatureFlagBody"
+            }
+          }
+        ],
+        "tags": [
+          "Feature Flags"
+        ]
+      }
+    },
     "/api/v1/projects/{projectId}/members": {
       "post": {
         "summary": "Add team member to project",
@@ -557,6 +1018,549 @@
           "Projects"
         ]
       }
+    },
+    "/api/v1/projects/{projectId}/persons": {
+      "get": {
+        "summary": "List persons",
+        "operationId": "BaseService_ListPersons",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListPersonsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Persons"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/persons/{distinctId}": {
+      "get": {
+        "summary": "Get person",
+        "operationId": "BaseService_GetPerson",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetPersonResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "distinctId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Persons"
+        ]
+      },
+      "delete": {
+        "summary": "Delete person",
+        "operationId": "BaseService_DeletePerson",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeletePersonResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "distinctId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Persons"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/query/events": {
+      "post": {
+        "summary": "Query events",
+        "operationId": "BaseService_QueryEvents",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1QueryEventsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BaseServiceQueryEventsBody"
+            }
+          }
+        ],
+        "tags": [
+          "Analytics"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/query/funnel": {
+      "post": {
+        "summary": "Query funnel",
+        "operationId": "BaseService_QueryFunnel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1QueryFunnelResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BaseServiceQueryFunnelBody"
+            }
+          }
+        ],
+        "tags": [
+          "Analytics"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/query/paths": {
+      "post": {
+        "summary": "Query paths",
+        "operationId": "BaseService_QueryPaths",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1QueryPathsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BaseServiceQueryPathsBody"
+            }
+          }
+        ],
+        "tags": [
+          "Analytics"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/query/retention": {
+      "post": {
+        "summary": "Query retention",
+        "operationId": "BaseService_QueryRetention",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1QueryRetentionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BaseServiceQueryRetentionBody"
+            }
+          }
+        ],
+        "tags": [
+          "Analytics"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/query/trends": {
+      "post": {
+        "summary": "Query trends",
+        "operationId": "BaseService_QueryTrends",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1QueryTrendsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BaseServiceQueryTrendsBody"
+            }
+          }
+        ],
+        "tags": [
+          "Analytics"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/sessions": {
+      "get": {
+        "summary": "List sessions",
+        "operationId": "BaseService_ListSessions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListSessionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "distinctId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "minDurationMs",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Analytics"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/sessions/{sessionId}": {
+      "get": {
+        "summary": "Get session",
+        "operationId": "BaseService_GetSession",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SessionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Analytics"
+        ]
+      },
+      "delete": {
+        "summary": "Delete session",
+        "operationId": "BaseService_DeleteSession",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteSessionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Analytics"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/sessions/{sessionId}/chunks": {
+      "get": {
+        "summary": "Get session chunks",
+        "operationId": "BaseService_GetSessionChunks",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSessionChunksResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fromChunk",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Analytics"
+        ]
+      }
+    },
+    "/api/v1/replay": {
+      "post": {
+        "summary": "Ingest replay chunk",
+        "operationId": "BaseService_IngestReplay",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1IngestReplayResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1IngestReplayRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Ingestion"
+        ]
+      }
     }
   },
   "definitions": {
@@ -568,6 +1572,17 @@
         },
         "role": {
           "type": "string"
+        }
+      }
+    },
+    "BaseServiceCreateCohortBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "filters": {
+          "type": "object"
         }
       }
     },
@@ -596,6 +1611,193 @@
         }
       }
     },
+    "BaseServiceCreateFeatureFlagBody": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rolloutPct": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "filters": {
+          "type": "object"
+        }
+      }
+    },
+    "BaseServiceEvaluateFlagsBody": {
+      "type": "object",
+      "properties": {
+        "distinctId": {
+          "type": "string"
+        },
+        "personProperties": {
+          "type": "object"
+        },
+        "groups": {
+          "type": "object"
+        }
+      }
+    },
+    "BaseServiceQueryEventsBody": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "type": "string"
+        },
+        "dateFrom": {
+          "type": "string"
+        },
+        "dateTo": {
+          "type": "string"
+        },
+        "distinctId": {
+          "type": "string"
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1PropertyFilter"
+          }
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "orderBy": {
+          "type": "string"
+        },
+        "orderDir": {
+          "type": "string"
+        }
+      }
+    },
+    "BaseServiceQueryFunnelBody": {
+      "type": "object",
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1FunnelStep"
+          }
+        },
+        "dateFrom": {
+          "type": "string"
+        },
+        "dateTo": {
+          "type": "string"
+        },
+        "conversionWindowDays": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "funnelOrder": {
+          "type": "string"
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1PropertyFilter"
+          }
+        }
+      }
+    },
+    "BaseServiceQueryPathsBody": {
+      "type": "object",
+      "properties": {
+        "dateFrom": {
+          "type": "string"
+        },
+        "dateTo": {
+          "type": "string"
+        },
+        "startPoint": {
+          "type": "string"
+        },
+        "endPoint": {
+          "type": "string"
+        },
+        "pathType": {
+          "type": "string"
+        },
+        "stepLimit": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "minEdgeWeight": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "BaseServiceQueryRetentionBody": {
+      "type": "object",
+      "properties": {
+        "targetEvent": {
+          "$ref": "#/definitions/v1RetentionEvent"
+        },
+        "returnEvent": {
+          "$ref": "#/definitions/v1RetentionEvent"
+        },
+        "dateFrom": {
+          "type": "string"
+        },
+        "dateTo": {
+          "type": "string"
+        },
+        "period": {
+          "type": "string"
+        },
+        "retentionType": {
+          "type": "string"
+        }
+      }
+    },
+    "BaseServiceQueryTrendsBody": {
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1TrendsEvent"
+          }
+        },
+        "dateFrom": {
+          "type": "string"
+        },
+        "dateTo": {
+          "type": "string"
+        },
+        "interval": {
+          "type": "string"
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1PropertyFilter"
+          }
+        },
+        "breakdown": {
+          "type": "string"
+        }
+      }
+    },
     "BaseServiceUpdateDashboardItemBody": {
       "type": "object",
       "properties": {
@@ -609,6 +1811,24 @@
           "type": "object"
         },
         "position": {
+          "type": "object"
+        }
+      }
+    },
+    "BaseServiceUpdateFeatureFlagBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rolloutPct": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "filters": {
           "type": "object"
         }
       }
@@ -677,6 +1897,133 @@
         }
       }
     },
+    "v1AliasRequest": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "distinctId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1AliasResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1BatchCaptureRequest": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string"
+        },
+        "batch": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1BatchEvent"
+          }
+        }
+      }
+    },
+    "v1BatchCaptureResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1BatchEvent": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "type": "string"
+        },
+        "distinctId": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "properties": {
+          "type": "object"
+        },
+        "sessionId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CaptureEventRequest": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string"
+        },
+        "event": {
+          "type": "string"
+        },
+        "distinctId": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "properties": {
+          "type": "object"
+        },
+        "sessionId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CaptureEventResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1CohortResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "filters": {
+          "type": "object"
+        },
+        "personCount": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "v1CreateProjectRequest": {
       "type": "object",
       "properties": {
@@ -730,14 +2077,131 @@
         }
       }
     },
+    "v1DecideResponse": {
+      "type": "object",
+      "properties": {
+        "featureFlags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "v1DeleteCohortResponse": {
+      "type": "object"
+    },
     "v1DeleteDashboardItemResponse": {
       "type": "object"
     },
     "v1DeleteDashboardResponse": {
       "type": "object"
     },
+    "v1DeleteFeatureFlagResponse": {
+      "type": "object"
+    },
+    "v1DeletePersonResponse": {
+      "type": "object"
+    },
     "v1DeleteProjectResponse": {
       "type": "object"
+    },
+    "v1DeleteSessionResponse": {
+      "type": "object"
+    },
+    "v1EvaluateFlagsResponse": {
+      "type": "object",
+      "properties": {
+        "featureFlags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "v1EventResult": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "event": {
+          "type": "string"
+        },
+        "distinctId": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "properties": {
+          "type": "object"
+        }
+      }
+    },
+    "v1FeatureFlagResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "rolloutPct": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "filters": {
+          "type": "object"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1FunnelStep": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "v1FunnelStepResult": {
+      "type": "object",
+      "properties": {
+        "actionId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "conversionRate": {
+          "type": "number",
+          "format": "double"
+        },
+        "averageConversionTime": {
+          "type": "number",
+          "format": "double"
+        }
+      }
     },
     "v1GetDashboardResponse": {
       "type": "object",
@@ -757,6 +2221,21 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1DashboardItemResponse"
+          }
+        }
+      }
+    },
+    "v1GetPersonResponse": {
+      "type": "object",
+      "properties": {
+        "person": {
+          "$ref": "#/definitions/v1PersonResponse"
+        },
+        "recentEvents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EventResult"
           }
         }
       }
@@ -792,6 +2271,93 @@
         }
       }
     },
+    "v1GetSessionChunksResponse": {
+      "type": "object",
+      "properties": {
+        "chunks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SessionChunk"
+          }
+        },
+        "totalChunks": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1IdentifyRequest": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string"
+        },
+        "distinctId": {
+          "type": "string"
+        },
+        "properties": {
+          "type": "object"
+        }
+      }
+    },
+    "v1IdentifyResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1IngestReplayRequest": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string"
+        },
+        "sessionId": {
+          "type": "string"
+        },
+        "distinctId": {
+          "type": "string"
+        },
+        "chunkIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v1IngestReplayResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1ListCohortsResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1CohortResponse"
+          }
+        }
+      }
+    },
     "v1ListDashboardsResponse": {
       "type": "object",
       "properties": {
@@ -804,6 +2370,34 @@
         }
       }
     },
+    "v1ListFeatureFlagsResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1FeatureFlagResponse"
+          }
+        }
+      }
+    },
+    "v1ListPersonsResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1PersonResponse"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "v1ListProjectsResponse": {
       "type": "object",
       "properties": {
@@ -813,6 +2407,66 @@
             "type": "object",
             "$ref": "#/definitions/v1ProjectResponse"
           }
+        }
+      }
+    },
+    "v1ListSessionsResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SessionResponse"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1PathLink": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1PathNode": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "v1PersonResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "distinctId": {
+          "type": "string"
+        },
+        "properties": {
+          "type": "object"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
@@ -868,8 +2522,249 @@
         }
       }
     },
+    "v1PropertyFilter": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {},
+        "operator": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "v1QueryEventsResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EventResult"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1QueryFunnelResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1FunnelStepResult"
+          }
+        }
+      }
+    },
+    "v1QueryPathsResponse": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1PathNode"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1PathLink"
+          }
+        }
+      }
+    },
+    "v1QueryRetentionResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1RetentionCohort"
+          }
+        }
+      }
+    },
+    "v1QueryTrendsResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1TrendsSeries"
+          }
+        }
+      }
+    },
     "v1RemoveMemberResponse": {
       "type": "object"
+    },
+    "v1RetentionCohort": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "cohortSize": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1RetentionValue"
+          }
+        }
+      }
+    },
+    "v1RetentionEvent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "v1RetentionValue": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "percentage": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "v1SessionChunk": {
+      "type": "object",
+      "properties": {
+        "chunkIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1SessionResponse": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string"
+        },
+        "sessionId": {
+          "type": "string"
+        },
+        "distinctId": {
+          "type": "string"
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "durationMs": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pageCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "clickCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "countryCode": {
+          "type": "string"
+        },
+        "browser": {
+          "type": "string"
+        },
+        "os": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": "string"
+        },
+        "recordingUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "v1TrendsEvent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "math": {
+          "type": "string"
+        }
+      }
+    },
+    "v1TrendsSeries": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "breakdownValue": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "days": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {

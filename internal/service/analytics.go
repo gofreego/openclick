@@ -1,456 +1,426 @@
 package service
 
 import (
-	"encoding/json"
-	"net/http"
+	"context"
 
 	"github.com/gofreego/goutils/logger"
+	"github.com/gofreego/openclick/api/openclick_v1"
 	"github.com/gofreego/openclick/internal/models/filter"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Analytics Query Handlers
 // ─────────────────────────────────────────────────────────────────────────────
 
-// QueryTrends handles POST /api/v1/projects/:project_id/query/trends
-func (s *Service) QueryTrends(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	if !s.checkAnalyticsAuth(w, r, projectID, "analytics:read") {
-		return
+func (s *Service) QueryTrends(ctx context.Context, req *openclick_v1.QueryTrendsRequest) (*openclick_v1.QueryTrendsResponse, error) {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "analytics:read"); err != nil {
+		return nil, err
 	}
 
 	if s.analyticsDB == nil {
-		writeJSON(w, http.StatusOK, map[string]interface{}{"results": []interface{}{}})
-		return
+		return &openclick_v1.QueryTrendsResponse{Results: []*openclick_v1.TrendsSeries{}}, nil
 	}
 
-	var body struct {
-		Events    []filter.TrendsEvent   `json:"events"`
-		DateFrom  string                 `json:"date_from"`
-		DateTo    string                 `json:"date_to"`
-		Interval  string                 `json:"interval"`
-		Filters   []filter.PropertyFilter `json:"filters"`
-		Breakdown string                 `json:"breakdown"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
+	var events []filter.TrendsEvent
+	for _, e := range req.Events {
+		events = append(events, filter.TrendsEvent{ID: e.Id, Name: e.Name, Math: e.Math})
 	}
 
 	result, err := s.analyticsDB.QueryTrends(ctx, &filter.TrendsQuery{
-		ProjectID: projectID,
-		Events:    body.Events,
-		DateFrom:  body.DateFrom,
-		DateTo:    body.DateTo,
-		Interval:  body.Interval,
-		Filters:   body.Filters,
-		Breakdown: body.Breakdown,
+		ProjectID: req.ProjectId,
+		Events:    events,
+		DateFrom:  req.DateFrom,
+		DateTo:    req.DateTo,
+		Interval:  req.Interval,
+		Filters:   protoToPropertyFilters(req.Filters),
+		Breakdown: req.Breakdown,
 	})
 	if err != nil {
 		logger.Error(ctx, "query trends: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to query trends", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to query trends")
 	}
 
-	// Build response
-	var results []map[string]interface{}
+	var results []*openclick_v1.TrendsSeries
 	for _, series := range result.Results {
-		results = append(results, map[string]interface{}{
-			"label":           series.Label,
-			"breakdown_value": series.BreakdownValue,
-			"data":            series.Data,
-			"labels":          series.Labels,
-			"days":            series.Days,
+		results = append(results, &openclick_v1.TrendsSeries{
+			Label:          series.Label,
+			BreakdownValue: series.BreakdownValue,
+			Data:           series.Data,
+			Labels:         series.Labels,
+			Days:           series.Days,
 		})
 	}
 	if results == nil {
-		results = []map[string]interface{}{}
+		results = []*openclick_v1.TrendsSeries{}
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{"results": results})
+	return &openclick_v1.QueryTrendsResponse{Results: results}, nil
 }
 
-// QueryFunnel handles POST /api/v1/projects/:project_id/query/funnel
-func (s *Service) QueryFunnel(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	if !s.checkAnalyticsAuth(w, r, projectID, "analytics:read") {
-		return
+func (s *Service) QueryFunnel(ctx context.Context, req *openclick_v1.QueryFunnelRequest) (*openclick_v1.QueryFunnelResponse, error) {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "analytics:read"); err != nil {
+		return nil, err
 	}
 
 	if s.analyticsDB == nil {
-		writeJSON(w, http.StatusOK, map[string]interface{}{"result": []interface{}{}})
-		return
+		return &openclick_v1.QueryFunnelResponse{Result: []*openclick_v1.FunnelStepResult{}}, nil
 	}
 
-	var body struct {
-		Steps                []filter.FunnelStep    `json:"steps"`
-		DateFrom             string                 `json:"date_from"`
-		DateTo               string                 `json:"date_to"`
-		ConversionWindowDays int                    `json:"conversion_window_days"`
-		FunnelOrder          string                 `json:"funnel_order"`
-		Filters              []filter.PropertyFilter `json:"filters"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
+	var steps []filter.FunnelStep
+	for _, st := range req.Steps {
+		steps = append(steps, filter.FunnelStep{Event: st.Event, Name: st.Name})
 	}
 
 	result, err := s.analyticsDB.QueryFunnel(ctx, &filter.FunnelQuery{
-		ProjectID:            projectID,
-		Steps:                body.Steps,
-		DateFrom:             body.DateFrom,
-		DateTo:               body.DateTo,
-		ConversionWindowDays: body.ConversionWindowDays,
-		FunnelOrder:          body.FunnelOrder,
-		Filters:              body.Filters,
+		ProjectID:            req.ProjectId,
+		Steps:                steps,
+		DateFrom:             req.DateFrom,
+		DateTo:               req.DateTo,
+		ConversionWindowDays: int(req.ConversionWindowDays),
+		FunnelOrder:          req.FunnelOrder,
+		Filters:              protoToPropertyFilters(req.Filters),
 	})
 	if err != nil {
 		logger.Error(ctx, "query funnel: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to query funnel", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to query funnel")
 	}
 
-	var steps []map[string]interface{}
+	var resSteps []*openclick_v1.FunnelStepResult
 	for _, step := range result.Result {
-		steps = append(steps, map[string]interface{}{
-			"action_id":               step.ActionID,
-			"name":                    step.Name,
-			"count":                   step.Count,
-			"conversion_rate":         step.ConversionRate,
-			"average_conversion_time": step.AverageConversionTime,
+		avgTime := float64(0)
+		if step.AverageConversionTime != nil {
+			avgTime = *step.AverageConversionTime
+		}
+		resSteps = append(resSteps, &openclick_v1.FunnelStepResult{
+			ActionId:              step.ActionID,
+			Name:                  step.Name,
+			Count:                 step.Count,
+			ConversionRate:        step.ConversionRate,
+			AverageConversionTime: avgTime,
 		})
 	}
-	if steps == nil {
-		steps = []map[string]interface{}{}
+	if resSteps == nil {
+		resSteps = []*openclick_v1.FunnelStepResult{}
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{"result": steps})
+	return &openclick_v1.QueryFunnelResponse{Result: resSteps}, nil
 }
 
-// QueryRetention handles POST /api/v1/projects/:project_id/query/retention
-func (s *Service) QueryRetention(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	if !s.checkAnalyticsAuth(w, r, projectID, "analytics:read") {
-		return
+func (s *Service) QueryRetention(ctx context.Context, req *openclick_v1.QueryRetentionRequest) (*openclick_v1.QueryRetentionResponse, error) {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "analytics:read"); err != nil {
+		return nil, err
 	}
 
 	if s.analyticsDB == nil {
-		writeJSON(w, http.StatusOK, map[string]interface{}{"result": []interface{}{}})
-		return
+		return &openclick_v1.QueryRetentionResponse{Result: []*openclick_v1.RetentionCohort{}}, nil
 	}
 
-	var body struct {
-		TargetEvent   filter.RetentionEvent `json:"target_event"`
-		ReturnEvent   filter.RetentionEvent `json:"return_event"`
-		DateFrom      string                `json:"date_from"`
-		DateTo        string                `json:"date_to"`
-		Period        string                `json:"period"`
-		RetentionType string                `json:"retention_type"`
+	var targetEvent, returnEvent filter.RetentionEvent
+	if req.TargetEvent != nil {
+		targetEvent = filter.RetentionEvent{ID: req.TargetEvent.Id, Name: req.TargetEvent.Name}
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
+	if req.ReturnEvent != nil {
+		returnEvent = filter.RetentionEvent{ID: req.ReturnEvent.Id, Name: req.ReturnEvent.Name}
 	}
 
 	result, err := s.analyticsDB.QueryRetention(ctx, &filter.RetentionQuery{
-		ProjectID:     projectID,
-		TargetEvent:   body.TargetEvent,
-		ReturnEvent:   body.ReturnEvent,
-		DateFrom:      body.DateFrom,
-		DateTo:        body.DateTo,
-		Period:        body.Period,
-		RetentionType: body.RetentionType,
+		ProjectID:     req.ProjectId,
+		TargetEvent:   targetEvent,
+		ReturnEvent:   returnEvent,
+		DateFrom:      req.DateFrom,
+		DateTo:        req.DateTo,
+		Period:        req.Period,
+		RetentionType: req.RetentionType,
 	})
 	if err != nil {
 		logger.Error(ctx, "query retention: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to query retention", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to query retention")
 	}
 
-	var rows []map[string]interface{}
+	var rows []*openclick_v1.RetentionCohort
 	for _, cohort := range result.Result {
-		var values []map[string]interface{}
+		var values []*openclick_v1.RetentionValue
 		for _, v := range cohort.Values {
-			values = append(values, map[string]interface{}{
-				"count":      v.Count,
-				"percentage": v.Percentage,
+			values = append(values, &openclick_v1.RetentionValue{
+				Count:      v.Count,
+				Percentage: v.Percentage,
 			})
 		}
-		rows = append(rows, map[string]interface{}{
-			"date":        cohort.Date,
-			"label":       cohort.Label,
-			"cohort_size": cohort.CohortSize,
-			"values":      values,
+		rows = append(rows, &openclick_v1.RetentionCohort{
+			Date:       cohort.Date.Format("2006-01-02"),
+			Label:      cohort.Label,
+			CohortSize: cohort.CohortSize,
+			Values:     values,
 		})
 	}
 	if rows == nil {
-		rows = []map[string]interface{}{}
+		rows = []*openclick_v1.RetentionCohort{}
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{"result": rows})
+	return &openclick_v1.QueryRetentionResponse{Result: rows}, nil
 }
 
-// QueryPaths handles POST /api/v1/projects/:project_id/query/paths
-func (s *Service) QueryPaths(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	if !s.checkAnalyticsAuth(w, r, projectID, "analytics:read") {
-		return
+func (s *Service) QueryPaths(ctx context.Context, req *openclick_v1.QueryPathsRequest) (*openclick_v1.QueryPathsResponse, error) {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "analytics:read"); err != nil {
+		return nil, err
 	}
 
 	if s.analyticsDB == nil {
-		writeJSON(w, http.StatusOK, map[string]interface{}{"nodes": []interface{}{}, "links": []interface{}{}})
-		return
-	}
-
-	var body struct {
-		DateFrom      string `json:"date_from"`
-		DateTo        string `json:"date_to"`
-		StartPoint    string `json:"start_point"`
-		EndPoint      string `json:"end_point"`
-		PathType      string `json:"path_type"`
-		StepLimit     int    `json:"step_limit"`
-		MinEdgeWeight int    `json:"min_edge_weight"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
+		return &openclick_v1.QueryPathsResponse{Nodes: []*openclick_v1.PathNode{}, Links: []*openclick_v1.PathLink{}}, nil
 	}
 
 	result, err := s.analyticsDB.QueryPaths(ctx, &filter.PathsQuery{
-		ProjectID:     projectID,
-		DateFrom:      body.DateFrom,
-		DateTo:        body.DateTo,
-		StartPoint:    body.StartPoint,
-		EndPoint:      body.EndPoint,
-		PathType:      body.PathType,
-		StepLimit:     body.StepLimit,
-		MinEdgeWeight: body.MinEdgeWeight,
+		ProjectID:     req.ProjectId,
+		DateFrom:      req.DateFrom,
+		DateTo:        req.DateTo,
+		StartPoint:    req.StartPoint,
+		EndPoint:      req.EndPoint,
+		PathType:      req.PathType,
+		StepLimit:     int(req.StepLimit),
+		MinEdgeWeight: int(req.MinEdgeWeight),
 	})
 	if err != nil {
 		logger.Error(ctx, "query paths: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to query paths", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to query paths")
 	}
 
-	var nodes, links []map[string]interface{}
+	var nodes []*openclick_v1.PathNode
+	var links []*openclick_v1.PathLink
 	for _, n := range result.Nodes {
-		nodes = append(nodes, map[string]interface{}{"id": n.ID, "name": n.Name})
+		nodes = append(nodes, &openclick_v1.PathNode{Id: n.ID, Name: n.Name})
 	}
 	for _, l := range result.Links {
-		links = append(links, map[string]interface{}{"source": l.Source, "target": l.Target, "value": l.Value})
+		links = append(links, &openclick_v1.PathLink{Source: l.Source, Target: l.Target, Value: int64(l.Value)})
 	}
 	if nodes == nil {
-		nodes = []map[string]interface{}{}
+		nodes = []*openclick_v1.PathNode{}
 	}
 	if links == nil {
-		links = []map[string]interface{}{}
+		links = []*openclick_v1.PathLink{}
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{"nodes": nodes, "links": links})
+	return &openclick_v1.QueryPathsResponse{Nodes: nodes, Links: links}, nil
 }
 
-// QueryEvents handles POST /api/v1/projects/:project_id/query/events
-func (s *Service) QueryEvents(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	if !s.checkAnalyticsAuth(w, r, projectID, "events:read") {
-		return
+func (s *Service) QueryEvents(ctx context.Context, req *openclick_v1.QueryEventsRequest) (*openclick_v1.QueryEventsResponse, error) {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "events:read"); err != nil {
+		return nil, err
 	}
 
 	if s.analyticsDB == nil {
-		writeJSON(w, http.StatusOK, map[string]interface{}{"results": []interface{}{}, "total": 0})
-		return
-	}
-
-	var body struct {
-		Event      string                 `json:"event"`
-		DateFrom   string                 `json:"date_from"`
-		DateTo     string                 `json:"date_to"`
-		DistinctID *string                `json:"distinct_id"`
-		Filters    []filter.PropertyFilter `json:"filters"`
-		Limit      int                    `json:"limit"`
-		Offset     int                    `json:"offset"`
-		OrderBy    string                 `json:"order_by"`
-		OrderDir   string                 `json:"order_dir"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
+		return &openclick_v1.QueryEventsResponse{Results: []*openclick_v1.EventResult{}, Total: 0}, nil
 	}
 
 	distinctID := ""
-	if body.DistinctID != nil {
-		distinctID = *body.DistinctID
+	if req.DistinctId != nil {
+		distinctID = *req.DistinctId
 	}
 
 	result, err := s.analyticsDB.QueryEvents(ctx, &filter.EventsQuery{
-		ProjectID:  projectID,
-		Event:      body.Event,
-		DateFrom:   body.DateFrom,
-		DateTo:     body.DateTo,
+		ProjectID:  req.ProjectId,
+		Event:      req.Event,
+		DateFrom:   req.DateFrom,
+		DateTo:     req.DateTo,
 		DistinctID: distinctID,
-		Filters:    body.Filters,
-		Limit:      body.Limit,
-		Offset:     body.Offset,
-		OrderBy:    body.OrderBy,
-		OrderDir:   body.OrderDir,
+		Filters:    protoToPropertyFilters(req.Filters),
+		Limit:      int(req.Limit),
+		Offset:     int(req.Offset),
+		OrderBy:    req.OrderBy,
+		OrderDir:   req.OrderDir,
 	})
 	if err != nil {
 		logger.Error(ctx, "query events: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to query events", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to query events")
 	}
 
-	var events []map[string]interface{}
+	var events []*openclick_v1.EventResult
 	for _, e := range result.Results {
-		events = append(events, map[string]interface{}{
-			"uuid":        e.UUID,
-			"event":       e.Event,
-			"distinct_id": e.DistinctID,
-			"timestamp":   e.Timestamp,
-			"properties":  json.RawMessage(e.Properties),
+		var props structpb.Struct
+		if len(e.Properties) > 0 {
+			_ = props.UnmarshalJSON([]byte(e.Properties))
+		}
+		events = append(events, &openclick_v1.EventResult{
+			Uuid:       e.UUID,
+			Event:      e.Event,
+			DistinctId: e.DistinctID,
+			Timestamp:  timestamppb.New(e.Timestamp),
+			Properties: &props,
 		})
 	}
 	if events == nil {
-		events = []map[string]interface{}{}
+		events = []*openclick_v1.EventResult{}
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{
-		"results": events,
-		"total":   result.Total,
-	})
+	return &openclick_v1.QueryEventsResponse{
+		Results: events,
+		Total:   int64(result.Total),
+	}, nil
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Sessions
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ListSessions handles GET /api/v1/projects/:project_id/sessions
-func (s *Service) ListSessions(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	if !s.checkAnalyticsAuth(w, r, projectID, "replay:read") {
-		return
+func (s *Service) ListSessions(ctx context.Context, req *openclick_v1.ListSessionsRequest) (*openclick_v1.ListSessionsResponse, error) {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "replay:read"); err != nil {
+		return nil, err
 	}
 
 	if s.analyticsDB == nil {
-		writeJSON(w, http.StatusOK, map[string]interface{}{"results": []interface{}{}, "total": 0})
-		return
+		return &openclick_v1.ListSessionsResponse{Results: []*openclick_v1.SessionResponse{}, Total: 0}, nil
 	}
 
-	q := r.URL.Query()
+	df := ""
+	if req.DateFrom != nil {
+		df = *req.DateFrom
+	}
+	dt := ""
+	if req.DateTo != nil {
+		dt = *req.DateTo
+	}
+	did := ""
+	if req.DistinctId != nil {
+		did = *req.DistinctId
+	}
+	search := ""
+	if req.Search != nil {
+		search = *req.Search
+	}
+	minDur := 0
+	if req.MinDurationMs != nil {
+		minDur = int(*req.MinDurationMs)
+	}
+	limit := 50
+	if req.Limit != nil {
+		limit = int(*req.Limit)
+	}
+	offset := 0
+	if req.Offset != nil {
+		offset = int(*req.Offset)
+	}
+
 	f := &filter.SessionFilter{
-		ProjectID:     projectID,
-		DateFrom:      q.Get("date_from"),
-		DateTo:        q.Get("date_to"),
-		DistinctID:    q.Get("distinct_id"),
-		MinDurationMs: queryInt(q, "min_duration_ms", 0),
-		Search:        q.Get("search"),
-		Limit:         queryInt(q, "limit", 50),
-		Offset:        queryInt(q, "offset", 0),
+		ProjectID:     req.ProjectId,
+		DateFrom:      df,
+		DateTo:        dt,
+		DistinctID:    did,
+		MinDurationMs: minDur,
+		Search:        search,
+		Limit:         limit,
+		Offset:        offset,
 	}
 
 	sessions, total, err := s.analyticsDB.ListSessions(ctx, f)
 	if err != nil {
 		logger.Error(ctx, "list sessions: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to list sessions", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to list sessions")
 	}
 
-	var results []map[string]interface{}
+	var results []*openclick_v1.SessionResponse
 	for _, sess := range sessions {
 		results = append(results, daoSessionToResponse(sess))
 	}
 	if results == nil {
-		results = []map[string]interface{}{}
+		results = []*openclick_v1.SessionResponse{}
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{"results": results, "total": total})
+	return &openclick_v1.ListSessionsResponse{Results: results, Total: int64(total)}, nil
 }
 
-// GetSession handles GET /api/v1/projects/:project_id/sessions/:session_id
-func (s *Service) GetSession(w http.ResponseWriter, r *http.Request, projectID, sessionID string) {
-	ctx := r.Context()
-	if !s.checkAnalyticsAuth(w, r, projectID, "replay:read") {
-		return
+func (s *Service) GetSession(ctx context.Context, req *openclick_v1.GetSessionRequest) (*openclick_v1.SessionResponse, error) {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "replay:read"); err != nil {
+		return nil, err
 	}
 
 	if s.analyticsDB == nil {
-		writeError(w, http.StatusServiceUnavailable, "analytics database not configured", "SERVICE_UNAVAILABLE")
-		return
+		return nil, status.Error(codes.Unavailable, "analytics database not configured")
 	}
 
-	sess, err := s.analyticsDB.GetSession(ctx, projectID, sessionID)
+	sess, err := s.analyticsDB.GetSession(ctx, req.ProjectId, req.SessionId)
 	if err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
-	writeJSON(w, http.StatusOK, daoSessionToResponse(sess))
+	return daoSessionToResponse(sess), nil
 }
 
-// GetSessionChunks handles GET /api/v1/projects/:project_id/sessions/:session_id/chunks
-func (s *Service) GetSessionChunks(w http.ResponseWriter, r *http.Request, projectID, sessionID string) {
-	ctx := r.Context()
-	if !s.checkAnalyticsAuth(w, r, projectID, "replay:read") {
-		return
+func (s *Service) GetSessionChunks(ctx context.Context, req *openclick_v1.GetSessionChunksRequest) (*openclick_v1.GetSessionChunksResponse, error) {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "replay:read"); err != nil {
+		return nil, err
 	}
 
 	if s.analyticsDB == nil {
-		writeError(w, http.StatusServiceUnavailable, "analytics database not configured", "SERVICE_UNAVAILABLE")
-		return
+		return nil, status.Error(codes.Unavailable, "analytics database not configured")
 	}
 
-	fromChunk := queryInt(r.URL.Query(), "from_chunk", 0)
-	chunks, total, err := s.analyticsDB.GetSessionChunks(ctx, projectID, sessionID, fromChunk)
+	fromChunk := 0
+	if req.FromChunk != nil {
+		fromChunk = int(*req.FromChunk)
+	}
+
+	chunks, total, err := s.analyticsDB.GetSessionChunks(ctx, req.ProjectId, req.SessionId, fromChunk)
 	if err != nil {
 		logger.Error(ctx, "get session chunks: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to get session chunks", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to get session chunks")
 	}
 
-	var chunkList []map[string]interface{}
+	var chunkList []*openclick_v1.SessionChunk
 	for _, c := range chunks {
-		chunkList = append(chunkList, map[string]interface{}{
-			"chunk_index": c.ChunkIndex,
-			"data":        c.Data,
-			"timestamp":   c.Timestamp,
+		chunkList = append(chunkList, &openclick_v1.SessionChunk{
+			ChunkIndex: int32(c.ChunkIndex),
+			Data:       c.Data,
+			Timestamp:  timestamppb.New(c.Timestamp),
 		})
 	}
 	if chunkList == nil {
-		chunkList = []map[string]interface{}{}
+		chunkList = []*openclick_v1.SessionChunk{}
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{
-		"chunks":       chunkList,
-		"total_chunks": total,
-	})
+	return &openclick_v1.GetSessionChunksResponse{
+		Chunks:      chunkList,
+		TotalChunks: int64(total),
+	}, nil
 }
 
-// DeleteSession handles DELETE /api/v1/projects/:project_id/sessions/:session_id
-func (s *Service) DeleteSession(w http.ResponseWriter, r *http.Request, projectID, sessionID string) {
-	ctx := r.Context()
-	if !s.checkAnalyticsAuth(w, r, projectID, "replay:delete") {
-		return
+func (s *Service) DeleteSession(ctx context.Context, req *openclick_v1.DeleteSessionRequest) (*openclick_v1.DeleteSessionResponse, error) {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, "replay:delete"); err != nil {
+		return nil, err
 	}
 
 	if s.analyticsDB == nil {
-		writeError(w, http.StatusServiceUnavailable, "analytics database not configured", "SERVICE_UNAVAILABLE")
-		return
+		return nil, status.Error(codes.Unavailable, "analytics database not configured")
 	}
 
-	if err := s.analyticsDB.DeleteSession(ctx, projectID, sessionID); err != nil {
-		writeError(w, http.StatusInternalServerError, err.Error(), "INTERNAL_ERROR")
-		return
+	if err := s.analyticsDB.DeleteSession(ctx, req.ProjectId, req.SessionId); err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
 	}
-	w.WriteHeader(http.StatusNoContent)
+	return &openclick_v1.DeleteSessionResponse{}, nil
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-// checkAnalyticsAuth validates user membership + permission for analytics endpoints
-func (s *Service) checkAnalyticsAuth(w http.ResponseWriter, r *http.Request, projectID, perm string) bool {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return false
+func (s *Service) checkAnalyticsAuth(ctx context.Context, projectID, perm string) error {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return err
 	}
-	if !hasPermission(r, perm) {
-		writeError(w, http.StatusForbidden, "missing permission: "+perm, "FORBIDDEN")
-		return false
+	if !s.hasPermission(ctx, perm) {
+		return status.Error(codes.PermissionDenied, "missing permission: "+perm)
 	}
-	return s.assertMembership(ctx, w, projectID, userID)
+	return s.validateMembership(ctx, projectID, userID)
+}
+
+func protoToPropertyFilters(pfs []*openclick_v1.PropertyFilter) []filter.PropertyFilter {
+	var result []filter.PropertyFilter
+	for _, pf := range pfs {
+		var val interface{}
+		if pf.Value != nil {
+			val = pf.Value.AsInterface()
+		}
+		result = append(result, filter.PropertyFilter{
+			Key:      pf.Key,
+			Value:    val,
+			Operator: pf.Operator,
+			Type:     pf.Type,
+		})
+	}
+	return result
 }

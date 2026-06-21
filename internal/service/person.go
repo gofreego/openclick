@@ -1,273 +1,228 @@
 package service
 
 import (
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"time"
+	"context"
 
 	"github.com/gofreego/goutils/logger"
+	"github.com/gofreego/openclick/api/openclick_v1"
 	"github.com/gofreego/openclick/internal/models/dao"
 	"github.com/gofreego/openclick/internal/models/filter"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Persons
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ListPersons handles GET /api/v1/projects/:project_id/persons
-func (s *Service) ListPersons(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "persons:read") {
-		writeError(w, http.StatusForbidden, "missing permission: persons:read", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+func (s *Service) ListPersons(ctx context.Context, req *openclick_v1.ListPersonsRequest) (*openclick_v1.ListPersonsResponse, error) {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:read"); err != nil {
+		return nil, err
 	}
 
-	q := r.URL.Query()
+	search := ""
+	if req.Search != nil {
+		search = *req.Search
+	}
+	limit := 100
+	if req.Limit != nil {
+		limit = int(*req.Limit)
+	}
+	offset := 0
+	if req.Offset != nil {
+		offset = int(*req.Offset)
+	}
+
 	f := &filter.PersonFilter{
-		ProjectID: projectID,
-		Search:    q.Get("search"),
-		Limit:     queryInt(q, "limit", 100),
-		Offset:    queryInt(q, "offset", 0),
+		ProjectID: req.ProjectId,
+		Search:    search,
+		Limit:     limit,
+		Offset:    offset,
 	}
 
 	persons, total, err := s.repo.ListPersons(ctx, f)
 	if err != nil {
 		logger.Error(ctx, "list persons: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to list persons", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to list persons")
 	}
 
-	results := make([]map[string]interface{}, 0, len(persons))
+	var results []*openclick_v1.PersonResponse
 	for _, p := range persons {
 		results = append(results, personToResponse(p))
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{
-		"results": results,
-		"total":   total,
-	})
+	if results == nil {
+		results = []*openclick_v1.PersonResponse{}
+	}
+	return &openclick_v1.ListPersonsResponse{Results: results, Total: int64(total)}, nil
 }
 
-// GetPerson handles GET /api/v1/projects/:project_id/persons/:distinct_id
-func (s *Service) GetPerson(w http.ResponseWriter, r *http.Request, projectID, distinctID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "persons:read") {
-		writeError(w, http.StatusForbidden, "missing permission: persons:read", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+func (s *Service) GetPerson(ctx context.Context, req *openclick_v1.GetPersonRequest) (*openclick_v1.GetPersonResponse, error) {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:read"); err != nil {
+		return nil, err
 	}
 
-	person, err := s.repo.GetPerson(ctx, projectID, distinctID)
+	person, err := s.repo.GetPerson(ctx, req.ProjectId, req.DistinctId)
 	if err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
 
-	resp := personToResponse(person)
+	resp := &openclick_v1.GetPersonResponse{
+		Person: personToResponse(person),
+	}
+
 	// Include recent events if ClickHouse is available
 	if s.analyticsDB != nil {
 		events, err := s.analyticsDB.QueryEvents(ctx, &filter.EventsQuery{
-			ProjectID:  projectID,
-			DistinctID: distinctID,
+			ProjectID:  req.ProjectId,
+			DistinctID: req.DistinctId,
 			Limit:      10,
 			OrderBy:    "timestamp",
 			OrderDir:   "desc",
 		})
 		if err == nil && events != nil {
-			var recentEvents []map[string]interface{}
+			var recentEvents []*openclick_v1.EventResult
 			for _, e := range events.Results {
-				recentEvents = append(recentEvents, map[string]interface{}{
-					"event":      e.Event,
-					"timestamp":  e.Timestamp,
-					"properties": json.RawMessage(e.Properties),
+				var props structpb.Struct
+				if len(e.Properties) > 0 {
+					_ = props.UnmarshalJSON([]byte(e.Properties))
+				}
+				recentEvents = append(recentEvents, &openclick_v1.EventResult{
+					Uuid:       e.UUID,
+					Event:      e.Event,
+					DistinctId: e.DistinctID,
+					Timestamp:  timestamppb.New(e.Timestamp),
+					Properties: &props,
 				})
 			}
-			resp["recent_events"] = recentEvents
+			if recentEvents == nil {
+				recentEvents = []*openclick_v1.EventResult{}
+			}
+			resp.RecentEvents = recentEvents
 		}
 	}
 
-	writeJSON(w, http.StatusOK, resp)
+	return resp, nil
 }
 
-// DeletePerson handles DELETE /api/v1/projects/:project_id/persons/:distinct_id
-func (s *Service) DeletePerson(w http.ResponseWriter, r *http.Request, projectID, distinctID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "persons:delete") {
-		writeError(w, http.StatusForbidden, "missing permission: persons:delete", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+func (s *Service) DeletePerson(ctx context.Context, req *openclick_v1.DeletePersonRequest) (*openclick_v1.DeletePersonResponse, error) {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:delete"); err != nil {
+		return nil, err
 	}
 
-	if err := s.repo.DeletePerson(ctx, projectID, distinctID); err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+	if err := s.repo.DeletePerson(ctx, req.ProjectId, req.DistinctId); err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
-	w.WriteHeader(http.StatusNoContent)
+	return &openclick_v1.DeletePersonResponse{}, nil
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Cohorts
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ListCohorts handles GET /api/v1/projects/:project_id/cohorts
-func (s *Service) ListCohorts(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "persons:read") {
-		writeError(w, http.StatusForbidden, "missing permission: persons:read", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+func (s *Service) ListCohorts(ctx context.Context, req *openclick_v1.ListCohortsRequest) (*openclick_v1.ListCohortsResponse, error) {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:read"); err != nil {
+		return nil, err
 	}
 
-	cohorts, err := s.repo.ListCohorts(ctx, &filter.CohortFilter{ProjectID: projectID})
+	cohorts, err := s.repo.ListCohorts(ctx, &filter.CohortFilter{ProjectID: req.ProjectId})
 	if err != nil {
 		logger.Error(ctx, "list cohorts: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to list cohorts", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to list cohorts")
 	}
 
-	results := make([]map[string]interface{}, 0, len(cohorts))
+	var results []*openclick_v1.CohortResponse
 	for _, c := range cohorts {
-		results = append(results, map[string]interface{}{
-			"id":           c.ID,
-			"name":         c.Name,
-			"filters":      c.Filters,
-			"person_count": c.PersonCount,
-			"created_at":   c.CreatedAt,
+		var filters structpb.Struct
+		if len(c.Filters) > 0 {
+			_ = filters.UnmarshalJSON(c.Filters)
+		}
+		results = append(results, &openclick_v1.CohortResponse{
+			Id:          c.ID,
+			Name:        c.Name,
+			Filters:     &filters,
+			PersonCount: int64(c.PersonCount),
+			CreatedAt:   timestamppb.New(c.CreatedAt),
 		})
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{"results": results})
+	if results == nil {
+		results = []*openclick_v1.CohortResponse{}
+	}
+	return &openclick_v1.ListCohortsResponse{Results: results}, nil
 }
 
-// CreateCohort handles POST /api/v1/projects/:project_id/cohorts
-func (s *Service) CreateCohort(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "persons:read") {
-		writeError(w, http.StatusForbidden, "missing permission: persons:read", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+func (s *Service) CreateCohort(ctx context.Context, req *openclick_v1.CreateCohortRequest) (*openclick_v1.CohortResponse, error) {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:read"); err != nil {
+		return nil, err
 	}
 
-	var body struct {
-		Name    string          `json:"name"`
-		Filters json.RawMessage `json:"filters"`
+	if req.Name == "" {
+		return nil, status.Error(codes.InvalidArgument, "name is required")
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
-	}
-	if body.Name == "" {
-		writeError(w, http.StatusBadRequest, "name is required", "VALIDATION_ERROR")
-		return
-	}
-	if body.Filters == nil {
-		body.Filters = json.RawMessage("{}")
+
+	filtersBytes, _ := req.Filters.MarshalJSON()
+	if len(filtersBytes) == 0 || string(filtersBytes) == "null" {
+		filtersBytes = []byte("{}")
 	}
 
 	cohort, err := s.repo.CreateCohort(ctx, &dao.Cohort{
-		ProjectID: projectID,
-		Name:      body.Name,
-		Filters:   body.Filters,
+		ProjectID: req.ProjectId,
+		Name:      req.Name,
+		Filters:   filtersBytes,
 	})
 	if err != nil {
 		logger.Error(ctx, "create cohort: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to create cohort", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to create cohort")
 	}
 
-	writeJSON(w, http.StatusCreated, map[string]interface{}{
-		"id":           cohort.ID,
-		"name":         cohort.Name,
-		"filters":      cohort.Filters,
-		"person_count": cohort.PersonCount,
-		"created_at":   cohort.CreatedAt,
-	})
+	var filters structpb.Struct
+	_ = filters.UnmarshalJSON(cohort.Filters)
+
+	return &openclick_v1.CohortResponse{
+		Id:          cohort.ID,
+		Name:        cohort.Name,
+		Filters:     &filters,
+		PersonCount: int64(cohort.PersonCount),
+		CreatedAt:   timestamppb.New(cohort.CreatedAt),
+	}, nil
 }
 
-// DeleteCohort handles DELETE /api/v1/projects/:project_id/cohorts/:cohort_id
-func (s *Service) DeleteCohort(w http.ResponseWriter, r *http.Request, projectID, cohortID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "persons:delete") {
-		writeError(w, http.StatusForbidden, "missing permission: persons:delete", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+func (s *Service) DeleteCohort(ctx context.Context, req *openclick_v1.DeleteCohortRequest) (*openclick_v1.DeleteCohortResponse, error) {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, "persons:delete"); err != nil {
+		return nil, err
 	}
 
-	if err := s.repo.DeleteCohort(ctx, projectID, cohortID); err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+	if err := s.repo.DeleteCohort(ctx, req.ProjectId, req.CohortId); err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
-	w.WriteHeader(http.StatusNoContent)
+	return &openclick_v1.DeleteCohortResponse{}, nil
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-func personToResponse(p *dao.Person) map[string]interface{} {
-	return map[string]interface{}{
-		"id":          p.ID,
-		"distinct_id": p.DistinctID,
-		"properties":  p.Properties,
-		"created_at":  p.CreatedAt,
-	}
-}
-
-// queryInt reads an integer query param with a default value
-func queryInt(q interface{ Get(string) string }, key string, def int) int {
-	s := q.Get(key)
-	if s == "" {
-		return def
-	}
-	var n int
-	_, err := fmt.Sscanf(s, "%d", &n)
+func (s *Service) checkPersonAuth(ctx context.Context, projectID, perm string) error {
+	userID, err := s.getUserID(ctx)
 	if err != nil {
-		return def
+		return err
 	}
-	return n
+	if !s.hasPermission(ctx, perm) {
+		return status.Error(codes.PermissionDenied, "missing permission: "+perm)
+	}
+	return s.validateMembership(ctx, projectID, userID)
 }
 
-// ensure time is used
-var _ = time.Now
+func personToResponse(p *dao.Person) *openclick_v1.PersonResponse {
+	var props structpb.Struct
+	if len(p.Properties) > 0 {
+		_ = props.UnmarshalJSON(p.Properties)
+	}
+	return &openclick_v1.PersonResponse{
+		Id:         p.ID,
+		DistinctId: p.DistinctID,
+		Properties: &props,
+		CreatedAt:  timestamppb.New(p.CreatedAt),
+	}
+}

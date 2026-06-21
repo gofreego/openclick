@@ -1,305 +1,266 @@
 package service
 
 import (
+	"context"
 	"encoding/json"
-	"net/http"
 
 	"github.com/gofreego/goutils/logger"
+	"github.com/gofreego/openclick/api/openclick_v1"
 	"github.com/gofreego/openclick/internal/models/dao"
 	"github.com/gofreego/openclick/internal/models/filter"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Dashboards
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ListDashboards handles GET /api/v1/projects/:project_id/dashboards
-func (s *Service) ListDashboards(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) ListDashboards(ctx context.Context, req *openclick_v1.ListDashboardsRequest) (*openclick_v1.ListDashboardsResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "dashboards:read") {
-		writeError(w, http.StatusForbidden, "missing permission: dashboards:read", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "dashboards:read") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:read")
 	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
+		return nil, err
 	}
 
-	dashboards, counts, err := s.repo.ListDashboards(ctx, &filter.DashboardFilter{ProjectID: projectID})
+	dashboards, counts, err := s.repo.ListDashboards(ctx, &filter.DashboardFilter{ProjectID: req.ProjectId})
 	if err != nil {
 		logger.Error(ctx, "list dashboards: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to list dashboards", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to list dashboards")
 	}
 
-	results := make([]map[string]interface{}, 0, len(dashboards))
+	var results []*openclick_v1.DashboardResponse
 	for i, d := range dashboards {
-		cnt := 0
+		cnt := int32(0)
 		if i < len(counts) {
-			cnt = counts[i]
+			cnt = int32(counts[i])
 		}
-		results = append(results, map[string]interface{}{
-			"id":         d.ID,
-			"name":       d.Name,
-			"item_count": cnt,
-			"created_at": d.CreatedAt,
+		results = append(results, &openclick_v1.DashboardResponse{
+			Id:        d.ID,
+			Name:      d.Name,
+			ItemCount: cnt,
+			CreatedAt: timestamppb.New(d.CreatedAt),
 		})
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{"results": results})
+	if results == nil {
+		results = []*openclick_v1.DashboardResponse{}
+	}
+	return &openclick_v1.ListDashboardsResponse{Results: results}, nil
 }
 
-// CreateDashboard handles POST /api/v1/projects/:project_id/dashboards
-func (s *Service) CreateDashboard(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) CreateDashboard(ctx context.Context, req *openclick_v1.CreateDashboardRequest) (*openclick_v1.DashboardResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "dashboards:write") {
-		writeError(w, http.StatusForbidden, "missing permission: dashboards:write", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "dashboards:write") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:write")
 	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
+		return nil, err
 	}
 
-	var body struct {
-		Name string `json:"name"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
-	}
-	if body.Name == "" {
-		writeError(w, http.StatusBadRequest, "name is required", "VALIDATION_ERROR")
-		return
+	if req.Name == "" {
+		return nil, status.Error(codes.InvalidArgument, "name is required")
 	}
 
 	d, err := s.repo.CreateDashboard(ctx, &dao.Dashboard{
-		ProjectID: projectID,
-		Name:      body.Name,
+		ProjectID: req.ProjectId,
+		Name:      req.Name,
 		Layout:    json.RawMessage("[]"),
 	})
 	if err != nil {
 		logger.Error(ctx, "create dashboard: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to create dashboard", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to create dashboard")
 	}
 
-	writeJSON(w, http.StatusCreated, map[string]interface{}{
-		"id":         d.ID,
-		"name":       d.Name,
-		"created_at": d.CreatedAt,
-	})
+	return &openclick_v1.DashboardResponse{
+		Id:        d.ID,
+		Name:      d.Name,
+		ItemCount: 0,
+		CreatedAt: timestamppb.New(d.CreatedAt),
+	}, nil
 }
 
-// GetDashboard handles GET /api/v1/projects/:project_id/dashboards/:dashboard_id
-func (s *Service) GetDashboard(w http.ResponseWriter, r *http.Request, projectID, dashboardID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "dashboards:read") {
-		writeError(w, http.StatusForbidden, "missing permission: dashboards:read", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
-	}
-
-	d, items, err := s.repo.GetDashboard(ctx, projectID, dashboardID)
+func (s *Service) GetDashboard(ctx context.Context, req *openclick_v1.GetDashboardRequest) (*openclick_v1.GetDashboardResponse, error) {
+	userID, err := s.getUserID(ctx)
 	if err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+		return nil, err
+	}
+	if !s.hasPermission(ctx, "dashboards:read") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:read")
+	}
+	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
+		return nil, err
 	}
 
-	itemResponses := make([]map[string]interface{}, 0, len(items))
+	d, items, err := s.repo.GetDashboard(ctx, req.ProjectId, req.DashboardId)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+
+	var itemResponses []*openclick_v1.DashboardItemResponse
 	for _, item := range items {
 		itemResponses = append(itemResponses, dashboardItemToResponse(item))
 	}
+	if itemResponses == nil {
+		itemResponses = []*openclick_v1.DashboardItemResponse{}
+	}
 
-	writeJSON(w, http.StatusOK, map[string]interface{}{
-		"id":         d.ID,
-		"name":       d.Name,
-		"created_at": d.CreatedAt,
-		"items":      itemResponses,
-	})
+	return &openclick_v1.GetDashboardResponse{
+		Id:        d.ID,
+		Name:      d.Name,
+		CreatedAt: timestamppb.New(d.CreatedAt),
+		Items:     itemResponses,
+	}, nil
 }
 
-// DeleteDashboard handles DELETE /api/v1/projects/:project_id/dashboards/:dashboard_id
-func (s *Service) DeleteDashboard(w http.ResponseWriter, r *http.Request, projectID, dashboardID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) DeleteDashboard(ctx context.Context, req *openclick_v1.DeleteDashboardRequest) (*openclick_v1.DeleteDashboardResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "dashboards:delete") {
-		writeError(w, http.StatusForbidden, "missing permission: dashboards:delete", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "dashboards:delete") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:delete")
 	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
+		return nil, err
 	}
 
-	if err := s.repo.DeleteDashboard(ctx, projectID, dashboardID); err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+	if err := s.repo.DeleteDashboard(ctx, req.ProjectId, req.DashboardId); err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
-	w.WriteHeader(http.StatusNoContent)
+	return &openclick_v1.DeleteDashboardResponse{}, nil
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Dashboard Items
 // ─────────────────────────────────────────────────────────────────────────────
 
-// CreateDashboardItem handles POST /api/v1/projects/:project_id/dashboards/:dashboard_id/items
-func (s *Service) CreateDashboardItem(w http.ResponseWriter, r *http.Request, projectID, dashboardID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) CreateDashboardItem(ctx context.Context, req *openclick_v1.CreateDashboardItemRequest) (*openclick_v1.DashboardItemResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "dashboards:write") {
-		writeError(w, http.StatusForbidden, "missing permission: dashboards:write", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "dashboards:write") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:write")
 	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
+		return nil, err
 	}
 
 	// Verify dashboard belongs to project
-	_, _, err := s.repo.GetDashboard(ctx, projectID, dashboardID)
+	_, _, err = s.repo.GetDashboard(ctx, req.ProjectId, req.DashboardId)
 	if err != nil {
-		writeError(w, http.StatusNotFound, "dashboard not found", "NOT_FOUND")
-		return
+		return nil, status.Error(codes.NotFound, "dashboard not found")
 	}
 
-	var body struct {
-		Name     string          `json:"name"`
-		Type     string          `json:"type"`
-		Query    json.RawMessage `json:"query"`
-		Position json.RawMessage `json:"position"`
+	if req.Name == "" || req.Type == "" {
+		return nil, status.Error(codes.InvalidArgument, "name and type are required")
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
-	}
-	if body.Name == "" || body.Type == "" {
-		writeError(w, http.StatusBadRequest, "name and type are required", "VALIDATION_ERROR")
-		return
-	}
-	if body.Position == nil {
-		body.Position = json.RawMessage(`{"x":0,"y":0,"w":6,"h":4}`)
+
+	queryBytes, _ := req.Query.MarshalJSON()
+	var positionBytes []byte
+	if req.Position != nil {
+		positionBytes, _ = req.Position.MarshalJSON()
+	} else {
+		positionBytes = []byte(`{"x":0,"y":0,"w":6,"h":4}`)
 	}
 
 	item, err := s.repo.CreateDashboardItem(ctx, &dao.DashboardItem{
-		DashboardID: dashboardID,
-		Name:        body.Name,
-		Type:        body.Type,
-		Query:       body.Query,
-		Position:    body.Position,
+		DashboardID: req.DashboardId,
+		Name:        req.Name,
+		Type:        req.Type,
+		Query:       json.RawMessage(queryBytes),
+		Position:    json.RawMessage(positionBytes),
 	})
 	if err != nil {
 		logger.Error(ctx, "create dashboard item: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to create dashboard item", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to create dashboard item")
 	}
 
-	writeJSON(w, http.StatusCreated, dashboardItemToResponse(item))
+	return dashboardItemToResponse(item), nil
 }
 
-// UpdateDashboardItem handles PATCH /api/v1/projects/:project_id/dashboards/:dashboard_id/items/:item_id
-func (s *Service) UpdateDashboardItem(w http.ResponseWriter, r *http.Request, projectID, dashboardID, itemID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) UpdateDashboardItem(ctx context.Context, req *openclick_v1.UpdateDashboardItemRequest) (*openclick_v1.DashboardItemResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "dashboards:write") {
-		writeError(w, http.StatusForbidden, "missing permission: dashboards:write", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "dashboards:write") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:write")
 	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
+		return nil, err
 	}
 
-	var body struct {
-		Name     *string          `json:"name"`
-		Type     *string          `json:"type"`
-		Query    *json.RawMessage `json:"query"`
-		Position *json.RawMessage `json:"position"`
+	item := &dao.DashboardItem{ID: req.ItemId, DashboardID: req.DashboardId}
+	if req.Name != nil {
+		item.Name = *req.Name
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
+	if req.Type != nil {
+		item.Type = *req.Type
 	}
-
-	item := &dao.DashboardItem{ID: itemID, DashboardID: dashboardID}
-	if body.Name != nil {
-		item.Name = *body.Name
+	if req.Query != nil {
+		b, _ := req.Query.MarshalJSON()
+		item.Query = json.RawMessage(b)
 	}
-	if body.Type != nil {
-		item.Type = *body.Type
-	}
-	if body.Query != nil {
-		item.Query = *body.Query
-	}
-	if body.Position != nil {
-		item.Position = *body.Position
+	if req.Position != nil {
+		b, _ := req.Position.MarshalJSON()
+		item.Position = json.RawMessage(b)
 	}
 
 	updated, err := s.repo.UpdateDashboardItem(ctx, item)
 	if err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
-	writeJSON(w, http.StatusOK, dashboardItemToResponse(updated))
+	return dashboardItemToResponse(updated), nil
 }
 
-// DeleteDashboardItem handles DELETE /api/v1/projects/:project_id/dashboards/:dashboard_id/items/:item_id
-func (s *Service) DeleteDashboardItem(w http.ResponseWriter, r *http.Request, projectID, dashboardID, itemID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
+func (s *Service) DeleteDashboardItem(ctx context.Context, req *openclick_v1.DeleteDashboardItemRequest) (*openclick_v1.DeleteDashboardItemResponse, error) {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if !hasPermission(r, "dashboards:delete") {
-		writeError(w, http.StatusForbidden, "missing permission: dashboards:delete", "FORBIDDEN")
-		return
+	if !s.hasPermission(ctx, "dashboards:delete") {
+		return nil, status.Error(codes.PermissionDenied, "missing permission: dashboards:delete")
 	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+	if err := s.validateMembership(ctx, req.ProjectId, userID); err != nil {
+		return nil, err
 	}
 
-	if err := s.repo.DeleteDashboardItem(ctx, dashboardID, itemID); err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+	if err := s.repo.DeleteDashboardItem(ctx, req.DashboardId, req.ItemId); err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
-	w.WriteHeader(http.StatusNoContent)
+	return &openclick_v1.DeleteDashboardItemResponse{}, nil
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-func dashboardItemToResponse(item *dao.DashboardItem) map[string]interface{} {
-	return map[string]interface{}{
-		"id":           item.ID,
-		"dashboard_id": item.DashboardID,
-		"name":         item.Name,
-		"type":         item.Type,
-		"query":        item.Query,
-		"position":     item.Position,
+func dashboardItemToResponse(item *dao.DashboardItem) *openclick_v1.DashboardItemResponse {
+	var queryStruct structpb.Struct
+	if len(item.Query) > 0 {
+		_ = queryStruct.UnmarshalJSON(item.Query)
+	}
+	var posStruct structpb.Struct
+	if len(item.Position) > 0 {
+		_ = posStruct.UnmarshalJSON(item.Position)
+	}
+	return &openclick_v1.DashboardItemResponse{
+		Id:          item.ID,
+		DashboardId: item.DashboardID,
+		Name:        item.Name,
+		Type:        item.Type,
+		Query:       &queryStruct,
+		Position:    &posStruct,
 	}
 }

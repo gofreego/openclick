@@ -1,0 +1,71 @@
+syntax = "proto3";
+package v1;
+
+option go_package = "./openclick_v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+message CaptureEventRequest {
+  optional string api_key = 1;
+  string event = 2;
+  string distinct_id = 3;
+  optional google.protobuf.Timestamp timestamp = 4;
+  google.protobuf.Struct properties = 5;
+  optional string session_id = 6;
+}
+
+message CaptureEventResponse {
+  int32 status = 1;
+}
+
+message BatchEvent {
+  string event = 1;
+  string distinct_id = 2;
+  optional google.protobuf.Timestamp timestamp = 3;
+  google.protobuf.Struct properties = 4;
+  optional string session_id = 5;
+}
+
+message BatchCaptureRequest {
+  optional string api_key = 1;
+  repeated BatchEvent batch = 2;
+}
+
+message BatchCaptureResponse {
+  int32 status = 1;
+  int32 count = 2;
+}
+
+message IdentifyRequest {
+  optional string api_key = 1;
+  string distinct_id = 2;
+  google.protobuf.Struct properties = 3;
+}
+
+message IdentifyResponse {
+  int32 status = 1;
+}
+
+message AliasRequest {
+  optional string api_key = 1;
+  string alias = 2;
+  string distinct_id = 3;
+}
+
+message AliasResponse {
+  int32 status = 1;
+}
+
+message IngestReplayRequest {
+  optional string api_key = 1;
+  string session_id = 2;
+  string distinct_id = 3;
+  int32 chunk_index = 4;
+  string data = 5;
+  map<string, string> metadata = 6;
+}
+
+message IngestReplayResponse {
+  int32 status = 1;
+}

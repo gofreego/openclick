@@ -26,7 +26,7 @@ var File_proto_openclick_v1_openclick_proto protoreflect.FileDescriptor
 
 const file_proto_openclick_v1_openclick_proto_rawDesc = "" +
 	"\n" +
-	"\"proto/openclick/v1/openclick.proto\x12\x02v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17proto/common/ping.proto\x1a proto/openclick/v1/project.proto\x1a\"proto/openclick/v1/dashboard.proto2\xc8\x12\n" +
+	"\"proto/openclick/v1/openclick.proto\x12\x02v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17proto/common/ping.proto\x1a proto/openclick/v1/project.proto\x1a\"proto/openclick/v1/dashboard.proto\x1a\"proto/openclick/v1/analytics.proto\x1a\x1fproto/openclick/v1/person.proto\x1a%proto/openclick/v1/feature_flag.proto\x1a\x1fproto/openclick/v1/ingest.proto2\xbb0\n" +
 	"\vBaseService\x12x\n" +
 	"\x04Ping\x12\x0f.v1.PingRequest\x1a\x10.v1.PingResponse\"M\x92A6\n" +
 	"\x04Ping\x12\x0fPing the server\x1a\x1dCheck if the server is alive.\x82\xd3\xe4\x93\x02\x0e\x12\f/api/v1/ping\x12w\n" +
@@ -65,7 +65,63 @@ const file_proto_openclick_v1_openclick_proto_rawDesc = "" +
 	"Dashboards\x12\x15Update dashboard item\x82\xd3\xe4\x93\x02L:\x01*2G/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}\x12\xcd\x01\n" +
 	"\x13DeleteDashboardItem\x12\x1e.v1.DeleteDashboardItemRequest\x1a\x1f.v1.DeleteDashboardItemResponse\"u\x92A#\n" +
 	"\n" +
-	"Dashboards\x12\x15Delete dashboard item\x82\xd3\xe4\x93\x02I*G/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}B\x82\x03\x92A\xee\x02\x12\xf0\x01\n" +
+	"Dashboards\x12\x15Delete dashboard item\x82\xd3\xe4\x93\x02I*G/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}\x12\x91\x01\n" +
+	"\vQueryTrends\x12\x16.v1.QueryTrendsRequest\x1a\x17.v1.QueryTrendsResponse\"Q\x92A\x19\n" +
+	"\tAnalytics\x12\fQuery trends\x82\xd3\xe4\x93\x02/:\x01*\"*/api/v1/projects/{project_id}/query/trends\x12\x91\x01\n" +
+	"\vQueryFunnel\x12\x16.v1.QueryFunnelRequest\x1a\x17.v1.QueryFunnelResponse\"Q\x92A\x19\n" +
+	"\tAnalytics\x12\fQuery funnel\x82\xd3\xe4\x93\x02/:\x01*\"*/api/v1/projects/{project_id}/query/funnel\x12\xa0\x01\n" +
+	"\x0eQueryRetention\x12\x19.v1.QueryRetentionRequest\x1a\x1a.v1.QueryRetentionResponse\"W\x92A\x1c\n" +
+	"\tAnalytics\x12\x0fQuery retention\x82\xd3\xe4\x93\x022:\x01*\"-/api/v1/projects/{project_id}/query/retention\x12\x8c\x01\n" +
+	"\n" +
+	"QueryPaths\x12\x15.v1.QueryPathsRequest\x1a\x16.v1.QueryPathsResponse\"O\x92A\x18\n" +
+	"\tAnalytics\x12\vQuery paths\x82\xd3\xe4\x93\x02.:\x01*\")/api/v1/projects/{project_id}/query/paths\x12\x91\x01\n" +
+	"\vQueryEvents\x12\x16.v1.QueryEventsRequest\x1a\x17.v1.QueryEventsResponse\"Q\x92A\x19\n" +
+	"\tAnalytics\x12\fQuery events\x82\xd3\xe4\x93\x02/:\x01*\"*/api/v1/projects/{project_id}/query/events\x12\x8e\x01\n" +
+	"\fListSessions\x12\x17.v1.ListSessionsRequest\x1a\x18.v1.ListSessionsResponse\"K\x92A\x1a\n" +
+	"\tAnalytics\x12\rList sessions\x82\xd3\xe4\x93\x02(\x12&/api/v1/projects/{project_id}/sessions\x12\x90\x01\n" +
+	"\n" +
+	"GetSession\x12\x15.v1.GetSessionRequest\x1a\x13.v1.SessionResponse\"V\x92A\x18\n" +
+	"\tAnalytics\x12\vGet session\x82\xd3\xe4\x93\x025\x123/api/v1/projects/{project_id}/sessions/{session_id}\x12\xb3\x01\n" +
+	"\x10GetSessionChunks\x12\x1b.v1.GetSessionChunksRequest\x1a\x1c.v1.GetSessionChunksResponse\"d\x92A\x1f\n" +
+	"\tAnalytics\x12\x12Get session chunks\x82\xd3\xe4\x93\x02<\x12:/api/v1/projects/{project_id}/sessions/{session_id}/chunks\x12\x9f\x01\n" +
+	"\rDeleteSession\x12\x18.v1.DeleteSessionRequest\x1a\x19.v1.DeleteSessionResponse\"Y\x92A\x1b\n" +
+	"\tAnalytics\x12\x0eDelete session\x82\xd3\xe4\x93\x025*3/api/v1/projects/{project_id}/sessions/{session_id}\x12\x87\x01\n" +
+	"\vListPersons\x12\x16.v1.ListPersonsRequest\x1a\x17.v1.ListPersonsResponse\"G\x92A\x17\n" +
+	"\aPersons\x12\fList persons\x82\xd3\xe4\x93\x02'\x12%/api/v1/projects/{project_id}/persons\x12\x8d\x01\n" +
+	"\tGetPerson\x12\x14.v1.GetPersonRequest\x1a\x15.v1.GetPersonResponse\"S\x92A\x15\n" +
+	"\aPersons\x12\n" +
+	"Get person\x82\xd3\xe4\x93\x025\x123/api/v1/projects/{project_id}/persons/{distinct_id}\x12\x99\x01\n" +
+	"\fDeletePerson\x12\x17.v1.DeletePersonRequest\x1a\x18.v1.DeletePersonResponse\"V\x92A\x18\n" +
+	"\aPersons\x12\rDelete person\x82\xd3\xe4\x93\x025*3/api/v1/projects/{project_id}/persons/{distinct_id}\x12\x87\x01\n" +
+	"\vListCohorts\x12\x16.v1.ListCohortsRequest\x1a\x17.v1.ListCohortsResponse\"G\x92A\x17\n" +
+	"\aCohorts\x12\fList cohorts\x82\xd3\xe4\x93\x02'\x12%/api/v1/projects/{project_id}/cohorts\x12\x88\x01\n" +
+	"\fCreateCohort\x12\x17.v1.CreateCohortRequest\x1a\x12.v1.CohortResponse\"K\x92A\x18\n" +
+	"\aCohorts\x12\rCreate cohort\x82\xd3\xe4\x93\x02*:\x01*\"%/api/v1/projects/{project_id}/cohorts\x12\x97\x01\n" +
+	"\fDeleteCohort\x12\x17.v1.DeleteCohortRequest\x1a\x18.v1.DeleteCohortResponse\"T\x92A\x18\n" +
+	"\aCohorts\x12\rDelete cohort\x82\xd3\xe4\x93\x023*1/api/v1/projects/{project_id}/cohorts/{cohort_id}\x12\xa8\x01\n" +
+	"\x10ListFeatureFlags\x12\x1b.v1.ListFeatureFlagsRequest\x1a\x1c.v1.ListFeatureFlagsResponse\"Y\x92A#\n" +
+	"\rFeature Flags\x12\x12List feature flags\x82\xd3\xe4\x93\x02-\x12+/api/v1/projects/{project_id}/feature-flags\x12\xa9\x01\n" +
+	"\x11CreateFeatureFlag\x12\x1c.v1.CreateFeatureFlagRequest\x1a\x17.v1.FeatureFlagResponse\"]\x92A$\n" +
+	"\rFeature Flags\x12\x13Create feature flag\x82\xd3\xe4\x93\x020:\x01*\"+/api/v1/projects/{project_id}/feature-flags\x12\xb3\x01\n" +
+	"\x11UpdateFeatureFlag\x12\x1c.v1.UpdateFeatureFlagRequest\x1a\x17.v1.FeatureFlagResponse\"g\x92A$\n" +
+	"\rFeature Flags\x12\x13Update feature flag\x82\xd3\xe4\x93\x02::\x01*25/api/v1/projects/{project_id}/feature-flags/{flag_id}\x12\xb6\x01\n" +
+	"\x11DeleteFeatureFlag\x12\x1c.v1.DeleteFeatureFlagRequest\x1a\x1d.v1.DeleteFeatureFlagResponse\"d\x92A$\n" +
+	"\rFeature Flags\x12\x13Delete feature flag\x82\xd3\xe4\x93\x027*5/api/v1/projects/{project_id}/feature-flags/{flag_id}\x12\xa7\x01\n" +
+	"\rEvaluateFlags\x12\x18.v1.EvaluateFlagsRequest\x1a\x19.v1.EvaluateFlagsResponse\"a\x92A\x1f\n" +
+	"\rFeature Flags\x12\x0eEvaluate flags\x82\xd3\xe4\x93\x029:\x01*\"4/api/v1/projects/{project_id}/feature-flags/evaluate\x12g\n" +
+	"\x06Decide\x12\x11.v1.DecideRequest\x1a\x12.v1.DecideResponse\"6\x92A\x1d\n" +
+	"\rFeature Flags\x12\fDecide flags\x82\xd3\xe4\x93\x02\x10\x12\x0e/api/v1/decide\x12t\n" +
+	"\fCaptureEvent\x12\x17.v1.CaptureEventRequest\x1a\x18.v1.CaptureEventResponse\"1\x92A\x1a\n" +
+	"\tIngestion\x12\rCapture event\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/api/v1/e\x12\x7f\n" +
+	"\fBatchCapture\x12\x17.v1.BatchCaptureRequest\x1a\x18.v1.BatchCaptureResponse\"<\x92A!\n" +
+	"\tIngestion\x12\x14Batch capture events\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/batch\x12o\n" +
+	"\bIdentify\x12\x13.v1.IdentifyRequest\x1a\x14.v1.IdentifyResponse\"8\x92A\x1a\n" +
+	"\tIngestion\x12\rIdentify user\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/identify\x12`\n" +
+	"\x05Alias\x12\x10.v1.AliasRequest\x1a\x11.v1.AliasResponse\"2\x92A\x17\n" +
+	"\tIngestion\x12\n" +
+	"Alias user\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/alias\x12\x7f\n" +
+	"\fIngestReplay\x12\x17.v1.IngestReplayRequest\x1a\x18.v1.IngestReplayResponse\"<\x92A \n" +
+	"\tIngestion\x12\x13Ingest replay chunk\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/v1/replayB\x82\x03\x92A\xee\x02\x12\xf0\x01\n" +
 	"\x0eOpenClick APIs\x12\xd5\x01**OpenClick** is an open-source, self-hostable product analytics platform built for speed and low memory footprint. It provides event tracking, session replay, funnel analysis, feature flags, and cohort analytics.2\x06v1.0.0Z<\n" +
 	"\x19\n" +
 	"\x06UserID\x12\x0f\b\x02\x1a\tx-user-id \x02\n" +
@@ -94,19 +150,70 @@ var file_proto_openclick_v1_openclick_proto_goTypes = []any{
 	(*CreateDashboardItemRequest)(nil),  // 12: v1.CreateDashboardItemRequest
 	(*UpdateDashboardItemRequest)(nil),  // 13: v1.UpdateDashboardItemRequest
 	(*DeleteDashboardItemRequest)(nil),  // 14: v1.DeleteDashboardItemRequest
-	(*PingResponse)(nil),                // 15: v1.PingResponse
-	(*ListProjectsResponse)(nil),        // 16: v1.ListProjectsResponse
-	(*ProjectResponse)(nil),             // 17: v1.ProjectResponse
-	(*GetProjectResponse)(nil),          // 18: v1.GetProjectResponse
-	(*DeleteProjectResponse)(nil),       // 19: v1.DeleteProjectResponse
-	(*AddMemberResponse)(nil),           // 20: v1.AddMemberResponse
-	(*RemoveMemberResponse)(nil),        // 21: v1.RemoveMemberResponse
-	(*ListDashboardsResponse)(nil),      // 22: v1.ListDashboardsResponse
-	(*DashboardResponse)(nil),           // 23: v1.DashboardResponse
-	(*GetDashboardResponse)(nil),        // 24: v1.GetDashboardResponse
-	(*DeleteDashboardResponse)(nil),     // 25: v1.DeleteDashboardResponse
-	(*DashboardItemResponse)(nil),       // 26: v1.DashboardItemResponse
-	(*DeleteDashboardItemResponse)(nil), // 27: v1.DeleteDashboardItemResponse
+	(*QueryTrendsRequest)(nil),          // 15: v1.QueryTrendsRequest
+	(*QueryFunnelRequest)(nil),          // 16: v1.QueryFunnelRequest
+	(*QueryRetentionRequest)(nil),       // 17: v1.QueryRetentionRequest
+	(*QueryPathsRequest)(nil),           // 18: v1.QueryPathsRequest
+	(*QueryEventsRequest)(nil),          // 19: v1.QueryEventsRequest
+	(*ListSessionsRequest)(nil),         // 20: v1.ListSessionsRequest
+	(*GetSessionRequest)(nil),           // 21: v1.GetSessionRequest
+	(*GetSessionChunksRequest)(nil),     // 22: v1.GetSessionChunksRequest
+	(*DeleteSessionRequest)(nil),        // 23: v1.DeleteSessionRequest
+	(*ListPersonsRequest)(nil),          // 24: v1.ListPersonsRequest
+	(*GetPersonRequest)(nil),            // 25: v1.GetPersonRequest
+	(*DeletePersonRequest)(nil),         // 26: v1.DeletePersonRequest
+	(*ListCohortsRequest)(nil),          // 27: v1.ListCohortsRequest
+	(*CreateCohortRequest)(nil),         // 28: v1.CreateCohortRequest
+	(*DeleteCohortRequest)(nil),         // 29: v1.DeleteCohortRequest
+	(*ListFeatureFlagsRequest)(nil),     // 30: v1.ListFeatureFlagsRequest
+	(*CreateFeatureFlagRequest)(nil),    // 31: v1.CreateFeatureFlagRequest
+	(*UpdateFeatureFlagRequest)(nil),    // 32: v1.UpdateFeatureFlagRequest
+	(*DeleteFeatureFlagRequest)(nil),    // 33: v1.DeleteFeatureFlagRequest
+	(*EvaluateFlagsRequest)(nil),        // 34: v1.EvaluateFlagsRequest
+	(*DecideRequest)(nil),               // 35: v1.DecideRequest
+	(*CaptureEventRequest)(nil),         // 36: v1.CaptureEventRequest
+	(*BatchCaptureRequest)(nil),         // 37: v1.BatchCaptureRequest
+	(*IdentifyRequest)(nil),             // 38: v1.IdentifyRequest
+	(*AliasRequest)(nil),                // 39: v1.AliasRequest
+	(*IngestReplayRequest)(nil),         // 40: v1.IngestReplayRequest
+	(*PingResponse)(nil),                // 41: v1.PingResponse
+	(*ListProjectsResponse)(nil),        // 42: v1.ListProjectsResponse
+	(*ProjectResponse)(nil),             // 43: v1.ProjectResponse
+	(*GetProjectResponse)(nil),          // 44: v1.GetProjectResponse
+	(*DeleteProjectResponse)(nil),       // 45: v1.DeleteProjectResponse
+	(*AddMemberResponse)(nil),           // 46: v1.AddMemberResponse
+	(*RemoveMemberResponse)(nil),        // 47: v1.RemoveMemberResponse
+	(*ListDashboardsResponse)(nil),      // 48: v1.ListDashboardsResponse
+	(*DashboardResponse)(nil),           // 49: v1.DashboardResponse
+	(*GetDashboardResponse)(nil),        // 50: v1.GetDashboardResponse
+	(*DeleteDashboardResponse)(nil),     // 51: v1.DeleteDashboardResponse
+	(*DashboardItemResponse)(nil),       // 52: v1.DashboardItemResponse
+	(*DeleteDashboardItemResponse)(nil), // 53: v1.DeleteDashboardItemResponse
+	(*QueryTrendsResponse)(nil),         // 54: v1.QueryTrendsResponse
+	(*QueryFunnelResponse)(nil),         // 55: v1.QueryFunnelResponse
+	(*QueryRetentionResponse)(nil),      // 56: v1.QueryRetentionResponse
+	(*QueryPathsResponse)(nil),          // 57: v1.QueryPathsResponse
+	(*QueryEventsResponse)(nil),         // 58: v1.QueryEventsResponse
+	(*ListSessionsResponse)(nil),        // 59: v1.ListSessionsResponse
+	(*SessionResponse)(nil),             // 60: v1.SessionResponse
+	(*GetSessionChunksResponse)(nil),    // 61: v1.GetSessionChunksResponse
+	(*DeleteSessionResponse)(nil),       // 62: v1.DeleteSessionResponse
+	(*ListPersonsResponse)(nil),         // 63: v1.ListPersonsResponse
+	(*GetPersonResponse)(nil),           // 64: v1.GetPersonResponse
+	(*DeletePersonResponse)(nil),        // 65: v1.DeletePersonResponse
+	(*ListCohortsResponse)(nil),         // 66: v1.ListCohortsResponse
+	(*CohortResponse)(nil),              // 67: v1.CohortResponse
+	(*DeleteCohortResponse)(nil),        // 68: v1.DeleteCohortResponse
+	(*ListFeatureFlagsResponse)(nil),    // 69: v1.ListFeatureFlagsResponse
+	(*FeatureFlagResponse)(nil),         // 70: v1.FeatureFlagResponse
+	(*DeleteFeatureFlagResponse)(nil),   // 71: v1.DeleteFeatureFlagResponse
+	(*EvaluateFlagsResponse)(nil),       // 72: v1.EvaluateFlagsResponse
+	(*DecideResponse)(nil),              // 73: v1.DecideResponse
+	(*CaptureEventResponse)(nil),        // 74: v1.CaptureEventResponse
+	(*BatchCaptureResponse)(nil),        // 75: v1.BatchCaptureResponse
+	(*IdentifyResponse)(nil),            // 76: v1.IdentifyResponse
+	(*AliasResponse)(nil),               // 77: v1.AliasResponse
+	(*IngestReplayResponse)(nil),        // 78: v1.IngestReplayResponse
 }
 var file_proto_openclick_v1_openclick_proto_depIdxs = []int32{
 	0,  // 0: v1.BaseService.Ping:input_type -> v1.PingRequest
@@ -124,23 +231,75 @@ var file_proto_openclick_v1_openclick_proto_depIdxs = []int32{
 	12, // 12: v1.BaseService.CreateDashboardItem:input_type -> v1.CreateDashboardItemRequest
 	13, // 13: v1.BaseService.UpdateDashboardItem:input_type -> v1.UpdateDashboardItemRequest
 	14, // 14: v1.BaseService.DeleteDashboardItem:input_type -> v1.DeleteDashboardItemRequest
-	15, // 15: v1.BaseService.Ping:output_type -> v1.PingResponse
-	16, // 16: v1.BaseService.ListProjects:output_type -> v1.ListProjectsResponse
-	17, // 17: v1.BaseService.CreateProject:output_type -> v1.ProjectResponse
-	18, // 18: v1.BaseService.GetProject:output_type -> v1.GetProjectResponse
-	17, // 19: v1.BaseService.UpdateProject:output_type -> v1.ProjectResponse
-	19, // 20: v1.BaseService.DeleteProject:output_type -> v1.DeleteProjectResponse
-	20, // 21: v1.BaseService.AddMember:output_type -> v1.AddMemberResponse
-	21, // 22: v1.BaseService.RemoveMember:output_type -> v1.RemoveMemberResponse
-	22, // 23: v1.BaseService.ListDashboards:output_type -> v1.ListDashboardsResponse
-	23, // 24: v1.BaseService.CreateDashboard:output_type -> v1.DashboardResponse
-	24, // 25: v1.BaseService.GetDashboard:output_type -> v1.GetDashboardResponse
-	25, // 26: v1.BaseService.DeleteDashboard:output_type -> v1.DeleteDashboardResponse
-	26, // 27: v1.BaseService.CreateDashboardItem:output_type -> v1.DashboardItemResponse
-	26, // 28: v1.BaseService.UpdateDashboardItem:output_type -> v1.DashboardItemResponse
-	27, // 29: v1.BaseService.DeleteDashboardItem:output_type -> v1.DeleteDashboardItemResponse
-	15, // [15:30] is the sub-list for method output_type
-	0,  // [0:15] is the sub-list for method input_type
+	15, // 15: v1.BaseService.QueryTrends:input_type -> v1.QueryTrendsRequest
+	16, // 16: v1.BaseService.QueryFunnel:input_type -> v1.QueryFunnelRequest
+	17, // 17: v1.BaseService.QueryRetention:input_type -> v1.QueryRetentionRequest
+	18, // 18: v1.BaseService.QueryPaths:input_type -> v1.QueryPathsRequest
+	19, // 19: v1.BaseService.QueryEvents:input_type -> v1.QueryEventsRequest
+	20, // 20: v1.BaseService.ListSessions:input_type -> v1.ListSessionsRequest
+	21, // 21: v1.BaseService.GetSession:input_type -> v1.GetSessionRequest
+	22, // 22: v1.BaseService.GetSessionChunks:input_type -> v1.GetSessionChunksRequest
+	23, // 23: v1.BaseService.DeleteSession:input_type -> v1.DeleteSessionRequest
+	24, // 24: v1.BaseService.ListPersons:input_type -> v1.ListPersonsRequest
+	25, // 25: v1.BaseService.GetPerson:input_type -> v1.GetPersonRequest
+	26, // 26: v1.BaseService.DeletePerson:input_type -> v1.DeletePersonRequest
+	27, // 27: v1.BaseService.ListCohorts:input_type -> v1.ListCohortsRequest
+	28, // 28: v1.BaseService.CreateCohort:input_type -> v1.CreateCohortRequest
+	29, // 29: v1.BaseService.DeleteCohort:input_type -> v1.DeleteCohortRequest
+	30, // 30: v1.BaseService.ListFeatureFlags:input_type -> v1.ListFeatureFlagsRequest
+	31, // 31: v1.BaseService.CreateFeatureFlag:input_type -> v1.CreateFeatureFlagRequest
+	32, // 32: v1.BaseService.UpdateFeatureFlag:input_type -> v1.UpdateFeatureFlagRequest
+	33, // 33: v1.BaseService.DeleteFeatureFlag:input_type -> v1.DeleteFeatureFlagRequest
+	34, // 34: v1.BaseService.EvaluateFlags:input_type -> v1.EvaluateFlagsRequest
+	35, // 35: v1.BaseService.Decide:input_type -> v1.DecideRequest
+	36, // 36: v1.BaseService.CaptureEvent:input_type -> v1.CaptureEventRequest
+	37, // 37: v1.BaseService.BatchCapture:input_type -> v1.BatchCaptureRequest
+	38, // 38: v1.BaseService.Identify:input_type -> v1.IdentifyRequest
+	39, // 39: v1.BaseService.Alias:input_type -> v1.AliasRequest
+	40, // 40: v1.BaseService.IngestReplay:input_type -> v1.IngestReplayRequest
+	41, // 41: v1.BaseService.Ping:output_type -> v1.PingResponse
+	42, // 42: v1.BaseService.ListProjects:output_type -> v1.ListProjectsResponse
+	43, // 43: v1.BaseService.CreateProject:output_type -> v1.ProjectResponse
+	44, // 44: v1.BaseService.GetProject:output_type -> v1.GetProjectResponse
+	43, // 45: v1.BaseService.UpdateProject:output_type -> v1.ProjectResponse
+	45, // 46: v1.BaseService.DeleteProject:output_type -> v1.DeleteProjectResponse
+	46, // 47: v1.BaseService.AddMember:output_type -> v1.AddMemberResponse
+	47, // 48: v1.BaseService.RemoveMember:output_type -> v1.RemoveMemberResponse
+	48, // 49: v1.BaseService.ListDashboards:output_type -> v1.ListDashboardsResponse
+	49, // 50: v1.BaseService.CreateDashboard:output_type -> v1.DashboardResponse
+	50, // 51: v1.BaseService.GetDashboard:output_type -> v1.GetDashboardResponse
+	51, // 52: v1.BaseService.DeleteDashboard:output_type -> v1.DeleteDashboardResponse
+	52, // 53: v1.BaseService.CreateDashboardItem:output_type -> v1.DashboardItemResponse
+	52, // 54: v1.BaseService.UpdateDashboardItem:output_type -> v1.DashboardItemResponse
+	53, // 55: v1.BaseService.DeleteDashboardItem:output_type -> v1.DeleteDashboardItemResponse
+	54, // 56: v1.BaseService.QueryTrends:output_type -> v1.QueryTrendsResponse
+	55, // 57: v1.BaseService.QueryFunnel:output_type -> v1.QueryFunnelResponse
+	56, // 58: v1.BaseService.QueryRetention:output_type -> v1.QueryRetentionResponse
+	57, // 59: v1.BaseService.QueryPaths:output_type -> v1.QueryPathsResponse
+	58, // 60: v1.BaseService.QueryEvents:output_type -> v1.QueryEventsResponse
+	59, // 61: v1.BaseService.ListSessions:output_type -> v1.ListSessionsResponse
+	60, // 62: v1.BaseService.GetSession:output_type -> v1.SessionResponse
+	61, // 63: v1.BaseService.GetSessionChunks:output_type -> v1.GetSessionChunksResponse
+	62, // 64: v1.BaseService.DeleteSession:output_type -> v1.DeleteSessionResponse
+	63, // 65: v1.BaseService.ListPersons:output_type -> v1.ListPersonsResponse
+	64, // 66: v1.BaseService.GetPerson:output_type -> v1.GetPersonResponse
+	65, // 67: v1.BaseService.DeletePerson:output_type -> v1.DeletePersonResponse
+	66, // 68: v1.BaseService.ListCohorts:output_type -> v1.ListCohortsResponse
+	67, // 69: v1.BaseService.CreateCohort:output_type -> v1.CohortResponse
+	68, // 70: v1.BaseService.DeleteCohort:output_type -> v1.DeleteCohortResponse
+	69, // 71: v1.BaseService.ListFeatureFlags:output_type -> v1.ListFeatureFlagsResponse
+	70, // 72: v1.BaseService.CreateFeatureFlag:output_type -> v1.FeatureFlagResponse
+	70, // 73: v1.BaseService.UpdateFeatureFlag:output_type -> v1.FeatureFlagResponse
+	71, // 74: v1.BaseService.DeleteFeatureFlag:output_type -> v1.DeleteFeatureFlagResponse
+	72, // 75: v1.BaseService.EvaluateFlags:output_type -> v1.EvaluateFlagsResponse
+	73, // 76: v1.BaseService.Decide:output_type -> v1.DecideResponse
+	74, // 77: v1.BaseService.CaptureEvent:output_type -> v1.CaptureEventResponse
+	75, // 78: v1.BaseService.BatchCapture:output_type -> v1.BatchCaptureResponse
+	76, // 79: v1.BaseService.Identify:output_type -> v1.IdentifyResponse
+	77, // 80: v1.BaseService.Alias:output_type -> v1.AliasResponse
+	78, // 81: v1.BaseService.IngestReplay:output_type -> v1.IngestReplayResponse
+	41, // [41:82] is the sub-list for method output_type
+	0,  // [0:41] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -154,6 +313,10 @@ func file_proto_openclick_v1_openclick_proto_init() {
 	file_proto_common_ping_proto_init()
 	file_proto_openclick_v1_project_proto_init()
 	file_proto_openclick_v1_dashboard_proto_init()
+	file_proto_openclick_v1_analytics_proto_init()
+	file_proto_openclick_v1_person_proto_init()
+	file_proto_openclick_v1_feature_flag_proto_init()
+	file_proto_openclick_v1_ingest_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

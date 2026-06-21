@@ -1,253 +1,210 @@
 package service
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"strings"
 
 	"github.com/gofreego/goutils/logger"
+	"github.com/gofreego/openclick/api/openclick_v1"
 	"github.com/gofreego/openclick/internal/models/dao"
 	"github.com/gofreego/openclick/internal/models/filter"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Feature Flags
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ListFeatureFlags handles GET /api/v1/projects/:project_id/feature-flags
-func (s *Service) ListFeatureFlags(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "flags:read") {
-		writeError(w, http.StatusForbidden, "missing permission: flags:read", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+func (s *Service) ListFeatureFlags(ctx context.Context, req *openclick_v1.ListFeatureFlagsRequest) (*openclick_v1.ListFeatureFlagsResponse, error) {
+	if err := s.checkFlagAuth(ctx, req.ProjectId, "flags:read"); err != nil {
+		return nil, err
 	}
 
-	flags, err := s.repo.ListFeatureFlags(ctx, &filter.FeatureFlagFilter{ProjectID: projectID})
+	flags, err := s.repo.ListFeatureFlags(ctx, &filter.FeatureFlagFilter{ProjectID: req.ProjectId})
 	if err != nil {
 		logger.Error(ctx, "list feature flags: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to list feature flags", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to list feature flags")
 	}
 
-	writeJSON(w, http.StatusOK, map[string]interface{}{"results": flagsToResponse(flags)})
+	var results []*openclick_v1.FeatureFlagResponse
+	for _, f := range flags {
+		results = append(results, flagToResponse(f))
+	}
+	if results == nil {
+		results = []*openclick_v1.FeatureFlagResponse{}
+	}
+
+	return &openclick_v1.ListFeatureFlagsResponse{Results: results}, nil
 }
 
-// CreateFeatureFlag handles POST /api/v1/projects/:project_id/feature-flags
-func (s *Service) CreateFeatureFlag(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "flags:write") {
-		writeError(w, http.StatusForbidden, "missing permission: flags:write", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+func (s *Service) CreateFeatureFlag(ctx context.Context, req *openclick_v1.CreateFeatureFlagRequest) (*openclick_v1.FeatureFlagResponse, error) {
+	if err := s.checkFlagAuth(ctx, req.ProjectId, "flags:write"); err != nil {
+		return nil, err
 	}
 
-	var body struct {
-		Key        string          `json:"key"`
-		Name       string          `json:"name"`
-		Active     bool            `json:"active"`
-		RolloutPct int16           `json:"rollout_pct"`
-		Filters    json.RawMessage `json:"filters"`
+	if req.Key == "" || req.Name == "" {
+		return nil, status.Error(codes.InvalidArgument, "key and name are required")
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
-	}
-	if body.Key == "" || body.Name == "" {
-		writeError(w, http.StatusBadRequest, "key and name are required", "VALIDATION_ERROR")
-		return
-	}
-	if body.Filters == nil {
-		body.Filters = json.RawMessage("{}")
+
+	filtersBytes, _ := req.Filters.MarshalJSON()
+	if len(filtersBytes) == 0 || string(filtersBytes) == "null" {
+		filtersBytes = []byte("{}")
 	}
 
 	f := &dao.FeatureFlag{
-		ProjectID:  projectID,
-		Key:        body.Key,
-		Name:       body.Name,
-		Active:     body.Active,
-		RolloutPct: body.RolloutPct,
-		Filters:    body.Filters,
+		ProjectID:  req.ProjectId,
+		Key:        req.Key,
+		Name:       req.Name,
+		Active:     req.Active,
+		RolloutPct: int16(req.RolloutPct),
+		Filters:    filtersBytes,
 	}
 	created, err := s.repo.CreateFeatureFlag(ctx, f)
 	if err != nil {
 		logger.Error(ctx, "create feature flag: %v", err)
-		writeError(w, http.StatusConflict, err.Error(), "CONFLICT")
-		return
+		return nil, status.Error(codes.AlreadyExists, err.Error())
 	}
-	writeJSON(w, http.StatusCreated, flagToResponse(created))
+	return flagToResponse(created), nil
 }
 
-// UpdateFeatureFlag handles PATCH /api/v1/projects/:project_id/feature-flags/:flag_id
-func (s *Service) UpdateFeatureFlag(w http.ResponseWriter, r *http.Request, projectID, flagID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "flags:write") {
-		writeError(w, http.StatusForbidden, "missing permission: flags:write", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+func (s *Service) UpdateFeatureFlag(ctx context.Context, req *openclick_v1.UpdateFeatureFlagRequest) (*openclick_v1.FeatureFlagResponse, error) {
+	if err := s.checkFlagAuth(ctx, req.ProjectId, "flags:write"); err != nil {
+		return nil, err
 	}
 
-	existing, err := s.repo.GetFeatureFlagByID(ctx, projectID, flagID)
+	existing, err := s.repo.GetFeatureFlagByID(ctx, req.ProjectId, req.FlagId)
 	if err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
 
-	var body struct {
-		Name       *string          `json:"name"`
-		Active     *bool            `json:"active"`
-		RolloutPct *int16           `json:"rollout_pct"`
-		Filters    *json.RawMessage `json:"filters"`
+	if req.Name != nil {
+		existing.Name = *req.Name
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
+	if req.Active != nil {
+		existing.Active = *req.Active
 	}
-
-	if body.Name != nil {
-		existing.Name = *body.Name
+	if req.RolloutPct != nil {
+		existing.RolloutPct = int16(*req.RolloutPct)
 	}
-	if body.Active != nil {
-		existing.Active = *body.Active
-	}
-	if body.RolloutPct != nil {
-		existing.RolloutPct = *body.RolloutPct
-	}
-	if body.Filters != nil {
-		existing.Filters = *body.Filters
+	if req.Filters != nil {
+		filtersBytes, _ := req.Filters.MarshalJSON()
+		existing.Filters = filtersBytes
 	}
 
 	updated, err := s.repo.UpdateFeatureFlag(ctx, existing)
 	if err != nil {
 		logger.Error(ctx, "update feature flag: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to update feature flag", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to update feature flag")
 	}
-	writeJSON(w, http.StatusOK, flagToResponse(updated))
+	return flagToResponse(updated), nil
 }
 
-// DeleteFeatureFlag handles DELETE /api/v1/projects/:project_id/feature-flags/:flag_id
-func (s *Service) DeleteFeatureFlag(w http.ResponseWriter, r *http.Request, projectID, flagID string) {
-	ctx := r.Context()
-	userID := r.Header.Get("x-user-id")
-	if userID == "" {
-		writeError(w, http.StatusUnauthorized, "x-user-id header is required", "UNAUTHORIZED")
-		return
-	}
-	if !hasPermission(r, "flags:delete") {
-		writeError(w, http.StatusForbidden, "missing permission: flags:delete", "FORBIDDEN")
-		return
-	}
-	if !s.assertMembership(ctx, w, projectID, userID) {
-		return
+func (s *Service) DeleteFeatureFlag(ctx context.Context, req *openclick_v1.DeleteFeatureFlagRequest) (*openclick_v1.DeleteFeatureFlagResponse, error) {
+	if err := s.checkFlagAuth(ctx, req.ProjectId, "flags:delete"); err != nil {
+		return nil, err
 	}
 
-	if err := s.repo.DeleteFeatureFlag(ctx, projectID, flagID); err != nil {
-		writeError(w, http.StatusNotFound, err.Error(), "NOT_FOUND")
-		return
+	if err := s.repo.DeleteFeatureFlag(ctx, req.ProjectId, req.FlagId); err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
-	w.WriteHeader(http.StatusNoContent)
+	return &openclick_v1.DeleteFeatureFlagResponse{}, nil
 }
 
-// EvaluateFlags handles POST /api/v1/projects/:project_id/feature-flags/evaluate
-// Authenticated via project secret_key Bearer token
-func (s *Service) EvaluateFlags(w http.ResponseWriter, r *http.Request, projectID string) {
-	ctx := r.Context()
-	secretKey := extractBearerToken(r)
+func (s *Service) EvaluateFlags(ctx context.Context, req *openclick_v1.EvaluateFlagsRequest) (*openclick_v1.EvaluateFlagsResponse, error) {
+	secretKey := extractBearerTokenFromCtx(ctx)
 	if secretKey == "" {
-		writeError(w, http.StatusUnauthorized, "Bearer secret_key is required", "UNAUTHORIZED")
-		return
+		return nil, status.Error(codes.Unauthenticated, "Bearer secret_key is required")
 	}
 
 	project, err := s.repo.GetProjectBySecretKey(ctx, secretKey)
-	if err != nil || project.ID != projectID {
-		writeError(w, http.StatusUnauthorized, "invalid secret_key", "UNAUTHORIZED")
-		return
+	if err != nil || project.ID != req.ProjectId {
+		return nil, status.Error(codes.Unauthenticated, "invalid secret_key")
 	}
 
-	var body struct {
-		DistinctID       string                 `json:"distinct_id"`
-		PersonProperties map[string]interface{} `json:"person_properties"`
-		Groups           map[string]interface{} `json:"groups"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body", "BAD_REQUEST")
-		return
-	}
-	if body.DistinctID == "" {
-		writeError(w, http.StatusBadRequest, "distinct_id is required", "VALIDATION_ERROR")
-		return
+	if req.DistinctId == "" {
+		return nil, status.Error(codes.InvalidArgument, "distinct_id is required")
 	}
 
-	flags, err := s.repo.ListActiveFeatureFlags(ctx, projectID)
+	flags, err := s.repo.ListActiveFeatureFlags(ctx, req.ProjectId)
 	if err != nil {
 		logger.Error(ctx, "evaluate flags: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to evaluate flags", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to evaluate flags")
 	}
 
-	results := evaluateFlags(flags, body.DistinctID, body.PersonProperties)
-	writeJSON(w, http.StatusOK, map[string]interface{}{"feature_flags": results})
+	var personProps map[string]interface{}
+	if req.PersonProperties != nil {
+		personProps = req.PersonProperties.AsMap()
+	}
+
+	results := evaluateFlags(flags, req.DistinctId, personProps)
+	return &openclick_v1.EvaluateFlagsResponse{FeatureFlags: results}, nil
 }
 
-// Decide handles GET /decide/ — client-side evaluation via api_key
-func (s *Service) Decide(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	apiKey := r.URL.Query().Get("api_key")
-	if apiKey == "" {
-		apiKey = extractBearerToken(r)
+func (s *Service) Decide(ctx context.Context, req *openclick_v1.DecideRequest) (*openclick_v1.DecideResponse, error) {
+	apiKey := ""
+	if req.ApiKey != nil {
+		apiKey = *req.ApiKey
 	}
-	distinctID := r.URL.Query().Get("distinct_id")
+	if apiKey == "" {
+		apiKey = extractBearerTokenFromCtx(ctx)
+	}
 
-	if apiKey == "" || distinctID == "" {
-		writeError(w, http.StatusBadRequest, "api_key and distinct_id are required", "BAD_REQUEST")
-		return
+	if apiKey == "" || req.DistinctId == "" {
+		return nil, status.Error(codes.InvalidArgument, "api_key and distinct_id are required")
 	}
 
 	project, err := s.repo.GetProjectByAPIKey(ctx, apiKey)
 	if err != nil {
-		writeError(w, http.StatusUnauthorized, "invalid api_key", "UNAUTHORIZED")
-		return
+		return nil, status.Error(codes.Unauthenticated, "invalid api_key")
 	}
 
 	flags, err := s.repo.ListActiveFeatureFlags(ctx, project.ID)
 	if err != nil {
 		logger.Error(ctx, "decide: %v", err)
-		writeError(w, http.StatusInternalServerError, "failed to evaluate flags", "INTERNAL_ERROR")
-		return
+		return nil, status.Error(codes.Internal, "failed to evaluate flags")
 	}
 
-	results := evaluateFlags(flags, distinctID, nil)
-	writeJSON(w, http.StatusOK, map[string]interface{}{"feature_flags": results})
+	results := evaluateFlags(flags, req.DistinctId, nil)
+	return &openclick_v1.DecideResponse{FeatureFlags: results}, nil
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Flag evaluation helpers
 // ─────────────────────────────────────────────────────────────────────────────
+
+func (s *Service) checkFlagAuth(ctx context.Context, projectID, perm string) error {
+	userID, err := s.getUserID(ctx)
+	if err != nil {
+		return err
+	}
+	if !s.hasPermission(ctx, perm) {
+		return status.Error(codes.PermissionDenied, "missing permission: "+perm)
+	}
+	return s.validateMembership(ctx, projectID, userID)
+}
+
+func extractBearerTokenFromCtx(ctx context.Context) string {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return ""
+	}
+	vals := md.Get("authorization")
+	if len(vals) == 0 {
+		return ""
+	}
+	authHeader := vals[0]
+	if len(authHeader) > 7 && strings.EqualFold(authHeader[:7], "bearer ") {
+		return authHeader[7:]
+	}
+	return ""
+}
 
 // evaluateFlags determines which flags are enabled for a given user
 func evaluateFlags(flags []*dao.FeatureFlag, distinctID string, personProps map[string]interface{}) map[string]bool {
@@ -331,26 +288,20 @@ func matchesGroup(conditions []struct {
 	return true
 }
 
-// flagToResponse converts a FeatureFlag DAO to an API response map
-func flagToResponse(f *dao.FeatureFlag) map[string]interface{} {
-	return map[string]interface{}{
-		"id":          f.ID,
-		"key":         f.Key,
-		"name":        f.Name,
-		"active":      f.Active,
-		"rollout_pct": f.RolloutPct,
-		"filters":     f.Filters,
-		"created_at":  f.CreatedAt,
+// flagToResponse converts a FeatureFlag DAO to an API response
+func flagToResponse(f *dao.FeatureFlag) *openclick_v1.FeatureFlagResponse {
+	var filters structpb.Struct
+	if len(f.Filters) > 0 {
+		_ = filters.UnmarshalJSON(f.Filters)
 	}
-}
 
-func flagsToResponse(flags []*dao.FeatureFlag) []map[string]interface{} {
-	if flags == nil {
-		return []map[string]interface{}{}
+	return &openclick_v1.FeatureFlagResponse{
+		Id:         f.ID,
+		Key:        f.Key,
+		Name:       f.Name,
+		Active:     f.Active,
+		RolloutPct: int32(f.RolloutPct),
+		Filters:    &filters,
+		CreatedAt:  timestamppb.New(f.CreatedAt),
 	}
-	result := make([]map[string]interface{}, len(flags))
-	for i, f := range flags {
-		result[i] = flagToResponse(f)
-	}
-	return result
 }

@@ -1,0 +1,215 @@
+syntax = "proto3";
+package v1;
+
+option go_package = "./openclick_v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+message PropertyFilter {
+  string key = 1;
+  google.protobuf.Value value = 2;
+  string operator = 3;
+  string type = 4;
+}
+
+message TrendsEvent {
+  string id = 1;
+  string name = 2;
+  string math = 3;
+}
+
+message QueryTrendsRequest {
+  string project_id = 1;
+  repeated TrendsEvent events = 2;
+  string date_from = 3;
+  string date_to = 4;
+  string interval = 5;
+  repeated PropertyFilter filters = 6;
+  string breakdown = 7;
+}
+
+message TrendsSeries {
+  string label = 1;
+  string breakdown_value = 2;
+  repeated int64 data = 3;
+  repeated string labels = 4;
+  repeated string days = 5;
+}
+
+message QueryTrendsResponse {
+  repeated TrendsSeries results = 1;
+}
+
+message FunnelStep {
+  string event = 1;
+  string name = 2;
+}
+
+message QueryFunnelRequest {
+  string project_id = 1;
+  repeated FunnelStep steps = 2;
+  string date_from = 3;
+  string date_to = 4;
+  int32 conversion_window_days = 5;
+  string funnel_order = 6;
+  repeated PropertyFilter filters = 7;
+}
+
+message FunnelStepResult {
+  string action_id = 1;
+  string name = 2;
+  int64 count = 3;
+  double conversion_rate = 4;
+  double average_conversion_time = 5;
+}
+
+message QueryFunnelResponse {
+  repeated FunnelStepResult result = 1;
+}
+
+message RetentionEvent {
+  string id = 1;
+  string name = 2;
+}
+
+message QueryRetentionRequest {
+  string project_id = 1;
+  RetentionEvent target_event = 2;
+  RetentionEvent return_event = 3;
+  string date_from = 4;
+  string date_to = 5;
+  string period = 6;
+  string retention_type = 7;
+}
+
+message RetentionValue {
+  int64 count = 1;
+  double percentage = 2;
+}
+
+message RetentionCohort {
+  string date = 1;
+  string label = 2;
+  int64 cohort_size = 3;
+  repeated RetentionValue values = 4;
+}
+
+message QueryRetentionResponse {
+  repeated RetentionCohort result = 1;
+}
+
+message QueryPathsRequest {
+  string project_id = 1;
+  string date_from = 2;
+  string date_to = 3;
+  string start_point = 4;
+  string end_point = 5;
+  string path_type = 6;
+  int32 step_limit = 7;
+  int32 min_edge_weight = 8;
+}
+
+message PathNode {
+  string id = 1;
+  string name = 2;
+}
+
+message PathLink {
+  string source = 1;
+  string target = 2;
+  int64 value = 3;
+}
+
+message QueryPathsResponse {
+  repeated PathNode nodes = 1;
+  repeated PathLink links = 2;
+}
+
+message QueryEventsRequest {
+  string project_id = 1;
+  string event = 2;
+  string date_from = 3;
+  string date_to = 4;
+  optional string distinct_id = 5;
+  repeated PropertyFilter filters = 6;
+  int32 limit = 7;
+  int32 offset = 8;
+  string order_by = 9;
+  string order_dir = 10;
+}
+
+message EventResult {
+  string uuid = 1;
+  string event = 2;
+  string distinct_id = 3;
+  google.protobuf.Timestamp timestamp = 4;
+  google.protobuf.Struct properties = 5;
+}
+
+message QueryEventsResponse {
+  repeated EventResult results = 1;
+  int64 total = 2;
+}
+
+message SessionResponse {
+  string project_id = 1;
+  string session_id = 2;
+  string distinct_id = 3;
+  google.protobuf.Timestamp start_time = 4;
+  google.protobuf.Timestamp end_time = 5;
+  int64 duration_ms = 6;
+  int32 page_count = 7;
+  int32 click_count = 8;
+  string country_code = 9;
+  string browser = 10;
+  string os = 11;
+  string device_type = 12;
+  string recording_url = 13;
+}
+
+message ListSessionsRequest {
+  string project_id = 1;
+  optional string date_from = 2;
+  optional string date_to = 3;
+  optional string distinct_id = 4;
+  optional int32 min_duration_ms = 5;
+  optional string search = 6;
+  optional int32 limit = 7;
+  optional int32 offset = 8;
+}
+
+message ListSessionsResponse {
+  repeated SessionResponse results = 1;
+  int64 total = 2;
+}
+
+message GetSessionRequest {
+  string project_id = 1;
+  string session_id = 2;
+}
+
+message SessionChunk {
+  int32 chunk_index = 1;
+  string data = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message GetSessionChunksRequest {
+  string project_id = 1;
+  string session_id = 2;
+  optional int32 from_chunk = 3;
+}
+
+message GetSessionChunksResponse {
+  repeated SessionChunk chunks = 1;
+  int64 total_chunks = 2;
+}
+
+message DeleteSessionRequest {
+  string project_id = 1;
+  string session_id = 2;
+}
+
+message DeleteSessionResponse {
+}

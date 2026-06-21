@@ -34,6 +34,32 @@ const (
 	BaseService_CreateDashboardItem_FullMethodName = "/v1.BaseService/CreateDashboardItem"
 	BaseService_UpdateDashboardItem_FullMethodName = "/v1.BaseService/UpdateDashboardItem"
 	BaseService_DeleteDashboardItem_FullMethodName = "/v1.BaseService/DeleteDashboardItem"
+	BaseService_QueryTrends_FullMethodName         = "/v1.BaseService/QueryTrends"
+	BaseService_QueryFunnel_FullMethodName         = "/v1.BaseService/QueryFunnel"
+	BaseService_QueryRetention_FullMethodName      = "/v1.BaseService/QueryRetention"
+	BaseService_QueryPaths_FullMethodName          = "/v1.BaseService/QueryPaths"
+	BaseService_QueryEvents_FullMethodName         = "/v1.BaseService/QueryEvents"
+	BaseService_ListSessions_FullMethodName        = "/v1.BaseService/ListSessions"
+	BaseService_GetSession_FullMethodName          = "/v1.BaseService/GetSession"
+	BaseService_GetSessionChunks_FullMethodName    = "/v1.BaseService/GetSessionChunks"
+	BaseService_DeleteSession_FullMethodName       = "/v1.BaseService/DeleteSession"
+	BaseService_ListPersons_FullMethodName         = "/v1.BaseService/ListPersons"
+	BaseService_GetPerson_FullMethodName           = "/v1.BaseService/GetPerson"
+	BaseService_DeletePerson_FullMethodName        = "/v1.BaseService/DeletePerson"
+	BaseService_ListCohorts_FullMethodName         = "/v1.BaseService/ListCohorts"
+	BaseService_CreateCohort_FullMethodName        = "/v1.BaseService/CreateCohort"
+	BaseService_DeleteCohort_FullMethodName        = "/v1.BaseService/DeleteCohort"
+	BaseService_ListFeatureFlags_FullMethodName    = "/v1.BaseService/ListFeatureFlags"
+	BaseService_CreateFeatureFlag_FullMethodName   = "/v1.BaseService/CreateFeatureFlag"
+	BaseService_UpdateFeatureFlag_FullMethodName   = "/v1.BaseService/UpdateFeatureFlag"
+	BaseService_DeleteFeatureFlag_FullMethodName   = "/v1.BaseService/DeleteFeatureFlag"
+	BaseService_EvaluateFlags_FullMethodName       = "/v1.BaseService/EvaluateFlags"
+	BaseService_Decide_FullMethodName              = "/v1.BaseService/Decide"
+	BaseService_CaptureEvent_FullMethodName        = "/v1.BaseService/CaptureEvent"
+	BaseService_BatchCapture_FullMethodName        = "/v1.BaseService/BatchCapture"
+	BaseService_Identify_FullMethodName            = "/v1.BaseService/Identify"
+	BaseService_Alias_FullMethodName               = "/v1.BaseService/Alias"
+	BaseService_IngestReplay_FullMethodName        = "/v1.BaseService/IngestReplay"
 )
 
 // BaseServiceClient is the client API for BaseService service.
@@ -58,6 +84,36 @@ type BaseServiceClient interface {
 	CreateDashboardItem(ctx context.Context, in *CreateDashboardItemRequest, opts ...grpc.CallOption) (*DashboardItemResponse, error)
 	UpdateDashboardItem(ctx context.Context, in *UpdateDashboardItemRequest, opts ...grpc.CallOption) (*DashboardItemResponse, error)
 	DeleteDashboardItem(ctx context.Context, in *DeleteDashboardItemRequest, opts ...grpc.CallOption) (*DeleteDashboardItemResponse, error)
+	// Analytics
+	QueryTrends(ctx context.Context, in *QueryTrendsRequest, opts ...grpc.CallOption) (*QueryTrendsResponse, error)
+	QueryFunnel(ctx context.Context, in *QueryFunnelRequest, opts ...grpc.CallOption) (*QueryFunnelResponse, error)
+	QueryRetention(ctx context.Context, in *QueryRetentionRequest, opts ...grpc.CallOption) (*QueryRetentionResponse, error)
+	QueryPaths(ctx context.Context, in *QueryPathsRequest, opts ...grpc.CallOption) (*QueryPathsResponse, error)
+	QueryEvents(ctx context.Context, in *QueryEventsRequest, opts ...grpc.CallOption) (*QueryEventsResponse, error)
+	ListSessions(ctx context.Context, in *ListSessionsRequest, opts ...grpc.CallOption) (*ListSessionsResponse, error)
+	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*SessionResponse, error)
+	GetSessionChunks(ctx context.Context, in *GetSessionChunksRequest, opts ...grpc.CallOption) (*GetSessionChunksResponse, error)
+	DeleteSession(ctx context.Context, in *DeleteSessionRequest, opts ...grpc.CallOption) (*DeleteSessionResponse, error)
+	// Persons & Cohorts
+	ListPersons(ctx context.Context, in *ListPersonsRequest, opts ...grpc.CallOption) (*ListPersonsResponse, error)
+	GetPerson(ctx context.Context, in *GetPersonRequest, opts ...grpc.CallOption) (*GetPersonResponse, error)
+	DeletePerson(ctx context.Context, in *DeletePersonRequest, opts ...grpc.CallOption) (*DeletePersonResponse, error)
+	ListCohorts(ctx context.Context, in *ListCohortsRequest, opts ...grpc.CallOption) (*ListCohortsResponse, error)
+	CreateCohort(ctx context.Context, in *CreateCohortRequest, opts ...grpc.CallOption) (*CohortResponse, error)
+	DeleteCohort(ctx context.Context, in *DeleteCohortRequest, opts ...grpc.CallOption) (*DeleteCohortResponse, error)
+	// Feature Flags
+	ListFeatureFlags(ctx context.Context, in *ListFeatureFlagsRequest, opts ...grpc.CallOption) (*ListFeatureFlagsResponse, error)
+	CreateFeatureFlag(ctx context.Context, in *CreateFeatureFlagRequest, opts ...grpc.CallOption) (*FeatureFlagResponse, error)
+	UpdateFeatureFlag(ctx context.Context, in *UpdateFeatureFlagRequest, opts ...grpc.CallOption) (*FeatureFlagResponse, error)
+	DeleteFeatureFlag(ctx context.Context, in *DeleteFeatureFlagRequest, opts ...grpc.CallOption) (*DeleteFeatureFlagResponse, error)
+	EvaluateFlags(ctx context.Context, in *EvaluateFlagsRequest, opts ...grpc.CallOption) (*EvaluateFlagsResponse, error)
+	Decide(ctx context.Context, in *DecideRequest, opts ...grpc.CallOption) (*DecideResponse, error)
+	// Ingestion
+	CaptureEvent(ctx context.Context, in *CaptureEventRequest, opts ...grpc.CallOption) (*CaptureEventResponse, error)
+	BatchCapture(ctx context.Context, in *BatchCaptureRequest, opts ...grpc.CallOption) (*BatchCaptureResponse, error)
+	Identify(ctx context.Context, in *IdentifyRequest, opts ...grpc.CallOption) (*IdentifyResponse, error)
+	Alias(ctx context.Context, in *AliasRequest, opts ...grpc.CallOption) (*AliasResponse, error)
+	IngestReplay(ctx context.Context, in *IngestReplayRequest, opts ...grpc.CallOption) (*IngestReplayResponse, error)
 }
 
 type baseServiceClient struct {
@@ -218,6 +274,266 @@ func (c *baseServiceClient) DeleteDashboardItem(ctx context.Context, in *DeleteD
 	return out, nil
 }
 
+func (c *baseServiceClient) QueryTrends(ctx context.Context, in *QueryTrendsRequest, opts ...grpc.CallOption) (*QueryTrendsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryTrendsResponse)
+	err := c.cc.Invoke(ctx, BaseService_QueryTrends_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) QueryFunnel(ctx context.Context, in *QueryFunnelRequest, opts ...grpc.CallOption) (*QueryFunnelResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryFunnelResponse)
+	err := c.cc.Invoke(ctx, BaseService_QueryFunnel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) QueryRetention(ctx context.Context, in *QueryRetentionRequest, opts ...grpc.CallOption) (*QueryRetentionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryRetentionResponse)
+	err := c.cc.Invoke(ctx, BaseService_QueryRetention_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) QueryPaths(ctx context.Context, in *QueryPathsRequest, opts ...grpc.CallOption) (*QueryPathsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryPathsResponse)
+	err := c.cc.Invoke(ctx, BaseService_QueryPaths_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) QueryEvents(ctx context.Context, in *QueryEventsRequest, opts ...grpc.CallOption) (*QueryEventsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryEventsResponse)
+	err := c.cc.Invoke(ctx, BaseService_QueryEvents_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) ListSessions(ctx context.Context, in *ListSessionsRequest, opts ...grpc.CallOption) (*ListSessionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListSessionsResponse)
+	err := c.cc.Invoke(ctx, BaseService_ListSessions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*SessionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SessionResponse)
+	err := c.cc.Invoke(ctx, BaseService_GetSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) GetSessionChunks(ctx context.Context, in *GetSessionChunksRequest, opts ...grpc.CallOption) (*GetSessionChunksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSessionChunksResponse)
+	err := c.cc.Invoke(ctx, BaseService_GetSessionChunks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) DeleteSession(ctx context.Context, in *DeleteSessionRequest, opts ...grpc.CallOption) (*DeleteSessionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteSessionResponse)
+	err := c.cc.Invoke(ctx, BaseService_DeleteSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) ListPersons(ctx context.Context, in *ListPersonsRequest, opts ...grpc.CallOption) (*ListPersonsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPersonsResponse)
+	err := c.cc.Invoke(ctx, BaseService_ListPersons_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) GetPerson(ctx context.Context, in *GetPersonRequest, opts ...grpc.CallOption) (*GetPersonResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetPersonResponse)
+	err := c.cc.Invoke(ctx, BaseService_GetPerson_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) DeletePerson(ctx context.Context, in *DeletePersonRequest, opts ...grpc.CallOption) (*DeletePersonResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeletePersonResponse)
+	err := c.cc.Invoke(ctx, BaseService_DeletePerson_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) ListCohorts(ctx context.Context, in *ListCohortsRequest, opts ...grpc.CallOption) (*ListCohortsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListCohortsResponse)
+	err := c.cc.Invoke(ctx, BaseService_ListCohorts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) CreateCohort(ctx context.Context, in *CreateCohortRequest, opts ...grpc.CallOption) (*CohortResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CohortResponse)
+	err := c.cc.Invoke(ctx, BaseService_CreateCohort_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) DeleteCohort(ctx context.Context, in *DeleteCohortRequest, opts ...grpc.CallOption) (*DeleteCohortResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteCohortResponse)
+	err := c.cc.Invoke(ctx, BaseService_DeleteCohort_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) ListFeatureFlags(ctx context.Context, in *ListFeatureFlagsRequest, opts ...grpc.CallOption) (*ListFeatureFlagsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListFeatureFlagsResponse)
+	err := c.cc.Invoke(ctx, BaseService_ListFeatureFlags_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) CreateFeatureFlag(ctx context.Context, in *CreateFeatureFlagRequest, opts ...grpc.CallOption) (*FeatureFlagResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FeatureFlagResponse)
+	err := c.cc.Invoke(ctx, BaseService_CreateFeatureFlag_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) UpdateFeatureFlag(ctx context.Context, in *UpdateFeatureFlagRequest, opts ...grpc.CallOption) (*FeatureFlagResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FeatureFlagResponse)
+	err := c.cc.Invoke(ctx, BaseService_UpdateFeatureFlag_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) DeleteFeatureFlag(ctx context.Context, in *DeleteFeatureFlagRequest, opts ...grpc.CallOption) (*DeleteFeatureFlagResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteFeatureFlagResponse)
+	err := c.cc.Invoke(ctx, BaseService_DeleteFeatureFlag_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) EvaluateFlags(ctx context.Context, in *EvaluateFlagsRequest, opts ...grpc.CallOption) (*EvaluateFlagsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EvaluateFlagsResponse)
+	err := c.cc.Invoke(ctx, BaseService_EvaluateFlags_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) Decide(ctx context.Context, in *DecideRequest, opts ...grpc.CallOption) (*DecideResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DecideResponse)
+	err := c.cc.Invoke(ctx, BaseService_Decide_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) CaptureEvent(ctx context.Context, in *CaptureEventRequest, opts ...grpc.CallOption) (*CaptureEventResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CaptureEventResponse)
+	err := c.cc.Invoke(ctx, BaseService_CaptureEvent_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) BatchCapture(ctx context.Context, in *BatchCaptureRequest, opts ...grpc.CallOption) (*BatchCaptureResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BatchCaptureResponse)
+	err := c.cc.Invoke(ctx, BaseService_BatchCapture_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) Identify(ctx context.Context, in *IdentifyRequest, opts ...grpc.CallOption) (*IdentifyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(IdentifyResponse)
+	err := c.cc.Invoke(ctx, BaseService_Identify_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) Alias(ctx context.Context, in *AliasRequest, opts ...grpc.CallOption) (*AliasResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AliasResponse)
+	err := c.cc.Invoke(ctx, BaseService_Alias_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) IngestReplay(ctx context.Context, in *IngestReplayRequest, opts ...grpc.CallOption) (*IngestReplayResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(IngestReplayResponse)
+	err := c.cc.Invoke(ctx, BaseService_IngestReplay_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BaseServiceServer is the server API for BaseService service.
 // All implementations must embed UnimplementedBaseServiceServer
 // for forward compatibility.
@@ -240,6 +556,36 @@ type BaseServiceServer interface {
 	CreateDashboardItem(context.Context, *CreateDashboardItemRequest) (*DashboardItemResponse, error)
 	UpdateDashboardItem(context.Context, *UpdateDashboardItemRequest) (*DashboardItemResponse, error)
 	DeleteDashboardItem(context.Context, *DeleteDashboardItemRequest) (*DeleteDashboardItemResponse, error)
+	// Analytics
+	QueryTrends(context.Context, *QueryTrendsRequest) (*QueryTrendsResponse, error)
+	QueryFunnel(context.Context, *QueryFunnelRequest) (*QueryFunnelResponse, error)
+	QueryRetention(context.Context, *QueryRetentionRequest) (*QueryRetentionResponse, error)
+	QueryPaths(context.Context, *QueryPathsRequest) (*QueryPathsResponse, error)
+	QueryEvents(context.Context, *QueryEventsRequest) (*QueryEventsResponse, error)
+	ListSessions(context.Context, *ListSessionsRequest) (*ListSessionsResponse, error)
+	GetSession(context.Context, *GetSessionRequest) (*SessionResponse, error)
+	GetSessionChunks(context.Context, *GetSessionChunksRequest) (*GetSessionChunksResponse, error)
+	DeleteSession(context.Context, *DeleteSessionRequest) (*DeleteSessionResponse, error)
+	// Persons & Cohorts
+	ListPersons(context.Context, *ListPersonsRequest) (*ListPersonsResponse, error)
+	GetPerson(context.Context, *GetPersonRequest) (*GetPersonResponse, error)
+	DeletePerson(context.Context, *DeletePersonRequest) (*DeletePersonResponse, error)
+	ListCohorts(context.Context, *ListCohortsRequest) (*ListCohortsResponse, error)
+	CreateCohort(context.Context, *CreateCohortRequest) (*CohortResponse, error)
+	DeleteCohort(context.Context, *DeleteCohortRequest) (*DeleteCohortResponse, error)
+	// Feature Flags
+	ListFeatureFlags(context.Context, *ListFeatureFlagsRequest) (*ListFeatureFlagsResponse, error)
+	CreateFeatureFlag(context.Context, *CreateFeatureFlagRequest) (*FeatureFlagResponse, error)
+	UpdateFeatureFlag(context.Context, *UpdateFeatureFlagRequest) (*FeatureFlagResponse, error)
+	DeleteFeatureFlag(context.Context, *DeleteFeatureFlagRequest) (*DeleteFeatureFlagResponse, error)
+	EvaluateFlags(context.Context, *EvaluateFlagsRequest) (*EvaluateFlagsResponse, error)
+	Decide(context.Context, *DecideRequest) (*DecideResponse, error)
+	// Ingestion
+	CaptureEvent(context.Context, *CaptureEventRequest) (*CaptureEventResponse, error)
+	BatchCapture(context.Context, *BatchCaptureRequest) (*BatchCaptureResponse, error)
+	Identify(context.Context, *IdentifyRequest) (*IdentifyResponse, error)
+	Alias(context.Context, *AliasRequest) (*AliasResponse, error)
+	IngestReplay(context.Context, *IngestReplayRequest) (*IngestReplayResponse, error)
 	mustEmbedUnimplementedBaseServiceServer()
 }
 
@@ -294,6 +640,84 @@ func (UnimplementedBaseServiceServer) UpdateDashboardItem(context.Context, *Upda
 }
 func (UnimplementedBaseServiceServer) DeleteDashboardItem(context.Context, *DeleteDashboardItemRequest) (*DeleteDashboardItemResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteDashboardItem not implemented")
+}
+func (UnimplementedBaseServiceServer) QueryTrends(context.Context, *QueryTrendsRequest) (*QueryTrendsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method QueryTrends not implemented")
+}
+func (UnimplementedBaseServiceServer) QueryFunnel(context.Context, *QueryFunnelRequest) (*QueryFunnelResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method QueryFunnel not implemented")
+}
+func (UnimplementedBaseServiceServer) QueryRetention(context.Context, *QueryRetentionRequest) (*QueryRetentionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method QueryRetention not implemented")
+}
+func (UnimplementedBaseServiceServer) QueryPaths(context.Context, *QueryPathsRequest) (*QueryPathsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method QueryPaths not implemented")
+}
+func (UnimplementedBaseServiceServer) QueryEvents(context.Context, *QueryEventsRequest) (*QueryEventsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method QueryEvents not implemented")
+}
+func (UnimplementedBaseServiceServer) ListSessions(context.Context, *ListSessionsRequest) (*ListSessionsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListSessions not implemented")
+}
+func (UnimplementedBaseServiceServer) GetSession(context.Context, *GetSessionRequest) (*SessionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSession not implemented")
+}
+func (UnimplementedBaseServiceServer) GetSessionChunks(context.Context, *GetSessionChunksRequest) (*GetSessionChunksResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSessionChunks not implemented")
+}
+func (UnimplementedBaseServiceServer) DeleteSession(context.Context, *DeleteSessionRequest) (*DeleteSessionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteSession not implemented")
+}
+func (UnimplementedBaseServiceServer) ListPersons(context.Context, *ListPersonsRequest) (*ListPersonsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListPersons not implemented")
+}
+func (UnimplementedBaseServiceServer) GetPerson(context.Context, *GetPersonRequest) (*GetPersonResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPerson not implemented")
+}
+func (UnimplementedBaseServiceServer) DeletePerson(context.Context, *DeletePersonRequest) (*DeletePersonResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeletePerson not implemented")
+}
+func (UnimplementedBaseServiceServer) ListCohorts(context.Context, *ListCohortsRequest) (*ListCohortsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListCohorts not implemented")
+}
+func (UnimplementedBaseServiceServer) CreateCohort(context.Context, *CreateCohortRequest) (*CohortResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateCohort not implemented")
+}
+func (UnimplementedBaseServiceServer) DeleteCohort(context.Context, *DeleteCohortRequest) (*DeleteCohortResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteCohort not implemented")
+}
+func (UnimplementedBaseServiceServer) ListFeatureFlags(context.Context, *ListFeatureFlagsRequest) (*ListFeatureFlagsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListFeatureFlags not implemented")
+}
+func (UnimplementedBaseServiceServer) CreateFeatureFlag(context.Context, *CreateFeatureFlagRequest) (*FeatureFlagResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateFeatureFlag not implemented")
+}
+func (UnimplementedBaseServiceServer) UpdateFeatureFlag(context.Context, *UpdateFeatureFlagRequest) (*FeatureFlagResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateFeatureFlag not implemented")
+}
+func (UnimplementedBaseServiceServer) DeleteFeatureFlag(context.Context, *DeleteFeatureFlagRequest) (*DeleteFeatureFlagResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteFeatureFlag not implemented")
+}
+func (UnimplementedBaseServiceServer) EvaluateFlags(context.Context, *EvaluateFlagsRequest) (*EvaluateFlagsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method EvaluateFlags not implemented")
+}
+func (UnimplementedBaseServiceServer) Decide(context.Context, *DecideRequest) (*DecideResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Decide not implemented")
+}
+func (UnimplementedBaseServiceServer) CaptureEvent(context.Context, *CaptureEventRequest) (*CaptureEventResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CaptureEvent not implemented")
+}
+func (UnimplementedBaseServiceServer) BatchCapture(context.Context, *BatchCaptureRequest) (*BatchCaptureResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method BatchCapture not implemented")
+}
+func (UnimplementedBaseServiceServer) Identify(context.Context, *IdentifyRequest) (*IdentifyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Identify not implemented")
+}
+func (UnimplementedBaseServiceServer) Alias(context.Context, *AliasRequest) (*AliasResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Alias not implemented")
+}
+func (UnimplementedBaseServiceServer) IngestReplay(context.Context, *IngestReplayRequest) (*IngestReplayResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method IngestReplay not implemented")
 }
 func (UnimplementedBaseServiceServer) mustEmbedUnimplementedBaseServiceServer() {}
 func (UnimplementedBaseServiceServer) testEmbeddedByValue()                     {}
@@ -586,6 +1010,474 @@ func _BaseService_DeleteDashboardItem_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BaseService_QueryTrends_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryTrendsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).QueryTrends(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_QueryTrends_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).QueryTrends(ctx, req.(*QueryTrendsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_QueryFunnel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryFunnelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).QueryFunnel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_QueryFunnel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).QueryFunnel(ctx, req.(*QueryFunnelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_QueryRetention_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryRetentionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).QueryRetention(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_QueryRetention_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).QueryRetention(ctx, req.(*QueryRetentionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_QueryPaths_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPathsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).QueryPaths(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_QueryPaths_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).QueryPaths(ctx, req.(*QueryPathsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_QueryEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryEventsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).QueryEvents(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_QueryEvents_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).QueryEvents(ctx, req.(*QueryEventsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_ListSessions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSessionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).ListSessions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_ListSessions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).ListSessions(ctx, req.(*ListSessionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_GetSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).GetSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_GetSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).GetSession(ctx, req.(*GetSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_GetSessionChunks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSessionChunksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).GetSessionChunks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_GetSessionChunks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).GetSessionChunks(ctx, req.(*GetSessionChunksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_DeleteSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).DeleteSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_DeleteSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).DeleteSession(ctx, req.(*DeleteSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_ListPersons_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPersonsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).ListPersons(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_ListPersons_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).ListPersons(ctx, req.(*ListPersonsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_GetPerson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPersonRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).GetPerson(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_GetPerson_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).GetPerson(ctx, req.(*GetPersonRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_DeletePerson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePersonRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).DeletePerson(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_DeletePerson_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).DeletePerson(ctx, req.(*DeletePersonRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_ListCohorts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCohortsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).ListCohorts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_ListCohorts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).ListCohorts(ctx, req.(*ListCohortsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_CreateCohort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateCohortRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).CreateCohort(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_CreateCohort_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).CreateCohort(ctx, req.(*CreateCohortRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_DeleteCohort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCohortRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).DeleteCohort(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_DeleteCohort_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).DeleteCohort(ctx, req.(*DeleteCohortRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_ListFeatureFlags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFeatureFlagsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).ListFeatureFlags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_ListFeatureFlags_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).ListFeatureFlags(ctx, req.(*ListFeatureFlagsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_CreateFeatureFlag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateFeatureFlagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).CreateFeatureFlag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_CreateFeatureFlag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).CreateFeatureFlag(ctx, req.(*CreateFeatureFlagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_UpdateFeatureFlag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFeatureFlagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).UpdateFeatureFlag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_UpdateFeatureFlag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).UpdateFeatureFlag(ctx, req.(*UpdateFeatureFlagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_DeleteFeatureFlag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFeatureFlagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).DeleteFeatureFlag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_DeleteFeatureFlag_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).DeleteFeatureFlag(ctx, req.(*DeleteFeatureFlagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_EvaluateFlags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EvaluateFlagsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).EvaluateFlags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_EvaluateFlags_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).EvaluateFlags(ctx, req.(*EvaluateFlagsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_Decide_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DecideRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).Decide(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_Decide_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).Decide(ctx, req.(*DecideRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_CaptureEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CaptureEventRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).CaptureEvent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_CaptureEvent_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).CaptureEvent(ctx, req.(*CaptureEventRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_BatchCapture_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchCaptureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).BatchCapture(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_BatchCapture_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).BatchCapture(ctx, req.(*BatchCaptureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_Identify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IdentifyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).Identify(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_Identify_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).Identify(ctx, req.(*IdentifyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_Alias_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AliasRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).Alias(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_Alias_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).Alias(ctx, req.(*AliasRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_IngestReplay_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IngestReplayRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).IngestReplay(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_IngestReplay_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).IngestReplay(ctx, req.(*IngestReplayRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BaseService_ServiceDesc is the grpc.ServiceDesc for BaseService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -652,6 +1544,110 @@ var BaseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteDashboardItem",
 			Handler:    _BaseService_DeleteDashboardItem_Handler,
+		},
+		{
+			MethodName: "QueryTrends",
+			Handler:    _BaseService_QueryTrends_Handler,
+		},
+		{
+			MethodName: "QueryFunnel",
+			Handler:    _BaseService_QueryFunnel_Handler,
+		},
+		{
+			MethodName: "QueryRetention",
+			Handler:    _BaseService_QueryRetention_Handler,
+		},
+		{
+			MethodName: "QueryPaths",
+			Handler:    _BaseService_QueryPaths_Handler,
+		},
+		{
+			MethodName: "QueryEvents",
+			Handler:    _BaseService_QueryEvents_Handler,
+		},
+		{
+			MethodName: "ListSessions",
+			Handler:    _BaseService_ListSessions_Handler,
+		},
+		{
+			MethodName: "GetSession",
+			Handler:    _BaseService_GetSession_Handler,
+		},
+		{
+			MethodName: "GetSessionChunks",
+			Handler:    _BaseService_GetSessionChunks_Handler,
+		},
+		{
+			MethodName: "DeleteSession",
+			Handler:    _BaseService_DeleteSession_Handler,
+		},
+		{
+			MethodName: "ListPersons",
+			Handler:    _BaseService_ListPersons_Handler,
+		},
+		{
+			MethodName: "GetPerson",
+			Handler:    _BaseService_GetPerson_Handler,
+		},
+		{
+			MethodName: "DeletePerson",
+			Handler:    _BaseService_DeletePerson_Handler,
+		},
+		{
+			MethodName: "ListCohorts",
+			Handler:    _BaseService_ListCohorts_Handler,
+		},
+		{
+			MethodName: "CreateCohort",
+			Handler:    _BaseService_CreateCohort_Handler,
+		},
+		{
+			MethodName: "DeleteCohort",
+			Handler:    _BaseService_DeleteCohort_Handler,
+		},
+		{
+			MethodName: "ListFeatureFlags",
+			Handler:    _BaseService_ListFeatureFlags_Handler,
+		},
+		{
+			MethodName: "CreateFeatureFlag",
+			Handler:    _BaseService_CreateFeatureFlag_Handler,
+		},
+		{
+			MethodName: "UpdateFeatureFlag",
+			Handler:    _BaseService_UpdateFeatureFlag_Handler,
+		},
+		{
+			MethodName: "DeleteFeatureFlag",
+			Handler:    _BaseService_DeleteFeatureFlag_Handler,
+		},
+		{
+			MethodName: "EvaluateFlags",
+			Handler:    _BaseService_EvaluateFlags_Handler,
+		},
+		{
+			MethodName: "Decide",
+			Handler:    _BaseService_Decide_Handler,
+		},
+		{
+			MethodName: "CaptureEvent",
+			Handler:    _BaseService_CaptureEvent_Handler,
+		},
+		{
+			MethodName: "BatchCapture",
+			Handler:    _BaseService_BatchCapture_Handler,
+		},
+		{
+			MethodName: "Identify",
+			Handler:    _BaseService_Identify_Handler,
+		},
+		{
+			MethodName: "Alias",
+			Handler:    _BaseService_Alias_Handler,
+		},
+		{
+			MethodName: "IngestReplay",
+			Handler:    _BaseService_IngestReplay_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

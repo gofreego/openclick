@@ -1,0 +1,75 @@
+syntax = "proto3";
+package v1;
+
+option go_package = "./openclick_v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "proto/openclick/v1/analytics.proto";
+
+message PersonResponse {
+  string id = 1;
+  string distinct_id = 2;
+  google.protobuf.Struct properties = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
+message ListPersonsRequest {
+  string project_id = 1;
+  optional string search = 2;
+  optional int32 limit = 3;
+  optional int32 offset = 4;
+}
+
+message ListPersonsResponse {
+  repeated PersonResponse results = 1;
+  int64 total = 2;
+}
+
+message GetPersonRequest {
+  string project_id = 1;
+  string distinct_id = 2;
+}
+
+message GetPersonResponse {
+  PersonResponse person = 1;
+  repeated EventResult recent_events = 2;
+}
+
+message DeletePersonRequest {
+  string project_id = 1;
+  string distinct_id = 2;
+}
+
+message DeletePersonResponse {
+}
+
+message CohortResponse {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Struct filters = 3;
+  int64 person_count = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+message ListCohortsRequest {
+  string project_id = 1;
+}
+
+message ListCohortsResponse {
+  repeated CohortResponse results = 1;
+}
+
+message CreateCohortRequest {
+  string project_id = 1;
+  string name = 2;
+  google.protobuf.Struct filters = 3;
+}
+
+message DeleteCohortRequest {
+  string project_id = 1;
+  string cohort_id = 2;
+}
+
+message DeleteCohortResponse {
+}

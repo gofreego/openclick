@@ -1,0 +1,71 @@
+syntax = "proto3";
+package v1;
+
+option go_package = "./openclick_v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+message FeatureFlagResponse {
+  string id = 1;
+  string key = 2;
+  string name = 3;
+  bool active = 4;
+  int32 rollout_pct = 5;
+  google.protobuf.Struct filters = 6;
+  google.protobuf.Timestamp created_at = 7;
+}
+
+message ListFeatureFlagsRequest {
+  string project_id = 1;
+}
+
+message ListFeatureFlagsResponse {
+  repeated FeatureFlagResponse results = 1;
+}
+
+message CreateFeatureFlagRequest {
+  string project_id = 1;
+  string key = 2;
+  string name = 3;
+  bool active = 4;
+  int32 rollout_pct = 5;
+  google.protobuf.Struct filters = 6;
+}
+
+message UpdateFeatureFlagRequest {
+  string project_id = 1;
+  string flag_id = 2;
+  optional string name = 3;
+  optional bool active = 4;
+  optional int32 rollout_pct = 5;
+  google.protobuf.Struct filters = 6;
+}
+
+message DeleteFeatureFlagRequest {
+  string project_id = 1;
+  string flag_id = 2;
+}
+
+message DeleteFeatureFlagResponse {
+}
+
+message EvaluateFlagsRequest {
+  string project_id = 1;
+  string distinct_id = 2;
+  google.protobuf.Struct person_properties = 3;
+  google.protobuf.Struct groups = 4;
+}
+
+message EvaluateFlagsResponse {
+  map<string, bool> feature_flags = 1;
+}
+
+message DecideRequest {
+  optional string api_key = 1;
+  string distinct_id = 2;
+}
+
+message DecideResponse {
+  map<string, bool> feature_flags = 1;
+}

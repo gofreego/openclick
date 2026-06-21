@@ -8,6 +8,10 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "proto/common/ping.proto";
 import "proto/openclick/v1/project.proto";
 import "proto/openclick/v1/dashboard.proto";
+import "proto/openclick/v1/analytics.proto";
+import "proto/openclick/v1/person.proto";
+import "proto/openclick/v1/feature_flag.proto";
+import "proto/openclick/v1/ingest.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
@@ -210,6 +214,284 @@ service BaseService {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Dashboards"
             summary: "Delete dashboard item"
+        };
+    }
+
+    // Analytics
+    rpc QueryTrends (QueryTrendsRequest) returns (QueryTrendsResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/query/trends"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Analytics"
+            summary: "Query trends"
+        };
+    }
+
+    rpc QueryFunnel (QueryFunnelRequest) returns (QueryFunnelResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/query/funnel"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Analytics"
+            summary: "Query funnel"
+        };
+    }
+
+    rpc QueryRetention (QueryRetentionRequest) returns (QueryRetentionResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/query/retention"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Analytics"
+            summary: "Query retention"
+        };
+    }
+
+    rpc QueryPaths (QueryPathsRequest) returns (QueryPathsResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/query/paths"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Analytics"
+            summary: "Query paths"
+        };
+    }
+
+    rpc QueryEvents (QueryEventsRequest) returns (QueryEventsResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/query/events"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Analytics"
+            summary: "Query events"
+        };
+    }
+
+    rpc ListSessions (ListSessionsRequest) returns (ListSessionsResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}/sessions"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Analytics"
+            summary: "List sessions"
+        };
+    }
+
+    rpc GetSession (GetSessionRequest) returns (SessionResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}/sessions/{session_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Analytics"
+            summary: "Get session"
+        };
+    }
+
+    rpc GetSessionChunks (GetSessionChunksRequest) returns (GetSessionChunksResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}/sessions/{session_id}/chunks"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Analytics"
+            summary: "Get session chunks"
+        };
+    }
+
+    rpc DeleteSession (DeleteSessionRequest) returns (DeleteSessionResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/projects/{project_id}/sessions/{session_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Analytics"
+            summary: "Delete session"
+        };
+    }
+
+    // Persons & Cohorts
+    rpc ListPersons (ListPersonsRequest) returns (ListPersonsResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}/persons"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Persons"
+            summary: "List persons"
+        };
+    }
+
+    rpc GetPerson (GetPersonRequest) returns (GetPersonResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}/persons/{distinct_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Persons"
+            summary: "Get person"
+        };
+    }
+
+    rpc DeletePerson (DeletePersonRequest) returns (DeletePersonResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/projects/{project_id}/persons/{distinct_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Persons"
+            summary: "Delete person"
+        };
+    }
+
+    rpc ListCohorts (ListCohortsRequest) returns (ListCohortsResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}/cohorts"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Cohorts"
+            summary: "List cohorts"
+        };
+    }
+
+    rpc CreateCohort (CreateCohortRequest) returns (CohortResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/cohorts"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Cohorts"
+            summary: "Create cohort"
+        };
+    }
+
+    rpc DeleteCohort (DeleteCohortRequest) returns (DeleteCohortResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/projects/{project_id}/cohorts/{cohort_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Cohorts"
+            summary: "Delete cohort"
+        };
+    }
+
+    // Feature Flags
+    rpc ListFeatureFlags (ListFeatureFlagsRequest) returns (ListFeatureFlagsResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}/feature-flags"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Feature Flags"
+            summary: "List feature flags"
+        };
+    }
+
+    rpc CreateFeatureFlag (CreateFeatureFlagRequest) returns (FeatureFlagResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/feature-flags"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Feature Flags"
+            summary: "Create feature flag"
+        };
+    }
+
+    rpc UpdateFeatureFlag (UpdateFeatureFlagRequest) returns (FeatureFlagResponse) {
+        option (google.api.http) = {
+            patch: "/api/v1/projects/{project_id}/feature-flags/{flag_id}"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Feature Flags"
+            summary: "Update feature flag"
+        };
+    }
+
+    rpc DeleteFeatureFlag (DeleteFeatureFlagRequest) returns (DeleteFeatureFlagResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/projects/{project_id}/feature-flags/{flag_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Feature Flags"
+            summary: "Delete feature flag"
+        };
+    }
+
+    rpc EvaluateFlags (EvaluateFlagsRequest) returns (EvaluateFlagsResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/projects/{project_id}/feature-flags/evaluate"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Feature Flags"
+            summary: "Evaluate flags"
+        };
+    }
+
+    rpc Decide (DecideRequest) returns (DecideResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/decide"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Feature Flags"
+            summary: "Decide flags"
+        };
+    }
+
+    // Ingestion
+    rpc CaptureEvent (CaptureEventRequest) returns (CaptureEventResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/e"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Ingestion"
+            summary: "Capture event"
+        };
+    }
+
+    rpc BatchCapture (BatchCaptureRequest) returns (BatchCaptureResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/batch"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Ingestion"
+            summary: "Batch capture events"
+        };
+    }
+
+    rpc Identify (IdentifyRequest) returns (IdentifyResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/identify"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Ingestion"
+            summary: "Identify user"
+        };
+    }
+
+    rpc Alias (AliasRequest) returns (AliasResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/alias"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Ingestion"
+            summary: "Alias user"
+        };
+    }
+
+    rpc IngestReplay (IngestReplayRequest) returns (IngestReplayResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/replay"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Ingestion"
+            summary: "Ingest replay chunk"
         };
     }
 }

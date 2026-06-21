@@ -19,6 +19,26 @@ import {
 } from "@grpc/grpc-js";
 import { PingRequest, PingResponse } from "../../common/ping";
 import {
+  DeleteSessionRequest,
+  DeleteSessionResponse,
+  GetSessionChunksRequest,
+  GetSessionChunksResponse,
+  GetSessionRequest,
+  ListSessionsRequest,
+  ListSessionsResponse,
+  QueryEventsRequest,
+  QueryEventsResponse,
+  QueryFunnelRequest,
+  QueryFunnelResponse,
+  QueryPathsRequest,
+  QueryPathsResponse,
+  QueryRetentionRequest,
+  QueryRetentionResponse,
+  QueryTrendsRequest,
+  QueryTrendsResponse,
+  SessionResponse,
+} from "./analytics";
+import {
   CreateDashboardItemRequest,
   CreateDashboardRequest,
   DashboardItemResponse,
@@ -33,6 +53,45 @@ import {
   ListDashboardsResponse,
   UpdateDashboardItemRequest,
 } from "./dashboard";
+import {
+  CreateFeatureFlagRequest,
+  DecideRequest,
+  DecideResponse,
+  DeleteFeatureFlagRequest,
+  DeleteFeatureFlagResponse,
+  EvaluateFlagsRequest,
+  EvaluateFlagsResponse,
+  FeatureFlagResponse,
+  ListFeatureFlagsRequest,
+  ListFeatureFlagsResponse,
+  UpdateFeatureFlagRequest,
+} from "./feature_flag";
+import {
+  AliasRequest,
+  AliasResponse,
+  BatchCaptureRequest,
+  BatchCaptureResponse,
+  CaptureEventRequest,
+  CaptureEventResponse,
+  IdentifyRequest,
+  IdentifyResponse,
+  IngestReplayRequest,
+  IngestReplayResponse,
+} from "./ingest";
+import {
+  CohortResponse,
+  CreateCohortRequest,
+  DeleteCohortRequest,
+  DeleteCohortResponse,
+  DeletePersonRequest,
+  DeletePersonResponse,
+  GetPersonRequest,
+  GetPersonResponse,
+  ListCohortsRequest,
+  ListCohortsResponse,
+  ListPersonsRequest,
+  ListPersonsResponse,
+} from "./person";
 import {
   AddMemberRequest,
   AddMemberResponse,
@@ -206,6 +265,262 @@ export const BaseServiceService = {
       Buffer.from(DeleteDashboardItemResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer): DeleteDashboardItemResponse => DeleteDashboardItemResponse.decode(value),
   },
+  /** Analytics */
+  queryTrends: {
+    path: "/v1.BaseService/QueryTrends" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: QueryTrendsRequest): Buffer => Buffer.from(QueryTrendsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): QueryTrendsRequest => QueryTrendsRequest.decode(value),
+    responseSerialize: (value: QueryTrendsResponse): Buffer => Buffer.from(QueryTrendsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): QueryTrendsResponse => QueryTrendsResponse.decode(value),
+  },
+  queryFunnel: {
+    path: "/v1.BaseService/QueryFunnel" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: QueryFunnelRequest): Buffer => Buffer.from(QueryFunnelRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): QueryFunnelRequest => QueryFunnelRequest.decode(value),
+    responseSerialize: (value: QueryFunnelResponse): Buffer => Buffer.from(QueryFunnelResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): QueryFunnelResponse => QueryFunnelResponse.decode(value),
+  },
+  queryRetention: {
+    path: "/v1.BaseService/QueryRetention" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: QueryRetentionRequest): Buffer =>
+      Buffer.from(QueryRetentionRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): QueryRetentionRequest => QueryRetentionRequest.decode(value),
+    responseSerialize: (value: QueryRetentionResponse): Buffer =>
+      Buffer.from(QueryRetentionResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): QueryRetentionResponse => QueryRetentionResponse.decode(value),
+  },
+  queryPaths: {
+    path: "/v1.BaseService/QueryPaths" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: QueryPathsRequest): Buffer => Buffer.from(QueryPathsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): QueryPathsRequest => QueryPathsRequest.decode(value),
+    responseSerialize: (value: QueryPathsResponse): Buffer => Buffer.from(QueryPathsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): QueryPathsResponse => QueryPathsResponse.decode(value),
+  },
+  queryEvents: {
+    path: "/v1.BaseService/QueryEvents" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: QueryEventsRequest): Buffer => Buffer.from(QueryEventsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): QueryEventsRequest => QueryEventsRequest.decode(value),
+    responseSerialize: (value: QueryEventsResponse): Buffer => Buffer.from(QueryEventsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): QueryEventsResponse => QueryEventsResponse.decode(value),
+  },
+  listSessions: {
+    path: "/v1.BaseService/ListSessions" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ListSessionsRequest): Buffer => Buffer.from(ListSessionsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ListSessionsRequest => ListSessionsRequest.decode(value),
+    responseSerialize: (value: ListSessionsResponse): Buffer =>
+      Buffer.from(ListSessionsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ListSessionsResponse => ListSessionsResponse.decode(value),
+  },
+  getSession: {
+    path: "/v1.BaseService/GetSession" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: GetSessionRequest): Buffer => Buffer.from(GetSessionRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): GetSessionRequest => GetSessionRequest.decode(value),
+    responseSerialize: (value: SessionResponse): Buffer => Buffer.from(SessionResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): SessionResponse => SessionResponse.decode(value),
+  },
+  getSessionChunks: {
+    path: "/v1.BaseService/GetSessionChunks" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: GetSessionChunksRequest): Buffer =>
+      Buffer.from(GetSessionChunksRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): GetSessionChunksRequest => GetSessionChunksRequest.decode(value),
+    responseSerialize: (value: GetSessionChunksResponse): Buffer =>
+      Buffer.from(GetSessionChunksResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): GetSessionChunksResponse => GetSessionChunksResponse.decode(value),
+  },
+  deleteSession: {
+    path: "/v1.BaseService/DeleteSession" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: DeleteSessionRequest): Buffer => Buffer.from(DeleteSessionRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): DeleteSessionRequest => DeleteSessionRequest.decode(value),
+    responseSerialize: (value: DeleteSessionResponse): Buffer =>
+      Buffer.from(DeleteSessionResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DeleteSessionResponse => DeleteSessionResponse.decode(value),
+  },
+  /** Persons & Cohorts */
+  listPersons: {
+    path: "/v1.BaseService/ListPersons" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ListPersonsRequest): Buffer => Buffer.from(ListPersonsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ListPersonsRequest => ListPersonsRequest.decode(value),
+    responseSerialize: (value: ListPersonsResponse): Buffer => Buffer.from(ListPersonsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ListPersonsResponse => ListPersonsResponse.decode(value),
+  },
+  getPerson: {
+    path: "/v1.BaseService/GetPerson" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: GetPersonRequest): Buffer => Buffer.from(GetPersonRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): GetPersonRequest => GetPersonRequest.decode(value),
+    responseSerialize: (value: GetPersonResponse): Buffer => Buffer.from(GetPersonResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): GetPersonResponse => GetPersonResponse.decode(value),
+  },
+  deletePerson: {
+    path: "/v1.BaseService/DeletePerson" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: DeletePersonRequest): Buffer => Buffer.from(DeletePersonRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): DeletePersonRequest => DeletePersonRequest.decode(value),
+    responseSerialize: (value: DeletePersonResponse): Buffer =>
+      Buffer.from(DeletePersonResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DeletePersonResponse => DeletePersonResponse.decode(value),
+  },
+  listCohorts: {
+    path: "/v1.BaseService/ListCohorts" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ListCohortsRequest): Buffer => Buffer.from(ListCohortsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ListCohortsRequest => ListCohortsRequest.decode(value),
+    responseSerialize: (value: ListCohortsResponse): Buffer => Buffer.from(ListCohortsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ListCohortsResponse => ListCohortsResponse.decode(value),
+  },
+  createCohort: {
+    path: "/v1.BaseService/CreateCohort" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: CreateCohortRequest): Buffer => Buffer.from(CreateCohortRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): CreateCohortRequest => CreateCohortRequest.decode(value),
+    responseSerialize: (value: CohortResponse): Buffer => Buffer.from(CohortResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): CohortResponse => CohortResponse.decode(value),
+  },
+  deleteCohort: {
+    path: "/v1.BaseService/DeleteCohort" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: DeleteCohortRequest): Buffer => Buffer.from(DeleteCohortRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): DeleteCohortRequest => DeleteCohortRequest.decode(value),
+    responseSerialize: (value: DeleteCohortResponse): Buffer =>
+      Buffer.from(DeleteCohortResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DeleteCohortResponse => DeleteCohortResponse.decode(value),
+  },
+  /** Feature Flags */
+  listFeatureFlags: {
+    path: "/v1.BaseService/ListFeatureFlags" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ListFeatureFlagsRequest): Buffer =>
+      Buffer.from(ListFeatureFlagsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ListFeatureFlagsRequest => ListFeatureFlagsRequest.decode(value),
+    responseSerialize: (value: ListFeatureFlagsResponse): Buffer =>
+      Buffer.from(ListFeatureFlagsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ListFeatureFlagsResponse => ListFeatureFlagsResponse.decode(value),
+  },
+  createFeatureFlag: {
+    path: "/v1.BaseService/CreateFeatureFlag" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: CreateFeatureFlagRequest): Buffer =>
+      Buffer.from(CreateFeatureFlagRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): CreateFeatureFlagRequest => CreateFeatureFlagRequest.decode(value),
+    responseSerialize: (value: FeatureFlagResponse): Buffer => Buffer.from(FeatureFlagResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): FeatureFlagResponse => FeatureFlagResponse.decode(value),
+  },
+  updateFeatureFlag: {
+    path: "/v1.BaseService/UpdateFeatureFlag" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: UpdateFeatureFlagRequest): Buffer =>
+      Buffer.from(UpdateFeatureFlagRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): UpdateFeatureFlagRequest => UpdateFeatureFlagRequest.decode(value),
+    responseSerialize: (value: FeatureFlagResponse): Buffer => Buffer.from(FeatureFlagResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): FeatureFlagResponse => FeatureFlagResponse.decode(value),
+  },
+  deleteFeatureFlag: {
+    path: "/v1.BaseService/DeleteFeatureFlag" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: DeleteFeatureFlagRequest): Buffer =>
+      Buffer.from(DeleteFeatureFlagRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): DeleteFeatureFlagRequest => DeleteFeatureFlagRequest.decode(value),
+    responseSerialize: (value: DeleteFeatureFlagResponse): Buffer =>
+      Buffer.from(DeleteFeatureFlagResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DeleteFeatureFlagResponse => DeleteFeatureFlagResponse.decode(value),
+  },
+  evaluateFlags: {
+    path: "/v1.BaseService/EvaluateFlags" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: EvaluateFlagsRequest): Buffer => Buffer.from(EvaluateFlagsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): EvaluateFlagsRequest => EvaluateFlagsRequest.decode(value),
+    responseSerialize: (value: EvaluateFlagsResponse): Buffer =>
+      Buffer.from(EvaluateFlagsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): EvaluateFlagsResponse => EvaluateFlagsResponse.decode(value),
+  },
+  decide: {
+    path: "/v1.BaseService/Decide" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: DecideRequest): Buffer => Buffer.from(DecideRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): DecideRequest => DecideRequest.decode(value),
+    responseSerialize: (value: DecideResponse): Buffer => Buffer.from(DecideResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DecideResponse => DecideResponse.decode(value),
+  },
+  /** Ingestion */
+  captureEvent: {
+    path: "/v1.BaseService/CaptureEvent" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: CaptureEventRequest): Buffer => Buffer.from(CaptureEventRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): CaptureEventRequest => CaptureEventRequest.decode(value),
+    responseSerialize: (value: CaptureEventResponse): Buffer =>
+      Buffer.from(CaptureEventResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): CaptureEventResponse => CaptureEventResponse.decode(value),
+  },
+  batchCapture: {
+    path: "/v1.BaseService/BatchCapture" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: BatchCaptureRequest): Buffer => Buffer.from(BatchCaptureRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): BatchCaptureRequest => BatchCaptureRequest.decode(value),
+    responseSerialize: (value: BatchCaptureResponse): Buffer =>
+      Buffer.from(BatchCaptureResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): BatchCaptureResponse => BatchCaptureResponse.decode(value),
+  },
+  identify: {
+    path: "/v1.BaseService/Identify" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: IdentifyRequest): Buffer => Buffer.from(IdentifyRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): IdentifyRequest => IdentifyRequest.decode(value),
+    responseSerialize: (value: IdentifyResponse): Buffer => Buffer.from(IdentifyResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): IdentifyResponse => IdentifyResponse.decode(value),
+  },
+  alias: {
+    path: "/v1.BaseService/Alias" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: AliasRequest): Buffer => Buffer.from(AliasRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): AliasRequest => AliasRequest.decode(value),
+    responseSerialize: (value: AliasResponse): Buffer => Buffer.from(AliasResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): AliasResponse => AliasResponse.decode(value),
+  },
+  ingestReplay: {
+    path: "/v1.BaseService/IngestReplay" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: IngestReplayRequest): Buffer => Buffer.from(IngestReplayRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): IngestReplayRequest => IngestReplayRequest.decode(value),
+    responseSerialize: (value: IngestReplayResponse): Buffer =>
+      Buffer.from(IngestReplayResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): IngestReplayResponse => IngestReplayResponse.decode(value),
+  },
 } as const;
 
 export interface BaseServiceServer extends UntypedServiceImplementation {
@@ -227,6 +542,36 @@ export interface BaseServiceServer extends UntypedServiceImplementation {
   createDashboardItem: handleUnaryCall<CreateDashboardItemRequest, DashboardItemResponse>;
   updateDashboardItem: handleUnaryCall<UpdateDashboardItemRequest, DashboardItemResponse>;
   deleteDashboardItem: handleUnaryCall<DeleteDashboardItemRequest, DeleteDashboardItemResponse>;
+  /** Analytics */
+  queryTrends: handleUnaryCall<QueryTrendsRequest, QueryTrendsResponse>;
+  queryFunnel: handleUnaryCall<QueryFunnelRequest, QueryFunnelResponse>;
+  queryRetention: handleUnaryCall<QueryRetentionRequest, QueryRetentionResponse>;
+  queryPaths: handleUnaryCall<QueryPathsRequest, QueryPathsResponse>;
+  queryEvents: handleUnaryCall<QueryEventsRequest, QueryEventsResponse>;
+  listSessions: handleUnaryCall<ListSessionsRequest, ListSessionsResponse>;
+  getSession: handleUnaryCall<GetSessionRequest, SessionResponse>;
+  getSessionChunks: handleUnaryCall<GetSessionChunksRequest, GetSessionChunksResponse>;
+  deleteSession: handleUnaryCall<DeleteSessionRequest, DeleteSessionResponse>;
+  /** Persons & Cohorts */
+  listPersons: handleUnaryCall<ListPersonsRequest, ListPersonsResponse>;
+  getPerson: handleUnaryCall<GetPersonRequest, GetPersonResponse>;
+  deletePerson: handleUnaryCall<DeletePersonRequest, DeletePersonResponse>;
+  listCohorts: handleUnaryCall<ListCohortsRequest, ListCohortsResponse>;
+  createCohort: handleUnaryCall<CreateCohortRequest, CohortResponse>;
+  deleteCohort: handleUnaryCall<DeleteCohortRequest, DeleteCohortResponse>;
+  /** Feature Flags */
+  listFeatureFlags: handleUnaryCall<ListFeatureFlagsRequest, ListFeatureFlagsResponse>;
+  createFeatureFlag: handleUnaryCall<CreateFeatureFlagRequest, FeatureFlagResponse>;
+  updateFeatureFlag: handleUnaryCall<UpdateFeatureFlagRequest, FeatureFlagResponse>;
+  deleteFeatureFlag: handleUnaryCall<DeleteFeatureFlagRequest, DeleteFeatureFlagResponse>;
+  evaluateFlags: handleUnaryCall<EvaluateFlagsRequest, EvaluateFlagsResponse>;
+  decide: handleUnaryCall<DecideRequest, DecideResponse>;
+  /** Ingestion */
+  captureEvent: handleUnaryCall<CaptureEventRequest, CaptureEventResponse>;
+  batchCapture: handleUnaryCall<BatchCaptureRequest, BatchCaptureResponse>;
+  identify: handleUnaryCall<IdentifyRequest, IdentifyResponse>;
+  alias: handleUnaryCall<AliasRequest, AliasResponse>;
+  ingestReplay: handleUnaryCall<IngestReplayRequest, IngestReplayResponse>;
 }
 
 export interface BaseServiceClient extends Client {
@@ -454,6 +799,400 @@ export interface BaseServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: DeleteDashboardItemResponse) => void,
+  ): ClientUnaryCall;
+  /** Analytics */
+  queryTrends(
+    request: QueryTrendsRequest,
+    callback: (error: ServiceError | null, response: QueryTrendsResponse) => void,
+  ): ClientUnaryCall;
+  queryTrends(
+    request: QueryTrendsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: QueryTrendsResponse) => void,
+  ): ClientUnaryCall;
+  queryTrends(
+    request: QueryTrendsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: QueryTrendsResponse) => void,
+  ): ClientUnaryCall;
+  queryFunnel(
+    request: QueryFunnelRequest,
+    callback: (error: ServiceError | null, response: QueryFunnelResponse) => void,
+  ): ClientUnaryCall;
+  queryFunnel(
+    request: QueryFunnelRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: QueryFunnelResponse) => void,
+  ): ClientUnaryCall;
+  queryFunnel(
+    request: QueryFunnelRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: QueryFunnelResponse) => void,
+  ): ClientUnaryCall;
+  queryRetention(
+    request: QueryRetentionRequest,
+    callback: (error: ServiceError | null, response: QueryRetentionResponse) => void,
+  ): ClientUnaryCall;
+  queryRetention(
+    request: QueryRetentionRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: QueryRetentionResponse) => void,
+  ): ClientUnaryCall;
+  queryRetention(
+    request: QueryRetentionRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: QueryRetentionResponse) => void,
+  ): ClientUnaryCall;
+  queryPaths(
+    request: QueryPathsRequest,
+    callback: (error: ServiceError | null, response: QueryPathsResponse) => void,
+  ): ClientUnaryCall;
+  queryPaths(
+    request: QueryPathsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: QueryPathsResponse) => void,
+  ): ClientUnaryCall;
+  queryPaths(
+    request: QueryPathsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: QueryPathsResponse) => void,
+  ): ClientUnaryCall;
+  queryEvents(
+    request: QueryEventsRequest,
+    callback: (error: ServiceError | null, response: QueryEventsResponse) => void,
+  ): ClientUnaryCall;
+  queryEvents(
+    request: QueryEventsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: QueryEventsResponse) => void,
+  ): ClientUnaryCall;
+  queryEvents(
+    request: QueryEventsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: QueryEventsResponse) => void,
+  ): ClientUnaryCall;
+  listSessions(
+    request: ListSessionsRequest,
+    callback: (error: ServiceError | null, response: ListSessionsResponse) => void,
+  ): ClientUnaryCall;
+  listSessions(
+    request: ListSessionsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListSessionsResponse) => void,
+  ): ClientUnaryCall;
+  listSessions(
+    request: ListSessionsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListSessionsResponse) => void,
+  ): ClientUnaryCall;
+  getSession(
+    request: GetSessionRequest,
+    callback: (error: ServiceError | null, response: SessionResponse) => void,
+  ): ClientUnaryCall;
+  getSession(
+    request: GetSessionRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: SessionResponse) => void,
+  ): ClientUnaryCall;
+  getSession(
+    request: GetSessionRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: SessionResponse) => void,
+  ): ClientUnaryCall;
+  getSessionChunks(
+    request: GetSessionChunksRequest,
+    callback: (error: ServiceError | null, response: GetSessionChunksResponse) => void,
+  ): ClientUnaryCall;
+  getSessionChunks(
+    request: GetSessionChunksRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetSessionChunksResponse) => void,
+  ): ClientUnaryCall;
+  getSessionChunks(
+    request: GetSessionChunksRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetSessionChunksResponse) => void,
+  ): ClientUnaryCall;
+  deleteSession(
+    request: DeleteSessionRequest,
+    callback: (error: ServiceError | null, response: DeleteSessionResponse) => void,
+  ): ClientUnaryCall;
+  deleteSession(
+    request: DeleteSessionRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DeleteSessionResponse) => void,
+  ): ClientUnaryCall;
+  deleteSession(
+    request: DeleteSessionRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DeleteSessionResponse) => void,
+  ): ClientUnaryCall;
+  /** Persons & Cohorts */
+  listPersons(
+    request: ListPersonsRequest,
+    callback: (error: ServiceError | null, response: ListPersonsResponse) => void,
+  ): ClientUnaryCall;
+  listPersons(
+    request: ListPersonsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListPersonsResponse) => void,
+  ): ClientUnaryCall;
+  listPersons(
+    request: ListPersonsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListPersonsResponse) => void,
+  ): ClientUnaryCall;
+  getPerson(
+    request: GetPersonRequest,
+    callback: (error: ServiceError | null, response: GetPersonResponse) => void,
+  ): ClientUnaryCall;
+  getPerson(
+    request: GetPersonRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetPersonResponse) => void,
+  ): ClientUnaryCall;
+  getPerson(
+    request: GetPersonRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetPersonResponse) => void,
+  ): ClientUnaryCall;
+  deletePerson(
+    request: DeletePersonRequest,
+    callback: (error: ServiceError | null, response: DeletePersonResponse) => void,
+  ): ClientUnaryCall;
+  deletePerson(
+    request: DeletePersonRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DeletePersonResponse) => void,
+  ): ClientUnaryCall;
+  deletePerson(
+    request: DeletePersonRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DeletePersonResponse) => void,
+  ): ClientUnaryCall;
+  listCohorts(
+    request: ListCohortsRequest,
+    callback: (error: ServiceError | null, response: ListCohortsResponse) => void,
+  ): ClientUnaryCall;
+  listCohorts(
+    request: ListCohortsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListCohortsResponse) => void,
+  ): ClientUnaryCall;
+  listCohorts(
+    request: ListCohortsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListCohortsResponse) => void,
+  ): ClientUnaryCall;
+  createCohort(
+    request: CreateCohortRequest,
+    callback: (error: ServiceError | null, response: CohortResponse) => void,
+  ): ClientUnaryCall;
+  createCohort(
+    request: CreateCohortRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: CohortResponse) => void,
+  ): ClientUnaryCall;
+  createCohort(
+    request: CreateCohortRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: CohortResponse) => void,
+  ): ClientUnaryCall;
+  deleteCohort(
+    request: DeleteCohortRequest,
+    callback: (error: ServiceError | null, response: DeleteCohortResponse) => void,
+  ): ClientUnaryCall;
+  deleteCohort(
+    request: DeleteCohortRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DeleteCohortResponse) => void,
+  ): ClientUnaryCall;
+  deleteCohort(
+    request: DeleteCohortRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DeleteCohortResponse) => void,
+  ): ClientUnaryCall;
+  /** Feature Flags */
+  listFeatureFlags(
+    request: ListFeatureFlagsRequest,
+    callback: (error: ServiceError | null, response: ListFeatureFlagsResponse) => void,
+  ): ClientUnaryCall;
+  listFeatureFlags(
+    request: ListFeatureFlagsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListFeatureFlagsResponse) => void,
+  ): ClientUnaryCall;
+  listFeatureFlags(
+    request: ListFeatureFlagsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListFeatureFlagsResponse) => void,
+  ): ClientUnaryCall;
+  createFeatureFlag(
+    request: CreateFeatureFlagRequest,
+    callback: (error: ServiceError | null, response: FeatureFlagResponse) => void,
+  ): ClientUnaryCall;
+  createFeatureFlag(
+    request: CreateFeatureFlagRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: FeatureFlagResponse) => void,
+  ): ClientUnaryCall;
+  createFeatureFlag(
+    request: CreateFeatureFlagRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: FeatureFlagResponse) => void,
+  ): ClientUnaryCall;
+  updateFeatureFlag(
+    request: UpdateFeatureFlagRequest,
+    callback: (error: ServiceError | null, response: FeatureFlagResponse) => void,
+  ): ClientUnaryCall;
+  updateFeatureFlag(
+    request: UpdateFeatureFlagRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: FeatureFlagResponse) => void,
+  ): ClientUnaryCall;
+  updateFeatureFlag(
+    request: UpdateFeatureFlagRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: FeatureFlagResponse) => void,
+  ): ClientUnaryCall;
+  deleteFeatureFlag(
+    request: DeleteFeatureFlagRequest,
+    callback: (error: ServiceError | null, response: DeleteFeatureFlagResponse) => void,
+  ): ClientUnaryCall;
+  deleteFeatureFlag(
+    request: DeleteFeatureFlagRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DeleteFeatureFlagResponse) => void,
+  ): ClientUnaryCall;
+  deleteFeatureFlag(
+    request: DeleteFeatureFlagRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DeleteFeatureFlagResponse) => void,
+  ): ClientUnaryCall;
+  evaluateFlags(
+    request: EvaluateFlagsRequest,
+    callback: (error: ServiceError | null, response: EvaluateFlagsResponse) => void,
+  ): ClientUnaryCall;
+  evaluateFlags(
+    request: EvaluateFlagsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: EvaluateFlagsResponse) => void,
+  ): ClientUnaryCall;
+  evaluateFlags(
+    request: EvaluateFlagsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: EvaluateFlagsResponse) => void,
+  ): ClientUnaryCall;
+  decide(
+    request: DecideRequest,
+    callback: (error: ServiceError | null, response: DecideResponse) => void,
+  ): ClientUnaryCall;
+  decide(
+    request: DecideRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: DecideResponse) => void,
+  ): ClientUnaryCall;
+  decide(
+    request: DecideRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: DecideResponse) => void,
+  ): ClientUnaryCall;
+  /** Ingestion */
+  captureEvent(
+    request: CaptureEventRequest,
+    callback: (error: ServiceError | null, response: CaptureEventResponse) => void,
+  ): ClientUnaryCall;
+  captureEvent(
+    request: CaptureEventRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: CaptureEventResponse) => void,
+  ): ClientUnaryCall;
+  captureEvent(
+    request: CaptureEventRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: CaptureEventResponse) => void,
+  ): ClientUnaryCall;
+  batchCapture(
+    request: BatchCaptureRequest,
+    callback: (error: ServiceError | null, response: BatchCaptureResponse) => void,
+  ): ClientUnaryCall;
+  batchCapture(
+    request: BatchCaptureRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: BatchCaptureResponse) => void,
+  ): ClientUnaryCall;
+  batchCapture(
+    request: BatchCaptureRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: BatchCaptureResponse) => void,
+  ): ClientUnaryCall;
+  identify(
+    request: IdentifyRequest,
+    callback: (error: ServiceError | null, response: IdentifyResponse) => void,
+  ): ClientUnaryCall;
+  identify(
+    request: IdentifyRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: IdentifyResponse) => void,
+  ): ClientUnaryCall;
+  identify(
+    request: IdentifyRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: IdentifyResponse) => void,
+  ): ClientUnaryCall;
+  alias(
+    request: AliasRequest,
+    callback: (error: ServiceError | null, response: AliasResponse) => void,
+  ): ClientUnaryCall;
+  alias(
+    request: AliasRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: AliasResponse) => void,
+  ): ClientUnaryCall;
+  alias(
+    request: AliasRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: AliasResponse) => void,
+  ): ClientUnaryCall;
+  ingestReplay(
+    request: IngestReplayRequest,
+    callback: (error: ServiceError | null, response: IngestReplayResponse) => void,
+  ): ClientUnaryCall;
+  ingestReplay(
+    request: IngestReplayRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: IngestReplayResponse) => void,
+  ): ClientUnaryCall;
+  ingestReplay(
+    request: IngestReplayRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: IngestReplayResponse) => void,
   ): ClientUnaryCall;
 }
 
