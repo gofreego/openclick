@@ -1,0 +1,115 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "OpenClick APIs",
+    "description": "**OpenClick** is an open-source, self-hostable product analytics platform built for speed and low memory footprint. It provides event tracking, session replay, funnel analysis, feature flags, and cohort analytics.",
+    "version": "v1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Ping",
+      "description": "Health check endpoints"
+    },
+    {
+      "name": "BaseService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/openclick/v1/ping": {
+      "get": {
+        "summary": "Ping the server",
+        "description": "Check if the server is alive.",
+        "operationId": "BaseService_Ping",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PingResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "message",
+            "description": "Message must be non-empty and between 1-100 characters",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Ping"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1PingResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "description": "PingResponse is the response message for the Ping RPC method."
+    }
+  },
+  "securityDefinitions": {
+    "UserID": {
+      "type": "apiKey",
+      "name": "x-user-id",
+      "in": "header"
+    },
+    "UserPerms": {
+      "type": "apiKey",
+      "name": "x-user-perms",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "UserID": [],
+      "UserPerms": []
+    }
+  ]
+}
