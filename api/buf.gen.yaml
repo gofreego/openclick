@@ -19,5 +19,10 @@ plugins:
     opt:
       - lang=go
 
-  - plugin: buf.build/protocolbuffers/dart:v21.1.2
-    out: ../ui/lib/src/
+  - name: ts_proto
+    path: ../dashboard-ui/node_modules/.bin/protoc-gen-ts_proto
+    out: ../dashboard-ui/src/apis/
+    opt:
+      - esModuleInterop=true
+      - forceLong=string
+      - outputServices=grpc-js
