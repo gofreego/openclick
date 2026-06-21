@@ -80,9 +80,9 @@ export function EventsPage() {
               {events.map((event) => (
                 <TableRow key={event.uuid}>
                   <TableCell><strong>{event.event}</strong></TableCell>
-                  <TableCell><code>{event.distinct_id}</code></TableCell>
+                  <TableCell><code>{event.distinctId}</code></TableCell>
                   <TableCell><pre style={{ margin: 0, fontSize: '0.8em', maxWidth: '300px', overflowX: 'auto' }}>{JSON.stringify(event.properties, null, 2)}</pre></TableCell>
-                  <TableCell>{new Date(event.timestamp).toLocaleString()}</TableCell>
+                  <TableCell>{event.timestamp ? new Date(event.timestamp as any).toLocaleString() : ''}</TableCell>
                 </TableRow>
               ))}
               {events.length === 0 && (

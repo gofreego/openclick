@@ -75,9 +75,9 @@ export function PersonsPage() {
             <TableBody>
               {persons.map((person) => (
                 <TableRow key={person.id}>
-                  <TableCell><code>{person.distinct_id}</code></TableCell>
+                  <TableCell><code>{person.distinctId}</code></TableCell>
                   <TableCell><pre style={{ margin: 0, fontSize: '0.8em' }}>{JSON.stringify(person.properties, null, 2)}</pre></TableCell>
-                  <TableCell>{new Date(person.created_at).toLocaleString()}</TableCell>
+                  <TableCell>{person.createdAt ? new Date(person.createdAt as any).toLocaleString() : ''}</TableCell>
                 </TableRow>
               ))}
               {persons.length === 0 && (

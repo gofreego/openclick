@@ -25,7 +25,7 @@ export function ProjectsPage() {
 
   const handleCreate = async () => {
     try {
-      await projectService.create({ name: newProjectName })
+      await projectService.create({ name: newProjectName, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC' })
       setOpen(false)
       setNewProjectName('')
       notify.success('Project created successfully')
@@ -48,7 +48,7 @@ export function ProjectsPage() {
             <Card>
               <CardContent>
                 <Typography variant="h6" gutterBottom>{p.name}</Typography>
-                <Typography variant="body2" color="textSecondary">API Key: {p.api_key}</Typography>
+                <Typography variant="body2" color="textSecondary">API Key: {p.apiKey}</Typography>
                 <Typography variant="body2" color="textSecondary">Timezone: {p.timezone}</Typography>
               </CardContent>
               <CardActions>

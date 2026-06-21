@@ -1,25 +1,13 @@
 import { httpClient } from '../utils/httpClient'
-
-export interface Event {
-  uuid: string
-  event: string
-  distinct_id: string
-  timestamp: string
-  properties: any
-}
-
-export interface QueryEventsRequest {
-  event?: string
-  date_from?: string
-  date_to?: string
-  distinct_id?: string
-  limit?: number
-  offset?: number
-}
+import {
+  QueryEventsRequest,
+  QueryEventsResponse,
+  EventResult
+} from '../apis/proto/openclick/v1/analytics'
 
 export const eventService = {
-  async queryEvents(projectId: string, data: QueryEventsRequest): Promise<{ results: Event[], total: number }> {
-    const response = await httpClient.post<{ results: Event[], total: number }>(`/v1/projects/${projectId}/query/events`, {
+  async queryEvents(projectId: string, data: Partial<QueryEventsRequest>): Promise<QueryEventsResponse> {
+    const response = await httpClient.post<QueryEventsResponse>(`/api/v1/projects/${projectId}/query/events`, {
       ...data,
       limit: data.limit || 50,
       offset: data.offset || 0,
@@ -27,3 +15,5 @@ export const eventService = {
     return response.data
   },
 }
+
+export type Event = EventResult;

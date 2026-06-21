@@ -57,7 +57,7 @@ export function FeatureFlagsPage() {
         key,
         name,
         active: true,
-        rollout_pct: rolloutPct
+        rolloutPct: rolloutPct
       })
       notify.success('Feature flag created')
       setOpen(false)
@@ -113,7 +113,7 @@ export function FeatureFlagsPage() {
                 <TableRow key={flag.id}>
                   <TableCell>{flag.name}</TableCell>
                   <TableCell><code>{flag.key}</code></TableCell>
-                  <TableCell>{flag.rollout_pct}%</TableCell>
+                  <TableCell>{flag.rolloutPct}%</TableCell>
                   <TableCell>
                     <Switch
                       checked={flag.active}
