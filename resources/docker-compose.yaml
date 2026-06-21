@@ -26,7 +26,7 @@ services:
       - "9000:9000"
     volumes:
       - openclick_ch_data:/var/lib/clickhouse
-      - ./resources/migrations/clickhouse:/docker-entrypoint-initdb.d
+      - ./migrations/clickhouse:/docker-entrypoint-initdb.d
     restart: unless-stopped
 
 volumes:
