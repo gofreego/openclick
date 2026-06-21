@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Typography, Box, Paper, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Switch, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material'
+import { Typography, Box, Paper, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Switch, Dialog, DialogTitle, DialogContent, DialogActions, TextField, IconButton } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 import { featureFlagService } from '../../services/featureFlagService'
 import type { FeatureFlag } from '../../services/featureFlagService'
 import { useCurrentProject } from '../../contexts/ProjectContext'
@@ -10,12 +12,39 @@ export function FeatureFlagsPage() {
   const selectedProjectId = useCurrentProject()
   const [flags, setFlags] = useState<FeatureFlag[]>([])
   const [open, setOpen] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [flagToDelete, setFlagToDelete] = useState<FeatureFlag | null>(null)
   const notify = useNotification()
 
   // form state
+  const [editingFlagId, setEditingFlagId] = useState<string | null>(null)
   const [key, setKey] = useState('')
   const [name, setName] = useState('')
   const [rolloutPct, setRolloutPct] = useState(100)
+
+  const handleOpenCreate = () => {
+    setEditingFlagId(null)
+    setKey('')
+    setName('')
+    setRolloutPct(100)
+    setOpen(true)
+  }
+
+  const handleOpenEdit = (flag: FeatureFlag) => {
+    setEditingFlagId(flag.id)
+    setKey(flag.key)
+    setName(flag.name)
+    setRolloutPct(flag.rolloutPct)
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+    setEditingFlagId(null)
+    setKey('')
+    setName('')
+    setRolloutPct(100)
+  }
 
   const loadFlags = async (projectId: string) => {
     if (!projectId) return
@@ -35,20 +64,29 @@ export function FeatureFlagsPage() {
     }
   }, [selectedProjectId])
 
-  const handleCreate = async () => {
+  const handleSave = async () => {
     if (!selectedProjectId) return
     try {
-      await featureFlagService.create(selectedProjectId, {
-        key,
-        name,
-        active: true,
-        rolloutPct: rolloutPct
-      })
-      notify.success('Feature flag created')
-      setOpen(false)
+      if (editingFlagId) {
+        await featureFlagService.update(selectedProjectId, editingFlagId, {
+          key,
+          name,
+          rolloutPct
+        })
+        notify.success('Feature flag updated')
+      } else {
+        await featureFlagService.create(selectedProjectId, {
+          key,
+          name,
+          active: true,
+          rolloutPct
+        })
+        notify.success('Feature flag created')
+      }
+      handleClose()
       loadFlags(selectedProjectId)
     } catch (err: any) {
-      notify.error(err.message || 'Failed to create feature flag')
+      notify.error(err.message || 'Failed to save feature flag')
     }
   }
 
@@ -61,6 +99,24 @@ export function FeatureFlagsPage() {
     }
   }
 
+  const confirmDelete = (flag: FeatureFlag) => {
+    setFlagToDelete(flag)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleDelete = async () => {
+    if (!selectedProjectId || !flagToDelete) return
+    try {
+      await featureFlagService.delete(selectedProjectId, flagToDelete.id)
+      notify.success('Feature flag deleted')
+      loadFlags(selectedProjectId)
+      setDeleteDialogOpen(false)
+      setFlagToDelete(null)
+    } catch (err: any) {
+      notify.error('Failed to delete flag')
+    }
+  }
+
   return (
     <Box sx={{ p: 3 }}>
       <PageHeader 
@@ -68,7 +124,7 @@ export function FeatureFlagsPage() {
         infoTitle="About Feature Flags"
         infoDescription="Feature Flags allow you to safely deploy new features to your application without releasing them to all users immediately. You can control the rollout percentage, toggle features on and off instantly without a code deployment, and use them for A/B testing."
         action={
-          <Button variant="contained" color="primary" onClick={() => setOpen(true)} disabled={!selectedProjectId}>Create Flag</Button>
+          <Button variant="contained" color="primary" onClick={handleOpenCreate} disabled={!selectedProjectId}>Create Flag</Button>
         }
       />
 
@@ -81,6 +137,7 @@ export function FeatureFlagsPage() {
                 <TableCell>Key</TableCell>
                 <TableCell>Rollout %</TableCell>
                 <TableCell>Active</TableCell>
+                <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -96,11 +153,19 @@ export function FeatureFlagsPage() {
                       color="primary"
                     />
                   </TableCell>
+                  <TableCell align="right">
+                    <IconButton size="small" color="primary" onClick={() => handleOpenEdit(flag)} title="Edit Flag">
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton size="small" color="error" onClick={() => confirmDelete(flag)} title="Delete Flag">
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
               {flags.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={4} align="center">No feature flags found</TableCell>
+                  <TableCell colSpan={5} align="center">No feature flags found</TableCell>
                 </TableRow>
               )}
             </TableBody>
@@ -112,8 +177,8 @@ export function FeatureFlagsPage() {
         </Paper>
       )}
 
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Create Feature Flag</DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{editingFlagId ? 'Edit Feature Flag' : 'Create Feature Flag'}</DialogTitle>
         <DialogContent>
           <TextField
             margin="dense"
@@ -144,8 +209,19 @@ export function FeatureFlagsPage() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleCreate} variant="contained" disabled={!name || !key}>Create</Button>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSave} variant="contained" disabled={!name || !key}>Save</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+        <DialogTitle>Delete Feature Flag</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete the feature flag "{flagToDelete?.name}"? This action cannot be undone.</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleDelete} variant="contained" color="error">Delete</Button>
         </DialogActions>
       </Dialog>
     </Box>
