@@ -5,6 +5,7 @@ import type { FeatureFlag } from '../../services/featureFlagService'
 import { projectService } from '../../services/projectService'
 import type { Project } from '../../services/projectService'
 import { useNotification } from '@gofreego/tsutils'
+import { PageHeader } from '../../components/PageHeader'
 
 export function FeatureFlagsPage() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -78,24 +79,28 @@ export function FeatureFlagsPage() {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4">Feature Flags</Typography>
-        <Box display="flex" gap={2}>
-          <FormControl size="small" sx={{ minWidth: 200 }}>
-            <InputLabel>Project</InputLabel>
-            <Select
-              label="Project"
-              value={selectedProjectId}
-              onChange={(e) => setSelectedProjectId(e.target.value)}
-            >
-              {projects.map(p => (
-                <MenuItem key={p.id} value={p.id}>{p.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <Button variant="contained" color="primary" onClick={() => setOpen(true)} disabled={!selectedProjectId}>Create Flag</Button>
-        </Box>
-      </Box>
+      <PageHeader 
+        title="Feature Flags" 
+        infoTitle="About Feature Flags"
+        infoDescription="Feature Flags allow you to safely deploy new features to your application without releasing them to all users immediately. You can control the rollout percentage, toggle features on and off instantly without a code deployment, and use them for A/B testing."
+        action={
+          <Box display="flex" gap={2}>
+            <FormControl size="small" sx={{ minWidth: 200 }}>
+              <InputLabel>Project</InputLabel>
+              <Select
+                label="Project"
+                value={selectedProjectId}
+                onChange={(e) => setSelectedProjectId(e.target.value)}
+              >
+                {projects.map(p => (
+                  <MenuItem key={p.id} value={p.id}>{p.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Button variant="contained" color="primary" onClick={() => setOpen(true)} disabled={!selectedProjectId}>Create Flag</Button>
+          </Box>
+        }
+      />
 
       {selectedProjectId ? (
         <TableContainer component={Paper}>

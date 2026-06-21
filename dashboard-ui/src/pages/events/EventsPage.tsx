@@ -5,6 +5,7 @@ import type { Event } from '../../services/eventService'
 import { projectService } from '../../services/projectService'
 import type { Project } from '../../services/projectService'
 import { useNotification } from '@gofreego/tsutils'
+import { PageHeader } from '../../components/PageHeader'
 
 export function EventsPage() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -46,21 +47,25 @@ export function EventsPage() {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4">Events & Replay</Typography>
-        <FormControl size="small" sx={{ minWidth: 200 }}>
-          <InputLabel>Project</InputLabel>
-          <Select
-            label="Project"
-            value={selectedProjectId}
-            onChange={(e) => setSelectedProjectId(e.target.value)}
-          >
-            {projects.map(p => (
-              <MenuItem key={p.id} value={p.id}>{p.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
+      <PageHeader 
+        title="Events & Replay" 
+        infoTitle="About Events & Replay"
+        infoDescription="This page displays the raw stream of events coming into your project. You can inspect event properties, view event sequences, and watch session replays to understand exactly how users are interacting with your application."
+        action={
+          <FormControl size="small" sx={{ minWidth: 200 }}>
+            <InputLabel>Project</InputLabel>
+            <Select
+              label="Project"
+              value={selectedProjectId}
+              onChange={(e) => setSelectedProjectId(e.target.value)}
+            >
+              {projects.map(p => (
+                <MenuItem key={p.id} value={p.id}>{p.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        }
+      />
 
       {selectedProjectId ? (
         <TableContainer component={Paper}>

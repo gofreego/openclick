@@ -3,6 +3,7 @@ import { Typography, Box, Paper, Button, Grid, Card, CardContent, CardActions, T
 import { projectService } from '../../services/projectService'
 import type { Project } from '../../services/projectService'
 import { useNotification } from '@gofreego/tsutils'
+import { PageHeader } from '../../components/PageHeader'
 
 export function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -37,10 +38,12 @@ export function ProjectsPage() {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4">Projects</Typography>
-        <Button variant="contained" color="primary" onClick={() => setOpen(true)}>Create Project</Button>
-      </Box>
+      <PageHeader 
+        title="Projects" 
+        infoTitle="About Projects"
+        infoDescription="Projects are isolated environments within OpenClick. You can use different projects for different applications, or for different environments like development, staging, and production. Each project has its own API Key and settings."
+        action={<Button variant="contained" color="primary" onClick={() => setOpen(true)}>Create Project</Button>} 
+      />
 
       <Grid container spacing={3}>
         {projects.map(p => (

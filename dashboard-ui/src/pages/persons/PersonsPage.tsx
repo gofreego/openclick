@@ -5,6 +5,7 @@ import type { Person } from '../../services/personService'
 import { projectService } from '../../services/projectService'
 import type { Project } from '../../services/projectService'
 import { useNotification } from '@gofreego/tsutils'
+import { PageHeader } from '../../components/PageHeader'
 
 export function PersonsPage() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -46,21 +47,25 @@ export function PersonsPage() {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4">Persons & Cohorts</Typography>
-        <FormControl size="small" sx={{ minWidth: 200 }}>
-          <InputLabel>Project</InputLabel>
-          <Select
-            label="Project"
-            value={selectedProjectId}
-            onChange={(e) => setSelectedProjectId(e.target.value)}
-          >
-            {projects.map(p => (
-              <MenuItem key={p.id} value={p.id}>{p.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
+      <PageHeader 
+        title="Persons & Cohorts" 
+        infoTitle="About Persons & Cohorts"
+        infoDescription="This page lists all the distinct users (persons) tracked in your project. A person represents a single individual interacting with your application, tying together their anonymous and identified events. You can group persons into cohorts based on shared properties."
+        action={
+          <FormControl size="small" sx={{ minWidth: 200 }}>
+            <InputLabel>Project</InputLabel>
+            <Select
+              label="Project"
+              value={selectedProjectId}
+              onChange={(e) => setSelectedProjectId(e.target.value)}
+            >
+              {projects.map(p => (
+                <MenuItem key={p.id} value={p.id}>{p.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        }
+      />
 
       {selectedProjectId ? (
         <TableContainer component={Paper}>
