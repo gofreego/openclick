@@ -18,8 +18,9 @@ import (
 )
 
 type HTTPServer struct {
-	cfg    *configs.Configuration
-	server *http.Server
+	cfg       *configs.Configuration
+	server    *http.Server
+	uiHandler http.Handler
 }
 
 func (a *HTTPServer) Name() string {
@@ -32,9 +33,10 @@ func (a *HTTPServer) Shutdown(ctx context.Context) {
 	}
 }
 
-func NewHTTPServer(cfg *configs.Configuration) *HTTPServer {
+func NewHTTPServer(cfg *configs.Configuration, uiHandler http.Handler) *HTTPServer {
 	return &HTTPServer{
-		cfg: cfg,
+		cfg:       cfg,
+		uiHandler: uiHandler,
 	}
 }
 
@@ -61,9 +63,27 @@ func (a *HTTPServer) Run(ctx context.Context) error {
 		debug.RegisterDebugHandlersWithGateway(ctx, &a.cfg.Debug, mux, a.cfg.Logger.AppName, string(a.cfg.Logger.Build), "/openclick/v1")
 	}
 
+	finalHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		path := r.URL.Path
+
+		// Direct API requests to grpc-gateway mux
+		if len(path) >= 14 && path[:14] == "/openclick/v1/" {
+			mux.ServeHTTP(w, r)
+			return
+		}
+
+		// Direct UI requests or root to uiHandler
+		if a.uiHandler != nil {
+			a.uiHandler.ServeHTTP(w, r)
+			return
+		}
+
+		http.NotFound(w, r)
+	})
+
 	a.server = &http.Server{
 		Addr:    fmt.Sprintf(":%d", a.cfg.Server.HTTPPort),
-		Handler: logger.WithRequestMiddleware(logger.WithRequestTimeMiddleware(api.CORSMiddleware(mux))),
+		Handler: logger.WithRequestMiddleware(logger.WithRequestTimeMiddleware(api.CORSMiddleware(finalHandler))),
 	}
 
 	logger.Info(ctx, "Starting HTTP server on port %d", a.cfg.Server.HTTPPort)

@@ -2,7 +2,10 @@ package main
 
 import (
 	"context"
+	"embed"
 	"flag"
+	"io/fs"
+	"net/http"
 
 	"github.com/gofreego/openclick/cmd/grpc_server"
 	"github.com/gofreego/openclick/cmd/http_server"
@@ -17,6 +20,30 @@ var (
 	env  string
 	path string
 )
+
+//go:embed all:dashboard-ui/dist
+var uiDist embed.FS
+
+func getUIFileSystem() http.FileSystem {
+	// Re-map the embedded filesystem to the root of 'dist'
+	fsys, err := fs.Sub(uiDist, "dashboard-ui/dist")
+	if err != nil {
+		panic(err)
+	}
+	return http.FS(fsys)
+}
+
+func getIndexHTML() []byte {
+	data, err := fs.ReadFile(uiDist, "dashboard-ui/dist/index.html")
+	if err != nil {
+		panic(err)
+	}
+	return data
+}
+
+func getUIHandler() http.Handler {
+	return http_server.GetUIHandler(getUIFileSystem(), getIndexHTML())
+}
 
 func main() {
 	flag.StringVar(&env, "env", "dev", "-env=dev")
@@ -34,7 +61,7 @@ func main() {
 	for _, appName := range conf.AppNames {
 		switch appName {
 		case constants.HTTP_SERVER:
-			apps = append(apps, http_server.NewHTTPServer(conf))
+			apps = append(apps, http_server.NewHTTPServer(conf, getUIHandler()))
 		case constants.GRPC_SERVER:
 			apps = append(apps, grpc_server.NewGRPCServer(conf))
 		default:
