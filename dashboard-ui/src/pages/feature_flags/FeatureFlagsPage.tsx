@@ -196,6 +196,8 @@ export function FeatureFlagsPage() {
             variant="outlined"
             value={key}
             onChange={(e) => setKey(e.target.value)}
+            disabled={!!editingFlagId}
+            helperText={editingFlagId ? "The feature flag key cannot be changed after creation." : ""}
             sx={{ mb: 2 }}
           />
           <TextField
