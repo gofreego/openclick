@@ -10,6 +10,7 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree' // For projects
 import TimelineIcon from '@mui/icons-material/Timeline' // For events
 import PeopleIcon from '@mui/icons-material/People' // For persons
 import FlagIcon from '@mui/icons-material/Flag' // For feature flags
+import SettingsIcon from '@mui/icons-material/Settings' // For settings
 
 // Components
 import { ProjectSelector } from './components/ProjectSelector'
@@ -21,6 +22,7 @@ import { ProjectsPage } from './pages/projects/ProjectsPage'
 import { EventsPage } from './pages/events/EventsPage'
 import { PersonsPage } from './pages/persons/PersonsPage'
 import { FeatureFlagsPage } from './pages/feature_flags/FeatureFlagsPage'
+import { SettingsPage } from './pages/settings/SettingsPage'
 
 import { authService, sessionManager } from './services'
 
@@ -70,6 +72,12 @@ function App() {
       path: '/openclick/feature-flags',
       icon: <FlagIcon />,
     },
+    {
+      id: 'settings',
+      label: 'Settings',
+      path: '/openclick/settings',
+      icon: <SettingsIcon />,
+    },
   ]
 
   if (!isInitialized) {
@@ -106,6 +114,7 @@ function App() {
                 <Route path="openclick/events" element={<EventsPage />} />
                 <Route path="openclick/persons" element={<PersonsPage />} />
                 <Route path="openclick/feature-flags" element={<FeatureFlagsPage />} />
+                <Route path="openclick/settings" element={<SettingsPage />} />
                 <Route path="*" element={<Navigate to="/openclick/dashboard" replace />} />
               </Route>
             </Routes>
