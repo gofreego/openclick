@@ -22,7 +22,22 @@ Server:
   GRPCPort: 8086
   HTTPPort: 8085
 Repository:
-  Name : memory
+  Name : PostgreSQL
+  PostgreSQL:
+    Name: Postgres
+    Postgres:
+      primary:
+        Host: 192.168.1.100
+        Port: 5432
+        Username: "admin"
+        Password: OSwfiTlc1r5W7Z
+        DBName: opengate
+        SSLMode: disable
+        MaxOpenConns: 10
+        MaxIdleConns: 5
+        ConnMaxLifetime: 5m
+        ConnMaxIdleTime: 5m
+      replica: []
 Service: {}
 Debug:
   Enabled: true
