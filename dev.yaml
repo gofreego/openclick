@@ -39,7 +39,7 @@ Repository:
         ConnMaxIdleTime: 5m
       replica: []
   ClickHouse:
-    DSN: "clickhouse://default:@localhost:9000/openclick"
+    DSN: "clickhouse://clickhouse:clickhouse@127.0.0.1:9000/openclick"
     MaxOpenConns: 10
     MaxIdleConns: 5
 Service: {}
