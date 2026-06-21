@@ -44,7 +44,9 @@ func (a *HTTPServer) Run(ctx context.Context) error {
 		logger.Panic(ctx, "http port is not provided")
 	}
 
-	service := service.NewService(ctx, &a.cfg.Service, repository.GetInstance(ctx, &a.cfg.Repository))
+	repo := repository.GetInstance(ctx, &a.cfg.Repository)
+	analyticsDB := repository.GetAnalyticsInstance(ctx, &a.cfg.Repository)
+	service := service.NewService(ctx, &a.cfg.Service, repo, analyticsDB)
 
 	mux := runtime.NewServeMux()
 

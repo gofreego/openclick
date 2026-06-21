@@ -39,9 +39,10 @@ func (a *GRPCServer) Run(ctx context.Context) error {
 		logger.Panic(ctx, "grpc port is not provided")
 	}
 
-	repository := repository.GetInstance(ctx, &a.cfg.Repository)
+	repo := repository.GetInstance(ctx, &a.cfg.Repository)
+	analyticsDB := repository.GetAnalyticsInstance(ctx, &a.cfg.Repository)
 
-	service := service.NewService(ctx, &a.cfg.Service, repository)
+	service := service.NewService(ctx, &a.cfg.Service, repo, analyticsDB)
 
 	// Create a new gRPC server
 	a.server = grpc.NewServer()
