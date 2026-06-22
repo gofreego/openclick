@@ -342,8 +342,19 @@ export function ProjectsPage() {
                 {(selectedProject.members || []).map((m) => (
                   <ListItem key={m.userId} divider>
                     <ListItemText
-                      primary={<Typography variant="body2" fontFamily="monospace">{m.userId}</Typography>}
-                      secondary={<Chip label={m.role} size="small" color={m.role === 'admin' ? 'primary' : 'default'} />}
+                      primary={
+                        <Box display="flex" alignItems="center" gap={1.5}>
+                          <Typography variant="body2" sx={{ fontFamily: 'monospace', fontWeight: 500 }}>
+                            {m.userId}
+                          </Typography>
+                          <Chip
+                            label={m.role}
+                            size="small"
+                            color={m.role === 'admin' ? 'primary' : (m.role === 'owner' ? 'error' : 'default')}
+                          />
+                        </Box>
+                      }
+                      primaryTypographyProps={{ component: 'div' }}
                     />
                     <ListItemSecondaryAction>
                       <Tooltip title="Remove member">
