@@ -10,6 +10,7 @@ import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import DashboardIcon from '@mui/icons-material/Dashboard'
+import InfoIcon from '@mui/icons-material/Info'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
   Legend, ResponsiveContainer, BarChart, Bar, Cell
@@ -635,11 +636,47 @@ function DashboardsTab({ projectId }: { projectId: string }) {
 }
 
 // ──────────────────────────────────────────────
+const TAB_INFO: Record<string, { title: string; meaning: string; howToUse: string; example: string }> = {
+  trends: {
+    title: 'Trends Query',
+    meaning: 'Trends let you view and analyze event counts, frequencies, and metrics over time. It answers questions like "How many times was page X viewed?" or "What is our daily active user count?"',
+    howToUse: 'Enter the event name you want to track (e.g. $pageview), select the date range and interval (Hour, Day, Week, Month), and click "Run Query". You can configure customized events as needed.',
+    example: 'To check signup conversions: Run a query with event "user_signed_up" over the "Last 30 Days" with a "Day" interval to see a day-by-day graph of completed registration events.'
+  },
+  funnel: {
+    title: 'Funnel Query',
+    meaning: 'Funnels measure how users complete a series of defined steps in your app, helping you visualize conversion and drop-off rates at each stage of a specific user flow.',
+    howToUse: 'Add steps in chronological order. Specify the event key and a user-friendly label for each step. Define the date range and a "Conversion Window" (the max time a user has to complete all steps to count as converted), then click "Run Funnel".',
+    example: 'For a purchase checkout funnel, set: Step 1 (cart_viewed) -> Step 2 (checkout_started) -> Step 3 (payment_submitted) with a 14-day conversion window to identify where users drop off.'
+  },
+  retention: {
+    title: 'Retention Query',
+    meaning: 'Retention metrics track user engagement over time. It measures how many users who completed a starting action return to perform another key action in subsequent days, weeks, or months.',
+    howToUse: 'Select the "Target Event" (the starting event that places users into a cohort) and the "Return Event" (the activity that marks them as retained). Choose the date range and the grouping period (Day, Week, Month), then click "Run Retention".',
+    example: 'To check weekly user return rate: Set Target Event to "user_signed_up" and Return Event to "$pageview" with a "Week" period. The cohort matrix will show the percentage of users returning in Week 1, Week 2, Week 3, etc.'
+  },
+  paths: {
+    title: 'User Paths Query',
+    meaning: 'User Paths visualize the step-by-step journeys and flows users follow through your website or application, revealing the most common routes taken between screens or events.',
+    howToUse: 'Choose a date range and specify the limit of steps. You can optionally filter paths starting at a specific page (Start Point) or ending at a specific page (End Point). Click "Run Paths" to view the resulting flows and nodes.',
+    example: 'To inspect paths after pricing page: Set Start Point to "/pricing" and Step Limit to 5. The path flow results will illustrate the next 5 pages or events users visited immediately after viewing the pricing details.'
+  },
+  dashboards: {
+    title: 'Dashboards',
+    meaning: 'Dashboards allow you to combine, organize, and monitor saved charts and metrics widgets in a single, consolidated page.',
+    howToUse: 'Click "Create Dashboard", input a name, and open it to view saved reports. You can save queries from other pages directly to your custom dashboards to keep key metrics visible.',
+    example: 'Create a "Key KPIs" dashboard and pin widgets like "Daily Active Users (Trends)", "Sign-up to Paid Funnel", and "Feature Flag active rollouts" to monitor product performance at a glance.'
+  }
+}
+
 // Main DashboardPage
 // ──────────────────────────────────────────────
 export function DashboardPage() {
   const selectedProjectId = useCurrentProject()
   const [activeTab, setActiveTab] = useState(0)
+  const [infoModalTab, setInfoModalTab] = useState<string | null>(null)
+
+  const tabKeys = ['trends', 'funnel', 'retention', 'paths', 'dashboards'] as const
 
   return (
     <Box sx={{ p: 3 }}>
@@ -652,11 +689,40 @@ export function DashboardPage() {
       {selectedProjectId ? (
         <>
           <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)} sx={{ mb: 3 }}>
-            <Tab label="Trends" />
-            <Tab label="Funnel" />
-            <Tab label="Retention" />
-            <Tab label="Paths" />
-            <Tab label="Dashboards" />
+            {tabKeys.map((key) => {
+              const label = key === 'dashboards' ? 'Dashboards' : key.charAt(0).toUpperCase() + key.slice(1)
+              return (
+                <Tab
+                  key={key}
+                  label={
+                    <Box display="flex" alignItems="center" gap={0.5}>
+                      {label}
+                      <Box
+                        component="span"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setInfoModalTab(key)
+                        }}
+                        sx={{
+                          display: 'inline-flex',
+                          p: 0.25,
+                          ml: 0.5,
+                          color: 'text.secondary',
+                          cursor: 'pointer',
+                          borderRadius: '50%',
+                          '&:hover': {
+                            color: 'primary.main',
+                            bgcolor: 'action.hover'
+                          }
+                        }}
+                      >
+                        <InfoIcon sx={{ fontSize: 16 }} />
+                      </Box>
+                    </Box>
+                  }
+                />
+              )
+            })}
           </Tabs>
           {activeTab === 0 && <TrendsTab projectId={selectedProjectId} />}
           {activeTab === 1 && <FunnelTab projectId={selectedProjectId} />}
@@ -671,6 +737,62 @@ export function DashboardPage() {
           </Typography>
         </Paper>
       )}
+
+      {/* Tab Information Modal */}
+      <Dialog
+        open={infoModalTab !== null}
+        onClose={() => setInfoModalTab(null)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: '12px',
+            p: 1,
+          }
+        }}
+      >
+        {infoModalTab && TAB_INFO[infoModalTab] && (
+          <>
+            <DialogTitle sx={{ fontWeight: 700, pb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <InfoIcon color="primary" />
+              {TAB_INFO[infoModalTab].title}
+            </DialogTitle>
+            <DialogContent dividers sx={{ py: 2 }}>
+              <Box mb={2.5}>
+                <Typography variant="subtitle2" fontWeight={600} color="primary" gutterBottom>
+                  What is it?
+                </Typography>
+                <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.6 }}>
+                  {TAB_INFO[infoModalTab].meaning}
+                </Typography>
+              </Box>
+
+              <Box mb={2.5}>
+                <Typography variant="subtitle2" fontWeight={600} color="primary" gutterBottom>
+                  How to Use
+                </Typography>
+                <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.6 }}>
+                  {TAB_INFO[infoModalTab].howToUse}
+                </Typography>
+              </Box>
+
+              <Box sx={{ p: 2, bgcolor: 'action.hover', borderRadius: '8px', border: '1px solid', borderColor: 'divider' }}>
+                <Typography variant="subtitle2" fontWeight={600} color="text.primary" gutterBottom>
+                  Example Scenario
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                  {TAB_INFO[infoModalTab].example}
+                </Typography>
+              </Box>
+            </DialogContent>
+            <DialogActions sx={{ px: 3, py: 1.5 }}>
+              <Button onClick={() => setInfoModalTab(null)} variant="contained" color="primary">
+                Got it
+              </Button>
+            </DialogActions>
+          </>
+        )}
+      </Dialog>
     </Box>
   )
 }
