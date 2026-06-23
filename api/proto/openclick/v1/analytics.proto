@@ -213,3 +213,11 @@ message DeleteSessionRequest {
 
 message DeleteSessionResponse {
 }
+
+message ListEventNamesRequest {
+  string project_id = 1;
+}
+
+message ListEventNamesResponse {
+  repeated string event_names = 1;
+}

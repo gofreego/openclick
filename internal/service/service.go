@@ -84,6 +84,7 @@ type AnalyticsRepository interface {
 	QueryRetention(ctx context.Context, q *filter.RetentionQuery) (*clickhouse.RetentionResult, error)
 	QueryPaths(ctx context.Context, q *filter.PathsQuery) (*clickhouse.PathsResult, error)
 	QueryEvents(ctx context.Context, q *filter.EventsQuery) (*clickhouse.EventsResult, error)
+	ListEventNames(ctx context.Context, projectID string) ([]string, error)
 }
 
 // Service holds all dependencies for the business logic layer

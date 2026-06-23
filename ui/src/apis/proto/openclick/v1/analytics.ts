@@ -219,6 +219,14 @@ export interface DeleteSessionRequest {
 export interface DeleteSessionResponse {
 }
 
+export interface ListEventNamesRequest {
+  projectId: string;
+}
+
+export interface ListEventNamesResponse {
+  eventNames: string[];
+}
+
 function createBasePropertyFilter(): PropertyFilter {
   return { key: "", value: undefined, operator: "", type: "" };
 }
@@ -3739,6 +3747,134 @@ export const DeleteSessionResponse: MessageFns<DeleteSessionResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<DeleteSessionResponse>, I>>(_: I): DeleteSessionResponse {
     const message = createBaseDeleteSessionResponse();
+    return message;
+  },
+};
+
+function createBaseListEventNamesRequest(): ListEventNamesRequest {
+  return { projectId: "" };
+}
+
+export const ListEventNamesRequest: MessageFns<ListEventNamesRequest> = {
+  encode(message: ListEventNamesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListEventNamesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListEventNamesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListEventNamesRequest {
+    return {
+      projectId: isSet(object.projectId)
+        ? globalThis.String(object.projectId)
+        : isSet(object.project_id)
+        ? globalThis.String(object.project_id)
+        : "",
+    };
+  },
+
+  toJSON(message: ListEventNamesRequest): unknown {
+    const obj: any = {};
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListEventNamesRequest>, I>>(base?: I): ListEventNamesRequest {
+    return ListEventNamesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListEventNamesRequest>, I>>(object: I): ListEventNamesRequest {
+    const message = createBaseListEventNamesRequest();
+    message.projectId = object.projectId ?? "";
+    return message;
+  },
+};
+
+function createBaseListEventNamesResponse(): ListEventNamesResponse {
+  return { eventNames: [] };
+}
+
+export const ListEventNamesResponse: MessageFns<ListEventNamesResponse> = {
+  encode(message: ListEventNamesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.eventNames) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListEventNamesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListEventNamesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.eventNames.push(reader.string());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListEventNamesResponse {
+    return {
+      eventNames: globalThis.Array.isArray(object?.eventNames)
+        ? object.eventNames.map((e: any) => globalThis.String(e))
+        : globalThis.Array.isArray(object?.event_names)
+        ? object.event_names.map((e: any) => globalThis.String(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ListEventNamesResponse): unknown {
+    const obj: any = {};
+    if (message.eventNames?.length) {
+      obj.eventNames = message.eventNames;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListEventNamesResponse>, I>>(base?: I): ListEventNamesResponse {
+    return ListEventNamesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListEventNamesResponse>, I>>(object: I): ListEventNamesResponse {
+    const message = createBaseListEventNamesResponse();
+    message.eventNames = object.eventNames?.map((e) => e) || [];
     return message;
   },
 };

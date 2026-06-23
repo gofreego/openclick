@@ -399,6 +399,23 @@ func (s *Service) DeleteSession(ctx context.Context, req *openclick_v1.DeleteSes
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
+func (s *Service) ListEventNames(ctx context.Context, req *openclick_v1.ListEventNamesRequest) (*openclick_v1.ListEventNamesResponse, error) {
+	if err := s.checkAnalyticsAuth(ctx, req.ProjectId, constants.PermAnalyticsRead); err != nil {
+		return nil, err
+	}
+	if s.analyticsDB == nil {
+		return &openclick_v1.ListEventNamesResponse{EventNames: []string{}}, nil
+	}
+	names, err := s.analyticsDB.ListEventNames(ctx, req.ProjectId)
+	if err != nil {
+		return nil, err
+	}
+	if names == nil {
+		names = []string{}
+	}
+	return &openclick_v1.ListEventNamesResponse{EventNames: names}, nil
+}
+
 func (s *Service) checkAnalyticsAuth(ctx context.Context, projectID, perm string) error {
 	userID, err := s.getUserID(ctx)
 	if err != nil {

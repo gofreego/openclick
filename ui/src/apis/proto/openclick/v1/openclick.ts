@@ -24,6 +24,8 @@ import {
   GetSessionChunksRequest,
   GetSessionChunksResponse,
   GetSessionRequest,
+  ListEventNamesRequest,
+  ListEventNamesResponse,
   ListSessionsRequest,
   ListSessionsResponse,
   QueryEventsRequest,
@@ -326,6 +328,17 @@ export const BaseServiceService = {
     responseSerialize: (value: QueryEventsResponse): Buffer => Buffer.from(QueryEventsResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer): QueryEventsResponse => QueryEventsResponse.decode(value),
   },
+  listEventNames: {
+    path: "/v1.BaseService/ListEventNames" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ListEventNamesRequest): Buffer =>
+      Buffer.from(ListEventNamesRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ListEventNamesRequest => ListEventNamesRequest.decode(value),
+    responseSerialize: (value: ListEventNamesResponse): Buffer =>
+      Buffer.from(ListEventNamesResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ListEventNamesResponse => ListEventNamesResponse.decode(value),
+  },
   listSessions: {
     path: "/v1.BaseService/ListSessions" as const,
     requestStream: false as const,
@@ -563,6 +576,7 @@ export interface BaseServiceServer extends UntypedServiceImplementation {
   queryRetention: handleUnaryCall<QueryRetentionRequest, QueryRetentionResponse>;
   queryPaths: handleUnaryCall<QueryPathsRequest, QueryPathsResponse>;
   queryEvents: handleUnaryCall<QueryEventsRequest, QueryEventsResponse>;
+  listEventNames: handleUnaryCall<ListEventNamesRequest, ListEventNamesResponse>;
   listSessions: handleUnaryCall<ListSessionsRequest, ListSessionsResponse>;
   getSession: handleUnaryCall<GetSessionRequest, SessionResponse>;
   getSessionChunks: handleUnaryCall<GetSessionChunksRequest, GetSessionChunksResponse>;
@@ -906,6 +920,21 @@ export interface BaseServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: QueryEventsResponse) => void,
+  ): ClientUnaryCall;
+  listEventNames(
+    request: ListEventNamesRequest,
+    callback: (error: ServiceError | null, response: ListEventNamesResponse) => void,
+  ): ClientUnaryCall;
+  listEventNames(
+    request: ListEventNamesRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListEventNamesResponse) => void,
+  ): ClientUnaryCall;
+  listEventNames(
+    request: ListEventNamesRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListEventNamesResponse) => void,
   ): ClientUnaryCall;
   listSessions(
     request: ListSessionsRequest,

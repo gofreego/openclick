@@ -779,6 +779,37 @@
         ]
       }
     },
+    "/api/v1/projects/{projectId}/event-names": {
+      "get": {
+        "summary": "List distinct event names for a project",
+        "operationId": "BaseService_ListEventNames",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListEventNamesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Analytics"
+        ]
+      }
+    },
     "/api/v1/projects/{projectId}/feature-flags": {
       "get": {
         "summary": "List feature flags",
@@ -2389,6 +2420,17 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1DashboardResponse"
+          }
+        }
+      }
+    },
+    "v1ListEventNamesResponse": {
+      "type": "object",
+      "properties": {
+        "eventNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         }
       }

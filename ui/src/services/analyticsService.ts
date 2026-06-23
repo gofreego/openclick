@@ -10,6 +10,7 @@ import {
   QueryPathsResponse,
   QueryEventsRequest,
   QueryEventsResponse,
+  ListEventNamesResponse,
 } from '../apis/proto/openclick/v1/analytics'
 
 export const analyticsService = {
@@ -40,5 +41,10 @@ export const analyticsService = {
       offset: data.offset || 0,
     })
     return response.data
+  },
+
+  async listEventNames(projectId: string): Promise<string[]> {
+    const response = await httpClient.get<ListEventNamesResponse>(`/api/v1/projects/${projectId}/event-names`)
+    return response.data.eventNames || []
   },
 }

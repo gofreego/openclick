@@ -455,6 +455,32 @@ type PathLink struct {
 	Value  int64
 }
 
+// ListEventNames returns distinct event names for a project, ordered by frequency.
+func (r *Repository) ListEventNames(ctx context.Context, projectID string) ([]string, error) {
+	rows, err := r.db.QueryContext(ctx, `
+		SELECT event, count() AS cnt
+		FROM events
+		WHERE project_id = ?
+		GROUP BY event
+		ORDER BY cnt DESC
+		LIMIT 200
+	`, projectID)
+	if err != nil {
+		return nil, fmt.Errorf("list event names: %w", err)
+	}
+	defer rows.Close()
+	var names []string
+	for rows.Next() {
+		var name string
+		var cnt uint64
+		if err := rows.Scan(&name, &cnt); err != nil {
+			continue
+		}
+		names = append(names, name)
+	}
+	return names, rows.Err()
+}
+
 // QueryPaths computes user path analysis
 func (r *Repository) QueryPaths(ctx context.Context, q *filter.PathsQuery) (*PathsResult, error) {
 	result := &PathsResult{}

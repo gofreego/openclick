@@ -285,6 +285,16 @@ service BaseService {
         };
     }
 
+    rpc ListEventNames (ListEventNamesRequest) returns (ListEventNamesResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/projects/{project_id}/event-names"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Analytics"
+            summary: "List distinct event names for a project"
+        };
+    }
+
     rpc ListSessions (ListSessionsRequest) returns (ListSessionsResponse) {
         option (google.api.http) = {
             get: "/api/v1/projects/{project_id}/sessions"
