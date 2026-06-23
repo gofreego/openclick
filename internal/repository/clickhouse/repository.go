@@ -7,15 +7,15 @@ import (
 	"strings"
 	"time"
 
+	_ "github.com/ClickHouse/clickhouse-go/v2" // ClickHouse database/sql driver registration
 	"github.com/gofreego/goutils/logger"
 	"github.com/gofreego/openclick/internal/models/dao"
 	"github.com/gofreego/openclick/internal/models/filter"
-	_ "github.com/ClickHouse/clickhouse-go/v2" // ClickHouse database/sql driver registration
 )
 
 // Config holds ClickHouse connection configuration
 type Config struct {
-	DSN          string `yaml:"DSN"`          // e.g. "clickhouse://user:pass@host:9000/dbname"
+	DSN          string `yaml:"DSN"` // e.g. "clickhouse://user:pass@host:9000/dbname"
 	MaxOpenConns int    `yaml:"MaxOpenConns"`
 	MaxIdleConns int    `yaml:"MaxIdleConns"`
 }
@@ -284,7 +284,7 @@ func (r *Repository) QueryTrends(ctx context.Context, q *filter.TrendsQuery) (*T
 			FROM events
 			WHERE project_id = ?
 			  AND event = ?
-			  AND timestamp >= ? AND timestamp <= ?
+			  AND timestamp >= ? AND toDate(timestamp) <= ?
 			GROUP BY %s
 			ORDER BY period ASC
 		`, interval, func() string {
@@ -351,7 +351,7 @@ func (r *Repository) QueryFunnel(ctx context.Context, q *filter.FunnelQuery) (*F
 			SELECT count(DISTINCT distinct_id)
 			FROM events
 			WHERE project_id = ? AND event = ?
-			  AND timestamp >= ? AND timestamp <= ?
+			  AND timestamp >= ? AND toDate(timestamp) <= ?
 		`, q.ProjectID, step.Event, q.DateFrom, q.DateTo).Scan(&count)
 		if err != nil {
 			logger.Error(ctx, "funnel step %s query: %v", step.Event, err)
@@ -383,10 +383,10 @@ type RetentionResult struct {
 
 // RetentionCohort is a cohort row in a retention result
 type RetentionCohort struct {
-	Date        time.Time
-	Label       string
-	CohortSize  int64
-	Values      []RetentionValue
+	Date       time.Time
+	Label      string
+	CohortSize int64
+	Values     []RetentionValue
 }
 
 // RetentionValue is a single cell in the retention table
@@ -404,7 +404,7 @@ func (r *Repository) QueryRetention(ctx context.Context, q *filter.RetentionQuer
 		SELECT distinct_id, min(timestamp) AS first_time
 		FROM events
 		WHERE project_id = ? AND event = ?
-		  AND timestamp >= ? AND timestamp <= ?
+		  AND timestamp >= ? AND toDate(timestamp) <= ?
 		GROUP BY distinct_id
 	`, q.ProjectID, q.TargetEvent.ID, q.DateFrom, q.DateTo)
 	if err != nil {
@@ -459,22 +459,29 @@ type PathLink struct {
 func (r *Repository) QueryPaths(ctx context.Context, q *filter.PathsQuery) (*PathsResult, error) {
 	result := &PathsResult{}
 
-	// Query page-view sequences grouped by session
+	// Query page-view sequences grouped by session.
+	// Uses leadInFrame() (partitioned by distinct_id+session) instead of the deprecated neighbor() function.
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT
-			JSONExtractString(properties, '$current_url') AS src,
-			neighbor(JSONExtractString(properties, '$current_url'), 1) AS tgt,
+			src,
+			tgt,
 			count() AS weight
 		FROM (
-			SELECT distinct_id, session_id, timestamp, properties
+			SELECT
+				JSONExtractString(properties, '$current_url') AS src,
+				leadInFrame(JSONExtractString(properties, '$current_url')) OVER (
+					PARTITION BY distinct_id, session_id
+					ORDER BY timestamp
+					ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING
+				) AS tgt
 			FROM events
 			WHERE project_id = ?
-			  AND event = 'page_view'
-			  AND timestamp >= ? AND timestamp <= ?
-			ORDER BY distinct_id, session_id, timestamp
+			  AND event = '$pageview'
+			  AND timestamp >= ? AND toDate(timestamp) <= ?
 		)
-		WHERE tgt != '' AND weight >= ?
+		WHERE tgt != ''
 		GROUP BY src, tgt
+		HAVING weight >= ?
 		ORDER BY weight DESC
 		LIMIT 50
 	`, q.ProjectID, q.DateFrom, q.DateTo, q.MinEdgeWeight)
@@ -521,7 +528,7 @@ func (r *Repository) QueryEvents(ctx context.Context, q *filter.EventsQuery) (*E
 		args = append(args, q.DateFrom)
 	}
 	if q.DateTo != "" {
-		conditions = append(conditions, "timestamp <= ?")
+		conditions = append(conditions, "toDate(timestamp) <= ?")
 		args = append(args, q.DateTo)
 	}
 	if q.DistinctID != "" {
