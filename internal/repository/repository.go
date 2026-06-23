@@ -7,15 +7,13 @@ import (
 	"github.com/gofreego/goutils/databases"
 	sqlutils "github.com/gofreego/goutils/databases/connections/sql"
 	"github.com/gofreego/openclick/internal/repository/clickhouse"
-	"github.com/gofreego/openclick/internal/repository/memory"
 	"github.com/gofreego/openclick/internal/repository/postgresql"
 	"github.com/gofreego/openclick/internal/service"
 )
 
 // Config holds repository selection and connection config
 type Config struct {
-	Name       string            `yaml:"Name"`       // "Memory" | "PostgreSQL"
-	Memory     memory.Config     `yaml:"Memory"`
+	Name       string            `yaml:"Name"`
 	PostgreSQL sqlutils.Config   `yaml:"PostgreSQL"`
 	ClickHouse clickhouse.Config `yaml:"ClickHouse"`
 }
@@ -29,7 +27,7 @@ var (
 	muCH        sync.RWMutex
 )
 
-// GetInstance returns the singleton PostgreSQL/Memory repository instance
+// GetInstance returns the singleton PostgreSQL repository instance
 func GetInstance(ctx context.Context, cfg *Config) service.Repository {
 	mu.RLock()
 	if instance != nil {
@@ -43,12 +41,6 @@ func GetInstance(ctx context.Context, cfg *Config) service.Repository {
 		defer mu.Unlock()
 		if instance == nil {
 			switch cfg.Name {
-			case "Memory":
-				repo, err := memory.NewRepository(ctx, &cfg.Memory)
-				if err != nil {
-					panic("failed to create repository: " + err.Error())
-				}
-				instance = repo
 			case "PostgreSQL":
 				if cfg.PostgreSQL.Name == "" {
 					cfg.PostgreSQL.Name = databases.Postgres
