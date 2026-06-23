@@ -25,6 +25,40 @@ function formatDuration(ms: number | string | bigint): string {
   return `${Math.floor(n / 60000)}m ${Math.round((n % 60000) / 1000)}s`
 }
 
+function EventDetailDrawer({ event, open, onClose }: {
+  event: Event | null
+  open: boolean
+  onClose: () => void
+}) {
+  return (
+    <Drawer anchor="right" open={open} onClose={onClose}>
+      <Box sx={{ width: 520, p: 3 }}>
+        {event && (
+          <>
+            <Typography variant="h6" fontWeight={700} gutterBottom>Event Detail</Typography>
+            <Divider sx={{ my: 2 }} />
+            <Box mb={2}>
+              <Chip label={event.event} color="primary" />
+            </Box>
+            <Box mb={1}>
+              <Typography variant="caption" color="text.secondary">Distinct ID</Typography>
+              <Typography variant="body2" fontFamily="monospace">{event.distinctId}</Typography>
+            </Box>
+            <Box mb={2}>
+              <Typography variant="caption" color="text.secondary">Timestamp</Typography>
+              <Typography variant="body2">{event.timestamp ? new Date(event.timestamp as any).toLocaleString() : '—'}</Typography>
+            </Box>
+            <Typography variant="subtitle2" fontWeight={600} gutterBottom>Properties</Typography>
+            <Box component="pre" sx={{ m: 0, p: 2, fontSize: '0.8rem', whiteSpace: 'pre-wrap', wordBreak: 'break-all', lineHeight: 1.6, fontFamily: 'monospace', bgcolor: 'grey.900', color: 'grey.300', borderRadius: 1, border: 1, borderColor: 'divider', overflow: 'auto', maxHeight: 'calc(100vh - 280px)' }}>
+              {JSON.stringify(event.properties, null, 2)}
+            </Box>
+          </>
+        )}
+      </Box>
+    </Drawer>
+  )
+}
+
 function SessionReplayDrawer({ projectId, session, open, onClose }: {
   projectId: string
   session: Session | null
@@ -95,9 +129,9 @@ function SessionReplayDrawer({ projectId, session, open, onClose }: {
                         {chunk.timestamp ? new Date(chunk.timestamp as any).toLocaleTimeString() : '—'}
                       </Typography>
                     </Box>
-                    <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.7rem', wordBreak: 'break-all', maxHeight: 100, overflow: 'hidden' }}>
-                      {chunk.data?.substring(0, 300)}{(chunk.data?.length || 0) > 300 ? '...' : ''}
-                    </Typography>
+                    <Box component="pre" sx={{ m: 0, p: 1, maxHeight: 150, overflow: 'auto', fontSize: '0.7rem', fontFamily: 'monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-all', lineHeight: 1.5, bgcolor: 'grey.900', color: 'grey.300', borderRadius: 1, border: 1, borderColor: 'divider' }}>
+                      {chunk.data}
+                    </Box>
                   </Paper>
                 ))}
               </Box>
@@ -262,6 +296,8 @@ function EventsTab({ projectId }: { projectId: string }) {
   const [eventFilterInput, setEventFilterInput] = useState('')
   const [distinctIdFilter, setDistinctIdFilter] = useState('')
   const [distinctIdInput, setDistinctIdInput] = useState('')
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
+  const [eventDetailOpen, setEventDetailOpen] = useState(false)
   const notify = useNotification()
 
   const loadEvents = useCallback(async () => {
@@ -329,7 +365,7 @@ function EventsTab({ projectId }: { projectId: string }) {
           </TableHead>
           <TableBody>
             {events.map((event) => (
-              <TableRow key={event.uuid} hover>
+              <TableRow key={event.uuid} hover sx={{ cursor: 'pointer' }} onClick={() => { setSelectedEvent(event); setEventDetailOpen(true) }}>
                 <TableCell><Chip label={event.event} size="small" /></TableCell>
                 <TableCell>
                   <Typography variant="body2" fontFamily="monospace">{event.distinctId}</Typography>
@@ -359,6 +395,12 @@ function EventsTab({ projectId }: { projectId: string }) {
           rowsPerPageOptions={[25, 50, 100]}
         />
       </TableContainer>
+
+      <EventDetailDrawer
+        event={selectedEvent}
+        open={eventDetailOpen}
+        onClose={() => setEventDetailOpen(false)}
+      />
     </Box>
   )
 }

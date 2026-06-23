@@ -75,11 +75,9 @@ function PersonDetailDrawer({ projectId, person, open, onClose, onDeleted }: {
               <Divider sx={{ my: 2 }} />
 
               <Typography variant="subtitle2" fontWeight={600} gutterBottom>Properties</Typography>
-              <Paper variant="outlined" sx={{ p: 2, mb: 3, maxHeight: 200, overflow: 'auto', bgcolor: 'grey.50' }}>
-                <pre style={{ margin: 0, fontSize: '0.8rem', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+              <Box component="pre" sx={{ m: 0, mb: 3, p: 2, maxHeight: 200, overflow: 'auto', fontSize: '0.8rem', fontFamily: 'monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-all', lineHeight: 1.6, bgcolor: 'grey.900', color: 'grey.300', borderRadius: 1, border: 1, borderColor: 'divider' }}>
                   {JSON.stringify(detail.person?.properties, null, 2)}
-                </pre>
-              </Paper>
+              </Box>
 
               <Typography variant="subtitle2" fontWeight={600} gutterBottom>
                 Recent Events ({detail.recentEvents?.length || 0})
