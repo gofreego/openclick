@@ -5,6 +5,7 @@ import {
 } from '@mui/material'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { analyticsService } from '../../services/analyticsService'
+import { SaveToDashboardButton } from './SaveToDashboardButton'
 import type { RetentionCohort } from '../../apis/proto/openclick/v1/analytics'
 import { useNotification } from '@gofreego/tsutils'
 
@@ -86,7 +87,11 @@ export function RetentionTab({ projectId }: { projectId: string }) {
 
       {!loading && results.length > 0 && (
         <Paper sx={{ p: 2, overflow: 'auto' }}>
-          <Typography variant="subtitle2" fontWeight={600} gutterBottom>Retention Matrix</Typography>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+            <Typography variant="subtitle2" fontWeight={600}>Retention Matrix</Typography>
+            <SaveToDashboardButton projectId={projectId} type="retention"
+              query={{ targetEvent: { id: targetEvent, name: targetEvent }, returnEvent: { id: returnEvent, name: returnEvent }, dateFrom, dateTo, period, retentionType: 'retention_first_time' }} />
+          </Box>
           <Box component="table" sx={{ borderCollapse: 'collapse', fontSize: '0.8rem', minWidth: '100%' }}>
             <Box component="thead">
               <Box component="tr">

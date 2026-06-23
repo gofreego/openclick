@@ -13,6 +13,7 @@ import { analyticsService } from '../../services/analyticsService'
 import type { FunnelStepResult } from '../../apis/proto/openclick/v1/analytics'
 import { useNotification } from '@gofreego/tsutils'
 import { COLORS } from './tabInfo'
+import { SaveToDashboardButton } from './SaveToDashboardButton'
 
 export function FunnelTab({ projectId }: { projectId: string }) {
   const [steps, setSteps] = useState([{ event: '$pageview', name: 'Page View' }, { event: '$click', name: 'Click' }])
@@ -96,7 +97,11 @@ export function FunnelTab({ projectId }: { projectId: string }) {
 
       {!loading && results.length > 0 && (
         <Paper sx={{ p: 2 }}>
-          <Typography variant="subtitle2" fontWeight={600} gutterBottom>Funnel Results</Typography>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+            <Typography variant="subtitle2" fontWeight={600}>Funnel Results</Typography>
+            <SaveToDashboardButton projectId={projectId} type="funnel"
+              query={{ steps, dateFrom, dateTo, conversionWindowDays: conversionWindow }} />
+          </Box>
           <ResponsiveContainer width="100%" height={350}>
             <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />

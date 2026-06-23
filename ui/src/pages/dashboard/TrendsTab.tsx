@@ -12,6 +12,7 @@ import { analyticsService } from '../../services/analyticsService'
 import type { TrendsSeries } from '../../apis/proto/openclick/v1/analytics'
 import { useNotification } from '@gofreego/tsutils'
 import { COLORS } from './tabInfo'
+import { SaveToDashboardButton } from './SaveToDashboardButton'
 
 export function TrendsTab({ projectId }: { projectId: string }) {
   const [eventName, setEventName] = useState('$pageview')
@@ -90,7 +91,11 @@ export function TrendsTab({ projectId }: { projectId: string }) {
 
       {!loading && results.length > 0 && (
         <Paper sx={{ p: 2 }}>
-          <Typography variant="subtitle2" fontWeight={600} gutterBottom>Results</Typography>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+            <Typography variant="subtitle2" fontWeight={600}>Results</Typography>
+            <SaveToDashboardButton projectId={projectId} type="trends"
+              query={{ events: [{ id: eventName, name: eventName, math: 'total' }], dateFrom, dateTo, interval }} />
+          </Box>
           <ResponsiveContainer width="100%" height={350}>
             <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />

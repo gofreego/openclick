@@ -4,6 +4,7 @@ import {
 } from '@mui/material'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { analyticsService } from '../../services/analyticsService'
+import { SaveToDashboardButton } from './SaveToDashboardButton'
 import type { PathNode, PathLink } from '../../apis/proto/openclick/v1/analytics'
 import { useNotification } from '@gofreego/tsutils'
 
@@ -64,6 +65,12 @@ export function PathsTab({ projectId }: { projectId: string }) {
 
       {loading && <Box display="flex" justifyContent="center" py={4}><CircularProgress /></Box>}
 
+      {!loading && (nodes.length > 0 || links.length > 0) && (
+        <Box display="flex" justifyContent="flex-end" mb={1}>
+          <SaveToDashboardButton projectId={projectId} type="paths"
+            query={{ dateFrom, dateTo, startPoint: startPoint || undefined, endPoint: endPoint || undefined, stepLimit, pathType: 'url', minEdgeWeight: 1 }} />
+        </Box>
+      )}
       {!loading && (nodes.length > 0 || links.length > 0) && (
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 4 }}>
