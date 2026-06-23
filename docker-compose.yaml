@@ -8,6 +8,6 @@ services:
     image: openclick:latest
     container_name: openclick
     restart: always
-    ports:
-      - "8085:8085"
-      - "8086:8086"
+    # ports:
+    #   - "8085:8085"
+    #   - "8086:8086"

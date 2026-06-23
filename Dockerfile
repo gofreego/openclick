@@ -1,14 +1,14 @@
 # Build UI stage
 FROM node:20-alpine AS ui-builder
 
-WORKDIR /app/dashboard-ui
+WORKDIR /app/ui
 
 # Copy package files
-COPY dashboard-ui/package*.json ./
+COPY ui/package*.json ./
 RUN npm install
 
 # Copy source and build
-COPY dashboard-ui/ .
+COPY ui/ .
 RUN npm run build
 
 # Build Go stage
@@ -24,7 +24,7 @@ RUN go mod download
 COPY . .
 
 # Copy the built UI
-COPY --from=ui-builder /app/dashboard-ui/dist /app/dashboard-ui/dist
+COPY --from=ui-builder /app/ui/dist /app/ui/dist
 
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -o application main.go
