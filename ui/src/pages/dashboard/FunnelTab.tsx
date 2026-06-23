@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import {
-  Typography, Box, Paper, Button, TextField, Chip, IconButton, CircularProgress
+  Typography, Box, Paper, Button, TextField, Chip, IconButton, CircularProgress, Autocomplete
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -23,7 +23,14 @@ export function FunnelTab({ projectId }: { projectId: string }) {
   const [conversionWindow, setConversionWindow] = useState(14)
   const [results, setResults] = useState<FunnelStepResult[]>([])
   const [loading, setLoading] = useState(false)
+  const [eventOptions, setEventOptions] = useState<string[]>([])
   const notify = useNotification()
+
+  useEffect(() => {
+    analyticsService.listEventNames(projectId)
+      .then(setEventOptions)
+      .catch(() => {})
+  }, [projectId])
 
   const run = useCallback(async () => {
     setLoading(true)
@@ -56,8 +63,13 @@ export function FunnelTab({ projectId }: { projectId: string }) {
         {steps.map((step, i) => (
           <Box key={i} display="flex" gap={1} mb={1} alignItems="center">
             <Chip label={`Step ${i + 1}`} size="small" color="primary" sx={{ minWidth: 60 }} />
-            <TextField size="small" label="Event" value={step.event}
-              onChange={e => updateStep(i, 'event', e.target.value)} sx={{ width: 200 }} />
+            <Autocomplete
+              freeSolo size="small" options={eventOptions}
+              value={step.event}
+              onInputChange={(_, val) => updateStep(i, 'event', val)}
+              sx={{ width: 220 }}
+              renderInput={(params) => <TextField {...params} label="Event" />}
+            />
             <TextField size="small" label="Label" value={step.name}
               onChange={e => updateStep(i, 'name', e.target.value)} sx={{ width: 200 }} />
             {steps.length > 2 && (

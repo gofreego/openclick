@@ -1,7 +1,7 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import {
   Typography, Box, Paper, Button, TextField, MenuItem, Select,
-  FormControl, InputLabel, CircularProgress
+  FormControl, InputLabel, CircularProgress, Autocomplete
 } from '@mui/material'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { analyticsService } from '../../services/analyticsService'
@@ -18,7 +18,14 @@ export function RetentionTab({ projectId }: { projectId: string }) {
   const [period, setPeriod] = useState('Week')
   const [results, setResults] = useState<RetentionCohort[]>([])
   const [loading, setLoading] = useState(false)
+  const [eventOptions, setEventOptions] = useState<string[]>([])
   const notify = useNotification()
+
+  useEffect(() => {
+    analyticsService.listEventNames(projectId)
+      .then(setEventOptions)
+      .catch(() => {})
+  }, [projectId])
 
   const run = useCallback(async () => {
     setLoading(true)
@@ -43,10 +50,20 @@ export function RetentionTab({ projectId }: { projectId: string }) {
     <Box>
       <Paper sx={{ p: 2, mb: 3 }}>
         <Box display="flex" gap={2} flexWrap="wrap" alignItems="flex-end">
-          <TextField size="small" label="Target Event" value={targetEvent}
-            onChange={e => setTargetEvent(e.target.value)} sx={{ width: 180 }} />
-          <TextField size="small" label="Return Event" value={returnEvent}
-            onChange={e => setReturnEvent(e.target.value)} sx={{ width: 180 }} />
+          <Autocomplete
+            freeSolo size="small" options={eventOptions}
+            value={targetEvent}
+            onInputChange={(_, val) => setTargetEvent(val)}
+            sx={{ width: 200 }}
+            renderInput={(params) => <TextField {...params} label="Target Event" />}
+          />
+          <Autocomplete
+            freeSolo size="small" options={eventOptions}
+            value={returnEvent}
+            onInputChange={(_, val) => setReturnEvent(val)}
+            sx={{ width: 200 }}
+            renderInput={(params) => <TextField {...params} label="Return Event" />}
+          />
           <TextField size="small" type="date" label="From" value={dateFrom}
             onChange={e => setDateFrom(e.target.value)} InputLabelProps={{ shrink: true }} sx={{ width: 160 }} />
           <TextField size="small" type="date" label="To" value={dateTo}
