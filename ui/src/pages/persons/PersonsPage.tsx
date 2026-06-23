@@ -15,6 +15,23 @@ import type { Cohort } from '../../services/cohortService'
 import { useCurrentProject } from '../../contexts/ProjectContext'
 import { useNotification } from '@gofreego/tsutils'
 import { PageHeader } from '../../components/PageHeader'
+import { TabInfoButton } from '../../components/TabInfoButton'
+import type { TabInfo } from '../../components/TabInfoButton'
+
+const PERSONS_TAB_INFO: Record<string, TabInfo> = {
+  persons: {
+    title: 'Persons',
+    meaning: 'Persons represent individual identified users of your application. Each person is uniquely identified by a distinct ID and can carry any set of properties (name, email, plan, etc.) set via identify calls.',
+    howToUse: 'Search by distinct ID or property value to find a specific user. Click any row to open their detail panel, which shows all properties and their recent event history.',
+    example: 'To investigate a support ticket: search for the user\'s email or ID, open their detail panel, and review their recent events to understand what they did before reporting the issue.'
+  },
+  cohorts: {
+    title: 'Cohorts',
+    meaning: 'Cohorts are saved segments of users that match a set of property filters. Use them to group users by plan, country, feature usage, or any other property for targeted analysis.',
+    howToUse: 'Click "Create Cohort", give it a name, and define filters as a JSON object (e.g. { "plan": "pro" }). The cohort will show a count of matching persons and can be reused across the product.',
+    example: 'Create a "Pro Users in Germany" cohort with filters { "plan": "pro", "country": "DE" } to track that segment\'s retention or funnel performance separately.'
+  }
+}
 
 function PersonDetailDrawer({ projectId, person, open, onClose, onDeleted }: {
   projectId: string
@@ -308,8 +325,8 @@ export function PersonsPage() {
       {selectedProjectId ? (
         <>
           <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)} sx={{ mb: 2 }}>
-            <Tab label="Persons" />
-            <Tab label="Cohorts" />
+            <Tab label={<Box display="flex" alignItems="center" gap={0.5}>Persons<TabInfoButton info={PERSONS_TAB_INFO.persons} /></Box>} />
+            <Tab label={<Box display="flex" alignItems="center" gap={0.5}>Cohorts<TabInfoButton info={PERSONS_TAB_INFO.cohorts} /></Box>} />
           </Tabs>
 
           {activeTab === 0 && (

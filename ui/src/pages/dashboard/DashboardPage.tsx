@@ -10,7 +10,8 @@ import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import DashboardIcon from '@mui/icons-material/Dashboard'
-import InfoIcon from '@mui/icons-material/Info'
+import { TabInfoButton } from '../../components/TabInfoButton'
+import type { TabInfo } from '../../components/TabInfoButton'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
   Legend, ResponsiveContainer, BarChart, Bar, Cell
@@ -636,7 +637,7 @@ function DashboardsTab({ projectId }: { projectId: string }) {
 }
 
 // ──────────────────────────────────────────────
-const TAB_INFO: Record<string, { title: string; meaning: string; howToUse: string; example: string }> = {
+const TAB_INFO: Record<string, TabInfo> = {
   trends: {
     title: 'Trends Query',
     meaning: 'Trends let you view and analyze event counts, frequencies, and metrics over time. It answers questions like "How many times was page X viewed?" or "What is our daily active user count?"',
@@ -674,7 +675,6 @@ const TAB_INFO: Record<string, { title: string; meaning: string; howToUse: strin
 export function DashboardPage() {
   const selectedProjectId = useCurrentProject()
   const [activeTab, setActiveTab] = useState(0)
-  const [infoModalTab, setInfoModalTab] = useState<string | null>(null)
 
   const tabKeys = ['trends', 'funnel', 'retention', 'paths', 'dashboards'] as const
 
@@ -697,27 +697,7 @@ export function DashboardPage() {
                   label={
                     <Box display="flex" alignItems="center" gap={0.5}>
                       {label}
-                      <Box
-                        component="span"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setInfoModalTab(key)
-                        }}
-                        sx={{
-                          display: 'inline-flex',
-                          p: 0.25,
-                          ml: 0.5,
-                          color: 'text.secondary',
-                          cursor: 'pointer',
-                          borderRadius: '50%',
-                          '&:hover': {
-                            color: 'primary.main',
-                            bgcolor: 'action.hover'
-                          }
-                        }}
-                      >
-                        <InfoIcon sx={{ fontSize: 16 }} />
-                      </Box>
+                      <TabInfoButton info={TAB_INFO[key]} />
                     </Box>
                   }
                 />
@@ -738,61 +718,6 @@ export function DashboardPage() {
         </Paper>
       )}
 
-      {/* Tab Information Modal */}
-      <Dialog
-        open={infoModalTab !== null}
-        onClose={() => setInfoModalTab(null)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          sx: {
-            borderRadius: '12px',
-            p: 1,
-          }
-        }}
-      >
-        {infoModalTab && TAB_INFO[infoModalTab] && (
-          <>
-            <DialogTitle sx={{ fontWeight: 700, pb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
-              <InfoIcon color="primary" />
-              {TAB_INFO[infoModalTab].title}
-            </DialogTitle>
-            <DialogContent dividers sx={{ py: 2 }}>
-              <Box mb={2.5}>
-                <Typography variant="subtitle2" fontWeight={600} color="primary" gutterBottom>
-                  What is it?
-                </Typography>
-                <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.6 }}>
-                  {TAB_INFO[infoModalTab].meaning}
-                </Typography>
-              </Box>
-
-              <Box mb={2.5}>
-                <Typography variant="subtitle2" fontWeight={600} color="primary" gutterBottom>
-                  How to Use
-                </Typography>
-                <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.6 }}>
-                  {TAB_INFO[infoModalTab].howToUse}
-                </Typography>
-              </Box>
-
-              <Box sx={{ p: 2, bgcolor: 'action.hover', borderRadius: '8px', border: '1px solid', borderColor: 'divider' }}>
-                <Typography variant="subtitle2" fontWeight={600} color="text.primary" gutterBottom>
-                  Example Scenario
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                  {TAB_INFO[infoModalTab].example}
-                </Typography>
-              </Box>
-            </DialogContent>
-            <DialogActions sx={{ px: 3, py: 1.5 }}>
-              <Button onClick={() => setInfoModalTab(null)} variant="contained" color="primary">
-                Got it
-              </Button>
-            </DialogActions>
-          </>
-        )}
-      </Dialog>
     </Box>
   )
 }

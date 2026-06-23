@@ -17,6 +17,23 @@ import { SessionChunk } from '../../apis/proto/openclick/v1/analytics'
 import { useCurrentProject } from '../../contexts/ProjectContext'
 import { useNotification } from '@gofreego/tsutils'
 import { PageHeader } from '../../components/PageHeader'
+import { TabInfoButton } from '../../components/TabInfoButton'
+import type { TabInfo } from '../../components/TabInfoButton'
+
+const EVENTS_TAB_INFO: Record<string, TabInfo> = {
+  events: {
+    title: 'Events',
+    meaning: 'Events are the raw actions captured from your users — page views, clicks, form submissions, and any custom events you track. Each event carries a distinct ID, timestamp, and a properties bag.',
+    howToUse: 'Filter by event name or distinct ID to narrow the list. Click any row to open a detail panel showing the full properties JSON. Use pagination to browse older events.',
+    example: 'To debug a sign-up issue: filter by event "$identify" and the user\'s distinct ID to inspect the exact properties sent during registration.'
+  },
+  replay: {
+    title: 'Session Replays',
+    meaning: 'Session Replays capture the sequence of rrweb chunks recorded during a user\'s browsing session. Each chunk is a timestamped snapshot of DOM mutations, mouse moves, and interactions.',
+    howToUse: 'Search by distinct ID to find sessions for a specific user. Click the play icon to open the replay drawer and browse the recorded chunks for that session. Use the delete icon to remove sessions.',
+    example: 'To reproduce a bug report: find the session by the user\'s distinct ID, open the replay, and inspect the chunk data around the reported timestamp to see what the user encountered.'
+  }
+}
 
 function formatDuration(ms: number | string | bigint): string {
   const n = Number(ms)
@@ -420,8 +437,8 @@ export function EventsPage() {
       {selectedProjectId ? (
         <>
           <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)} sx={{ mb: 2 }}>
-            <Tab label="Events" />
-            <Tab label="Session Replays" />
+            <Tab label={<Box display="flex" alignItems="center" gap={0.5}>Events<TabInfoButton info={EVENTS_TAB_INFO.events} /></Box>} />
+            <Tab label={<Box display="flex" alignItems="center" gap={0.5}>Session Replays<TabInfoButton info={EVENTS_TAB_INFO.replay} /></Box>} />
           </Tabs>
           {activeTab === 0 && <EventsTab projectId={selectedProjectId} />}
           {activeTab === 1 && <SessionsTab projectId={selectedProjectId} />}
