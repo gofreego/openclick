@@ -1,28 +1,28 @@
 package constants
 
 const (
-	PermProjectsRead     = "projects:read"
-	PermProjectsWrite    = "projects:write"
-	PermProjectsDelete   = "projects:delete"
-	PermDashboardsRead   = "dashboards:read"
-	PermDashboardsWrite  = "dashboards:write"
-	PermDashboardsDelete = "dashboards:delete"
-	PermMembersWrite     = "members:write"
-	
+	PermProjectsRead     = "oc.projects.read"
+	PermProjectsWrite    = "oc.projects.write"
+	PermProjectsDelete   = "oc.projects.delete"
+	PermDashboardsRead   = "oc.dashboards.read"
+	PermDashboardsWrite  = "oc.dashboards.write"
+	PermDashboardsDelete = "oc.dashboards.delete"
+	PermMembersWrite     = "oc.members.write"
+
 	// Analytics & Events
-	PermAnalyticsRead = "analytics:read"
-	PermEventsRead    = "events:read"
-	
+	PermAnalyticsRead = "oc.analytics.read"
+	PermEventsRead    = "oc.events.read"
+
 	// Replay
-	PermReplayRead   = "replay:read"
-	PermReplayDelete = "replay:delete"
-	
+	PermReplayRead   = "oc.replay.read"
+	PermReplayDelete = "oc.replay.delete"
+
 	// Persons & Cohorts
-	PermPersonsRead   = "persons:read"
-	PermPersonsDelete = "persons:delete"
-	
+	PermPersonsRead   = "oc.persons.read"
+	PermPersonsDelete = "oc.persons.delete"
+
 	// Feature Flags
-	PermFlagsRead   = "flags:read"
-	PermFlagsWrite  = "flags:write"
-	PermFlagsDelete = "flags:delete"
+	PermFlagsRead   = "oc.flags.read"
+	PermFlagsWrite  = "oc.flags.write"
+	PermFlagsDelete = "oc.flags.delete"
 )
