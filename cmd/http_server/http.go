@@ -77,7 +77,7 @@ func (a *HTTPServer) Run(ctx context.Context) error {
 		path := r.URL.Path
 
 		// Direct API requests to grpc-gateway mux
-		if len(path) >= 12 && path[:12] == "/openclick/api" {
+		if strings.HasPrefix(path, "/openclick/api") {
 			mux.ServeHTTP(w, r)
 			return
 		}
