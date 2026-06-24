@@ -40,7 +40,7 @@ Repository:
       replica: []
   ClickHouse:
     Host: "localhost"
-    Port: 9000
+    Port: 9096
     Username: "admin"
     Password: OSwfiTlc1r5W7Z
     Database: openclick

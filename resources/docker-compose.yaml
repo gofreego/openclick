@@ -1,34 +1,27 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: openclick_postgres
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: OSwfiTlc1r5W7Z
-      POSTGRES_DB: openclick
-    ports:
-      - "5434:5432"
-    volumes:
-      - openclick_pg_data:/var/lib/postgresql/data
-    restart: unless-stopped
-
   clickhouse:
     image: clickhouse/clickhouse-server:latest
     container_name: openclick_clickhouse
     environment:
       CLICKHOUSE_DB: openclick
-      CLICKHOUSE_USER: clickhouse
-      CLICKHOUSE_PASSWORD: clickhouse
+      CLICKHOUSE_USER: admin
+      CLICKHOUSE_PASSWORD: OSwfiTlc1r5W7Z
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
     ports:
       - "8123:8123"
-      - "9000:9000"
+      - "9096:9000"
     volumes:
       - openclick_ch_data:/var/lib/clickhouse
-      - ./resources/migrations/clickhouse:/docker-entrypoint-initdb.d
+      - ./migrations/clickhouse:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "clickhouse-client", "--user=admin", "--password=OSwfiTlc1r5W7Z", "--query=SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     restart: unless-stopped
 
 volumes:
-  openclick_pg_data:
   openclick_ch_data:
