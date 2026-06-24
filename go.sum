@@ -105,6 +105,8 @@ github.com/gofreego/goutils v1.3.9-0.20260624130438-db9d16daae60 h1:H9/IEPA0QxW8
 github.com/gofreego/goutils v1.3.9-0.20260624130438-db9d16daae60/go.mod h1:4vXpK+hkC8jsKko2m7loUyd3uep4RRh0bVKa9iW2IuA=
 github.com/gofreego/goutils v1.3.9 h1:5eCteGQIJsW2LeJ8RjPaqypAeO0m5gchYaXqpYUkNrc=
 github.com/gofreego/goutils v1.3.9/go.mod h1:4vXpK+hkC8jsKko2m7loUyd3uep4RRh0bVKa9iW2IuA=
+github.com/gofreego/goutils v1.4.0 h1:q+PMw6+bxV3J4fDxCySSDpR/yVtEMjCKrShUfCThpMI=
+github.com/gofreego/goutils v1.4.0/go.mod h1:LUw9INGnytMD/W7Xv8UeQPopRc0twmfc/HSEQfgkVeI=
 github.com/gogo/protobuf v1.1.1/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.3.2/go.mod h1:P1XiOD3dCwIKUDQYPy72D8LYyHL2YPYrpS2s69NZV8Q=
 github.com/golang-migrate/migrate/v4 v4.19.0 h1:RcjOnCGz3Or6HQYEJ/EEVLfWnmw9KnoigPSjzhCuaSE=
