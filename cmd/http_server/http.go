@@ -10,7 +10,6 @@ import (
 	"github.com/gofreego/openclick/internal/configs"
 	"github.com/gofreego/openclick/internal/repository"
 	"github.com/gofreego/openclick/internal/service"
-	"github.com/gofreego/openclick/pkg/utils"
 
 	"github.com/gofreego/goutils/api"
 	"github.com/gofreego/goutils/api/debug"
@@ -91,10 +90,14 @@ func (a *HTTPServer) Run(ctx context.Context) error {
 
 		http.NotFound(w, r)
 	})
+	var handler http.Handler = finalHandler
+	if a.cfg.Server.EnableCORS {
+		handler = api.CORSMiddleware(handler)
+	}
 
 	a.server = &http.Server{
 		Addr:    fmt.Sprintf(":%d", a.cfg.Server.HTTPPort),
-		Handler: logger.WithRequestMiddleware(logger.WithRequestTimeMiddleware(utils.CORSMiddleware(finalHandler))),
+		Handler: logger.WithRequestMiddleware(logger.WithRequestTimeMiddleware(handler)),
 	}
 
 	logger.Info(ctx, "Starting HTTP server on port %d", a.cfg.Server.HTTPPort)
