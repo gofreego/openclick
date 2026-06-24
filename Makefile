@@ -11,13 +11,13 @@ clean:
 
 # UI build commands
 build-ui:
-	cd dashboard-ui && npm install && npm run build
+	cd ui && npm install && npm run build
 
 dev-ui:
-	cd dashboard-ui && npm run dev
+	cd ui && npm run dev
 
 clean-ui:
-	cd dashboard-ui && rm -rf dist node_modules
+	cd ui && rm -rf dist node_modules
 
 docker: build-linux
 	docker build -t openclick .
