@@ -109,12 +109,12 @@ function App() {
                 }
               >
                 <Route index element={<Navigate to="/openclick/dashboard" replace />} />
-                <Route path="/openclick/dashboard" element={<DashboardPage />} />
-                <Route path="/openclick/projects" element={<ProjectsPage />} />
-                <Route path="/openclick/events" element={<EventsPage />} />
-                <Route path="/openclick/persons" element={<PersonsPage />} />
-                <Route path="/openclick/feature-flags" element={<FeatureFlagsPage />} />
-                <Route path="/openclick/settings" element={<SettingsPage />} />
+                <Route path="openclick/dashboard" element={<DashboardPage />} />
+                <Route path="openclick/projects" element={<ProjectsPage />} />
+                <Route path="openclick/events" element={<EventsPage />} />
+                <Route path="openclick/persons" element={<PersonsPage />} />
+                <Route path="openclick/feature-flags" element={<FeatureFlagsPage />} />
+                <Route path="openclick/settings" element={<SettingsPage />} />
                 <Route path="*" element={<Navigate to="/openclick/dashboard" replace />} />
               </Route>
             </Routes>

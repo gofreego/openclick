@@ -11,7 +11,7 @@ const PREFIX = "/openclick/"
 func GetUIHandler(uifs http.FileSystem, indexHTML []byte) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		if strings.HasPrefix(r.URL.Path, PREFIX) {
+		if strings.Contains(r.URL.Path, "assets") {
 			http.StripPrefix(PREFIX, http.FileServer(uifs)).ServeHTTP(w, r)
 			return
 		}
