@@ -7,7 +7,7 @@ import {
   AddMemberResponse,
 } from '../apis/proto/openclick/v1/project'
 
-const BASE_URL = '/api/v1/projects'
+const BASE_URL = '/openclick/api/v1/projects'
 
 export const projectService = {
   async list(): Promise<ListProjectsResponse> {
