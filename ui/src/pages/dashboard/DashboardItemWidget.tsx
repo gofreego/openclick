@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Box, Typography, CircularProgress } from '@mui/material'
+import { useState, useEffect, useCallback } from 'react'
+import { Box, Typography, CircularProgress, Button } from '@mui/material'
 import {
   LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid,
   Tooltip as RechartsTooltip, Legend, ResponsiveContainer
@@ -17,40 +17,47 @@ export function DashboardItemWidget({ projectId, item }: Props) {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState<any>(null)
   const [error, setError] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
 
-  useEffect(() => {
+  // Stable serialized deps to avoid re-firing when parent passes a new object reference
+  const itemType = item.type
+  const itemQuery = JSON.stringify(item.query || {})
+
+  const fetchData = useCallback(async () => {
     const q = item.query || {}
     setLoading(true)
     setError(false)
 
-    const run = async () => {
-      try {
-        let result: any
-        switch (item.type) {
-          case 'trends':
-            result = await analyticsService.queryTrends(projectId, q as any)
-            break
-          case 'funnel':
-            result = await analyticsService.queryFunnel(projectId, q as any)
-            break
-          case 'retention':
-            result = await analyticsService.queryRetention(projectId, q as any)
-            break
-          case 'paths':
-            result = await analyticsService.queryPaths(projectId, q as any)
-            break
-          default:
-            result = null
-        }
-        setData(result)
-      } catch {
-        setError(true)
-      } finally {
-        setLoading(false)
+    try {
+      let result: any
+      switch (itemType) {
+        case 'trends':
+          result = await analyticsService.queryTrends(projectId, q as any)
+          break
+        case 'funnel':
+          result = await analyticsService.queryFunnel(projectId, q as any)
+          break
+        case 'retention':
+          result = await analyticsService.queryRetention(projectId, q as any)
+          break
+        case 'paths':
+          result = await analyticsService.queryPaths(projectId, q as any)
+          break
+        default:
+          result = null
       }
+      setData(result)
+    } catch {
+      setError(true)
+    } finally {
+      setLoading(false)
     }
-    run()
-  }, [projectId, item])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectId, itemType, itemQuery, retryCount])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   if (loading) {
     return (
@@ -62,8 +69,11 @@ export function DashboardItemWidget({ projectId, item }: Props) {
 
   if (error || !data) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height={180}>
+      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" gap={1} height={180}>
         <Typography variant="body2" color="error">Failed to load data</Typography>
+        <Button size="small" variant="outlined" onClick={() => setRetryCount(c => c + 1)}>
+          Retry
+        </Button>
       </Box>
     )
   }

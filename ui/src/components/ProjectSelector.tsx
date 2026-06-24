@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { FormControl, Select, MenuItem, Typography, Box, CircularProgress } from '@mui/material';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { FormControl, Select, MenuItem, Typography, Box, CircularProgress, Button } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
 import { projectService } from '../services/projectService';
 import type { Project } from '../services/projectService';
@@ -11,25 +11,35 @@ export function ProjectSelector() {
   const selectedProjectId = useCurrentProject();
   const setSelectedProjectId = useSetCurrentProject();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const notify = useNotification();
+
+  // Refs so the effect doesn't need these as deps and avoids re-fetch loops
+  const notifyRef = useRef(notify);
+  notifyRef.current = notify;
+  const selectedProjectIdRef = useRef(selectedProjectId);
+  selectedProjectIdRef.current = selectedProjectId;
 
   useEffect(() => {
     let mounted = true;
+    setLoading(true);
+    setError(false);
+
     const loadProjects = async () => {
       try {
         const res = await projectService.list();
         if (mounted) {
           const list = res.results || [];
           setProjects(list);
-          // Set first project as selected by default if we don't have one selected
-          if (list.length > 0 && !selectedProjectId) {
-            const defaultId = list[0].id;
-            setSelectedProjectId(defaultId);
+          if (list.length > 0 && !selectedProjectIdRef.current) {
+            setSelectedProjectId(list[0].id);
           }
         }
       } catch (err: unknown) {
         if (mounted) {
-          notify.error((err as Error).message || 'Failed to load projects');
+          setError(true);
+          notifyRef.current.error((err as Error).message || 'Failed to load projects');
         }
       } finally {
         if (mounted) {
@@ -41,19 +51,33 @@ export function ProjectSelector() {
     return () => {
       mounted = false;
     };
-  }, [notify, selectedProjectId]);
+  // retryCount is the only intentional trigger for re-fetch beyond mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setSelectedProjectId, retryCount]);
 
   const handleChange = (event: SelectChangeEvent) => {
-    const val = event.target.value as string;
-    setSelectedProjectId(val);
+    setSelectedProjectId(event.target.value as string);
   };
 
-
+  const handleRetry = useCallback(() => setRetryCount(c => c + 1), []);
 
   if (loading) {
     return (
       <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
         <CircularProgress size={24} />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+        <Typography variant="body2" color="error" align="center">
+          Failed to load projects
+        </Typography>
+        <Button size="small" variant="outlined" onClick={handleRetry}>
+          Retry
+        </Button>
       </Box>
     );
   }
