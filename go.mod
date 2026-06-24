@@ -5,7 +5,8 @@ go 1.24.1
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.46.0
 	github.com/envoyproxy/protoc-gen-validate v1.2.1
-	github.com/gofreego/goutils v1.3.9-0.20260620134124-0e09c102bb7f
+	github.com/gofreego/goutils v1.3.9
+	github.com/golang-migrate/migrate/v4 v4.19.0
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
 	google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c
@@ -14,6 +15,7 @@ require (
 )
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/ClickHouse/ch-go v0.71.0 // indirect
 	github.com/andybalholm/brotli v1.2.0 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
@@ -31,6 +33,7 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.20.0 // indirect
+	github.com/go-sql-driver/mysql v1.9.3 // indirect
 	github.com/go-zookeeper/zk v1.0.3 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/hashicorp/consul/api v1.31.2 // indirect
