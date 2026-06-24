@@ -39,7 +39,7 @@ install:
 	go install google.golang.org/protobuf/cmd/protoc-gen-go
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.5.1
 	go install github.com/envoyproxy/protoc-gen-validate@latest
-	go install github.com/gofreego/goutils/cmd/sql-migrator@v1.3.8
+	go install github.com/gofreego/goutils/cmd/sql-migrator@v1.3.9
 
 setup:
 	@echo "Compiling proto files..."
