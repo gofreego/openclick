@@ -1,11 +1,11 @@
 Repository:
   Name: ClickHouse
   ClickHouse:
-    Host: localhost
+    Host: 192.168.1.100
     Port: 9096
     Username: "admin"
     Password: OSwfiTlc1r5W7Z
     Database: openclick
 Migrator:
   Action: up
-  Path: ./resources/migrations/clickhouse
+  Path: ../openclick/resources/migrations/clickhouse
