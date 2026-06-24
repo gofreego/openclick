@@ -66,7 +66,7 @@ export function SettingsPage() {
 
   useEffect(() => {
     setLoading(true)
-    httpClient.get<ListPermissionsResponse>('/api/v1/permissions')
+    httpClient.get<ListPermissionsResponse>('/openclick/api/v1/permissions')
       .then(res => setPermissions(res.data?.permissions || []))
       .catch(() => notify.error('Failed to load permissions'))
       .finally(() => setLoading(false))
