@@ -15,7 +15,11 @@ import (
 
 // Config holds ClickHouse connection configuration
 type Config struct {
-	DSN          string `yaml:"DSN"` // e.g. "clickhouse://user:pass@host:9000/dbname"
+	Host         string `yaml:"Host"`
+	Port         int    `yaml:"Port"`
+	Username     string `yaml:"Username"`
+	Password     string `yaml:"Password"`
+	Database     string `yaml:"Database"`
 	MaxOpenConns int    `yaml:"MaxOpenConns"`
 	MaxIdleConns int    `yaml:"MaxIdleConns"`
 }
@@ -27,10 +31,11 @@ type Repository struct {
 
 // NewRepository creates a new ClickHouse repository
 func NewRepository(ctx context.Context, cfg *Config) (*Repository, error) {
-	if cfg.DSN == "" {
-		return nil, fmt.Errorf("ClickHouse DSN is required")
+	if cfg.Host == "" || cfg.Port == 0 || cfg.Username == "" || cfg.Password == "" || cfg.Database == "" {
+		return nil, fmt.Errorf("ClickHouse configuration is incomplete")
 	}
-	db, err := sql.Open("clickhouse", cfg.DSN)
+	dsn := fmt.Sprintf("clickhouse://%s:%s@%s:%d/%s", cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.Database)
+	db, err := sql.Open("clickhouse", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("open clickhouse: %w", err)
 	}

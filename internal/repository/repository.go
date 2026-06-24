@@ -62,10 +62,6 @@ func GetInstance(ctx context.Context, cfg *Config) service.Repository {
 // GetAnalyticsInstance returns the singleton ClickHouse analytics repository.
 // Returns nil if ClickHouse is not configured.
 func GetAnalyticsInstance(ctx context.Context, cfg *Config) service.AnalyticsRepository {
-	if cfg.ClickHouse.DSN == "" {
-		return nil
-	}
-
 	muCH.RLock()
 	if analyticsDB != nil {
 		defer muCH.RUnlock()

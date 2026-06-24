@@ -19,16 +19,16 @@ AppNames:
 - HTTP_SERVER
 - GRPC_SERVER
 Server:
-  GRPCPort: 8080
-  HTTPPort: 80
+  GRPCPort: 9094
+  HTTPPort: 9093
 Repository:
   Name : PostgreSQL
   PostgreSQL:
     Name: Postgres
     Postgres:
       primary:
-        Host: localhost
-        Port: 5434
+        Host: 192.168.1.100
+        Port: 5432
         Username: "admin"
         Password: OSwfiTlc1r5W7Z
         DBName: openclick
@@ -39,7 +39,11 @@ Repository:
         ConnMaxIdleTime: 5m
       replica: []
   ClickHouse:
-    DSN: "clickhouse://clickhouse:clickhouse@localhost:9000/openclick"
+    Host: "localhost"
+    Port: 9000
+    Username: "admin"
+    Password: OSwfiTlc1r5W7Z
+    Database: openclick
     MaxOpenConns: 10
     MaxIdleConns: 5
 Service: {}
