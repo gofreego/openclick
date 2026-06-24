@@ -102,19 +102,19 @@ function App() {
                       isRouter={true}
                       isBrowserRouter={false}
                       style={{ height: '100vh' }}
-                      header={<SidebarHeader title="OpenClick" homePath="/" />}
+                      header={<SidebarHeader title="OpenClick" homePath="/openclick/dashboard" />}
                       footer={<ProjectSelector />}
                     />
                   </ProtectedRoute>
                 }
               >
                 <Route index element={<Navigate to="/openclick/dashboard" replace />} />
-                <Route path="openclick/dashboard" element={<DashboardPage />} />
-                <Route path="openclick/projects" element={<ProjectsPage />} />
-                <Route path="openclick/events" element={<EventsPage />} />
-                <Route path="openclick/persons" element={<PersonsPage />} />
-                <Route path="openclick/feature-flags" element={<FeatureFlagsPage />} />
-                <Route path="openclick/settings" element={<SettingsPage />} />
+                <Route path="/openclick/dashboard" element={<DashboardPage />} />
+                <Route path="/openclick/projects" element={<ProjectsPage />} />
+                <Route path="/openclick/events" element={<EventsPage />} />
+                <Route path="/openclick/persons" element={<PersonsPage />} />
+                <Route path="/openclick/feature-flags" element={<FeatureFlagsPage />} />
+                <Route path="/openclick/settings" element={<SettingsPage />} />
                 <Route path="*" element={<Navigate to="/openclick/dashboard" replace />} />
               </Route>
             </Routes>
