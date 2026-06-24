@@ -26,7 +26,7 @@ import { SettingsPage } from './pages/settings/SettingsPage'
 
 import { authService, sessionManager } from './services'
 
-const LOGIN_URL = import.meta.env.VITE_LOGIN_URL as string || 'http://localhost:8080/login'
+const LOGIN_URL = import.meta.env.VITE_LOGIN_URL as string || '/openauth/admin/v2/login'
 
 function App() {
   const [isInitialized, setIsInitialized] = useState(false);
