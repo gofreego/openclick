@@ -28,14 +28,14 @@ export const sessionService = {
     if (params?.offset !== undefined) query.set('offset', String(params.offset))
     const qs = query.toString()
     const response = await httpClient.get<ListSessionsResponse>(
-      `/api/v1/projects/${projectId}/sessions${qs ? `?${qs}` : ''}`
+      `/openclick/api/v1/projects/${projectId}/sessions${qs ? `?${qs}` : ''}`
     )
     return response.data
   },
 
   async get(projectId: string, sessionId: string): Promise<SessionResponse> {
     const response = await httpClient.get<SessionResponse>(
-      `/api/v1/projects/${projectId}/sessions/${sessionId}`
+      `/openclick/api/v1/projects/${projectId}/sessions/${sessionId}`
     )
     return response.data
   },
@@ -45,13 +45,13 @@ export const sessionService = {
     if (fromChunk !== undefined) query.set('from_chunk', String(fromChunk))
     const qs = query.toString()
     const response = await httpClient.get<GetSessionChunksResponse>(
-      `/api/v1/projects/${projectId}/sessions/${sessionId}/chunks${qs ? `?${qs}` : ''}`
+      `/openclick/api/v1/projects/${projectId}/sessions/${sessionId}/chunks${qs ? `?${qs}` : ''}`
     )
     return response.data
   },
 
   async delete(projectId: string, sessionId: string): Promise<void> {
-    await httpClient.delete(`/api/v1/projects/${projectId}/sessions/${sessionId}`)
+    await httpClient.delete(`/openclick/api/v1/projects/${projectId}/sessions/${sessionId}`)
   },
 }
 

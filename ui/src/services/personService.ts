@@ -8,17 +8,17 @@ export const personService = {
     if (params?.limit !== undefined) query.set('limit', String(params.limit))
     if (params?.offset !== undefined) query.set('offset', String(params.offset))
     const qs = query.toString()
-    const response = await httpClient.get<ListPersonsResponse>(`/api/v1/projects/${projectId}/persons${qs ? `?${qs}` : ''}`)
+    const response = await httpClient.get<ListPersonsResponse>(`/openclick/api/v1/projects/${projectId}/persons${qs ? `?${qs}` : ''}`)
     return response.data
   },
 
   async get(projectId: string, distinctId: string): Promise<GetPersonResponse> {
-    const response = await httpClient.get<GetPersonResponse>(`/api/v1/projects/${projectId}/persons/${encodeURIComponent(distinctId)}`)
+    const response = await httpClient.get<GetPersonResponse>(`/openclick/api/v1/projects/${projectId}/persons/${encodeURIComponent(distinctId)}`)
     return response.data
   },
 
   async delete(projectId: string, distinctId: string): Promise<void> {
-    await httpClient.delete(`/api/v1/projects/${projectId}/persons/${encodeURIComponent(distinctId)}`)
+    await httpClient.delete(`/openclick/api/v1/projects/${projectId}/persons/${encodeURIComponent(distinctId)}`)
   },
 }
 

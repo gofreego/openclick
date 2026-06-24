@@ -245,7 +245,7 @@ TTL timestamp + INTERVAL 90 DAY;
 
 ## API Definitions
 
-All API endpoints are prefixed with `/api/v1`. Ingestion routes (under `/e/`, `/batch/`, `/identify/`, `/alias/`, `/replay/`, `/decide/`) are public-facing and authenticated via the project `api_key`. All other routes are internal/dashboard routes authenticated via headers set by the upstream API gateway.
+All API endpoints are prefixed with `/openclick/api/v1`. Ingestion routes (under `/e/`, `/batch/`, `/identify/`, `/alias/`, `/replay/`, `/decide/`) are public-facing and authenticated via the project `api_key`. All other routes are internal/dashboard routes authenticated via headers set by the upstream API gateway.
 
 ### Authentication & Authorization
 

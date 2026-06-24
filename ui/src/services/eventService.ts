@@ -7,7 +7,7 @@ import {
 
 export const eventService = {
   async queryEvents(projectId: string, data: Partial<QueryEventsRequest>): Promise<QueryEventsResponse> {
-    const response = await httpClient.post<QueryEventsResponse>(`/api/v1/projects/${projectId}/query/events`, {
+    const response = await httpClient.post<QueryEventsResponse>(`/openclick/api/v1/projects/${projectId}/query/events`, {
       ...data,
       limit: data.limit || 50,
       offset: data.offset || 0,

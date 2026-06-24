@@ -7,22 +7,22 @@ import {
 
 export const featureFlagService = {
   async list(projectId: string): Promise<ListFeatureFlagsResponse> {
-    const response = await httpClient.get<ListFeatureFlagsResponse>(`/api/v1/projects/${projectId}/feature-flags`)
+    const response = await httpClient.get<ListFeatureFlagsResponse>(`/openclick/api/v1/projects/${projectId}/feature-flags`)
     return response.data
   },
 
   async create(projectId: string, data: Partial<CreateFeatureFlagRequest>): Promise<FeatureFlagResponse> {
-    const response = await httpClient.post<FeatureFlagResponse>(`/api/v1/projects/${projectId}/feature-flags`, data)
+    const response = await httpClient.post<FeatureFlagResponse>(`/openclick/api/v1/projects/${projectId}/feature-flags`, data)
     return response.data
   },
 
   async update(projectId: string, flagId: string, data: Partial<CreateFeatureFlagRequest>): Promise<FeatureFlagResponse> {
-    const response = await httpClient.patch<FeatureFlagResponse>(`/api/v1/projects/${projectId}/feature-flags/${flagId}`, data)
+    const response = await httpClient.patch<FeatureFlagResponse>(`/openclick/api/v1/projects/${projectId}/feature-flags/${flagId}`, data)
     return response.data
   },
 
   async delete(projectId: string, flagId: string): Promise<void> {
-    await httpClient.delete(`/api/v1/projects/${projectId}/feature-flags/${flagId}`)
+    await httpClient.delete(`/openclick/api/v1/projects/${projectId}/feature-flags/${flagId}`)
   },
 }
 
