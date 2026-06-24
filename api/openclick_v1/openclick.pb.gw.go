@@ -1990,7 +1990,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/Ping", runtime.WithHTTPPathPattern("/api/v1/ping"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/Ping", runtime.WithHTTPPathPattern("/openclick/api/v1/ping"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2010,7 +2010,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListPermissions", runtime.WithHTTPPathPattern("/api/v1/permissions"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListPermissions", runtime.WithHTTPPathPattern("/openclick/api/v1/permissions"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2030,7 +2030,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListProjects", runtime.WithHTTPPathPattern("/api/v1/projects"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListProjects", runtime.WithHTTPPathPattern("/openclick/api/v1/projects"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2050,7 +2050,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CreateProject", runtime.WithHTTPPathPattern("/api/v1/projects"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CreateProject", runtime.WithHTTPPathPattern("/openclick/api/v1/projects"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2070,7 +2070,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/GetProject", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/GetProject", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2090,7 +2090,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/UpdateProject", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/UpdateProject", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2110,7 +2110,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteProject", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteProject", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2130,7 +2130,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/AddMember", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/members"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/AddMember", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/members"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2150,7 +2150,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/RemoveMember", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/members/{user_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/RemoveMember", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/members/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2170,7 +2170,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListDashboards", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListDashboards", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2190,7 +2190,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CreateDashboard", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CreateDashboard", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2210,7 +2210,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/GetDashboard", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards/{dashboard_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/GetDashboard", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2230,7 +2230,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteDashboard", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards/{dashboard_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteDashboard", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2250,7 +2250,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CreateDashboardItem", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CreateDashboardItem", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2270,7 +2270,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/UpdateDashboardItem", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/UpdateDashboardItem", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2290,7 +2290,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteDashboardItem", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteDashboardItem", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2310,7 +2310,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/QueryTrends", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/query/trends"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/QueryTrends", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/query/trends"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2330,7 +2330,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/QueryFunnel", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/query/funnel"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/QueryFunnel", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/query/funnel"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2350,7 +2350,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/QueryRetention", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/query/retention"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/QueryRetention", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/query/retention"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2370,7 +2370,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/QueryPaths", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/query/paths"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/QueryPaths", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/query/paths"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2390,7 +2390,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/QueryEvents", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/query/events"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/QueryEvents", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/query/events"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2410,7 +2410,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListEventNames", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/event-names"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListEventNames", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/event-names"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2430,7 +2430,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListSessions", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/sessions"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListSessions", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/sessions"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2450,7 +2450,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/GetSession", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/sessions/{session_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/GetSession", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/sessions/{session_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2470,7 +2470,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/GetSessionChunks", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/sessions/{session_id}/chunks"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/GetSessionChunks", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/sessions/{session_id}/chunks"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2490,7 +2490,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteSession", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/sessions/{session_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteSession", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/sessions/{session_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2510,7 +2510,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListPersons", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/persons"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListPersons", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/persons"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2530,7 +2530,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/GetPerson", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/persons/{distinct_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/GetPerson", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/persons/{distinct_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2550,7 +2550,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeletePerson", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/persons/{distinct_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeletePerson", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/persons/{distinct_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2570,7 +2570,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListCohorts", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/cohorts"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListCohorts", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/cohorts"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2590,7 +2590,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CreateCohort", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/cohorts"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CreateCohort", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/cohorts"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2610,7 +2610,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteCohort", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/cohorts/{cohort_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteCohort", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/cohorts/{cohort_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2630,7 +2630,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListFeatureFlags", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/feature-flags"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/ListFeatureFlags", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/feature-flags"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2650,7 +2650,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CreateFeatureFlag", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/feature-flags"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CreateFeatureFlag", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/feature-flags"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2670,7 +2670,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/UpdateFeatureFlag", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/feature-flags/{flag_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/UpdateFeatureFlag", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/feature-flags/{flag_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2690,7 +2690,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteFeatureFlag", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/feature-flags/{flag_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/DeleteFeatureFlag", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/feature-flags/{flag_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2710,7 +2710,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/EvaluateFlags", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/feature-flags/evaluate"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/EvaluateFlags", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/feature-flags/evaluate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2730,7 +2730,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/Decide", runtime.WithHTTPPathPattern("/api/v1/decide"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/Decide", runtime.WithHTTPPathPattern("/openclick/api/v1/decide"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2750,7 +2750,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CaptureEvent", runtime.WithHTTPPathPattern("/api/v1/e"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/CaptureEvent", runtime.WithHTTPPathPattern("/openclick/api/v1/e"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2770,7 +2770,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/BatchCapture", runtime.WithHTTPPathPattern("/api/v1/batch"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/BatchCapture", runtime.WithHTTPPathPattern("/openclick/api/v1/batch"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2790,7 +2790,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/Identify", runtime.WithHTTPPathPattern("/api/v1/identify"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/Identify", runtime.WithHTTPPathPattern("/openclick/api/v1/identify"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2810,7 +2810,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/Alias", runtime.WithHTTPPathPattern("/api/v1/alias"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/Alias", runtime.WithHTTPPathPattern("/openclick/api/v1/alias"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2830,7 +2830,7 @@ func RegisterBaseServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/IngestReplay", runtime.WithHTTPPathPattern("/api/v1/replay"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/v1.BaseService/IngestReplay", runtime.WithHTTPPathPattern("/openclick/api/v1/replay"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2888,7 +2888,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/Ping", runtime.WithHTTPPathPattern("/api/v1/ping"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/Ping", runtime.WithHTTPPathPattern("/openclick/api/v1/ping"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2905,7 +2905,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListPermissions", runtime.WithHTTPPathPattern("/api/v1/permissions"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListPermissions", runtime.WithHTTPPathPattern("/openclick/api/v1/permissions"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2922,7 +2922,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListProjects", runtime.WithHTTPPathPattern("/api/v1/projects"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListProjects", runtime.WithHTTPPathPattern("/openclick/api/v1/projects"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2939,7 +2939,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CreateProject", runtime.WithHTTPPathPattern("/api/v1/projects"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CreateProject", runtime.WithHTTPPathPattern("/openclick/api/v1/projects"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2956,7 +2956,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/GetProject", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/GetProject", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2973,7 +2973,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/UpdateProject", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/UpdateProject", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2990,7 +2990,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteProject", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteProject", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3007,7 +3007,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/AddMember", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/members"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/AddMember", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/members"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3024,7 +3024,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/RemoveMember", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/members/{user_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/RemoveMember", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/members/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3041,7 +3041,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListDashboards", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListDashboards", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3058,7 +3058,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CreateDashboard", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CreateDashboard", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3075,7 +3075,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/GetDashboard", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards/{dashboard_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/GetDashboard", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3092,7 +3092,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteDashboard", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards/{dashboard_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteDashboard", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3109,7 +3109,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CreateDashboardItem", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CreateDashboardItem", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3126,7 +3126,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/UpdateDashboardItem", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/UpdateDashboardItem", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3143,7 +3143,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteDashboardItem", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteDashboardItem", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3160,7 +3160,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/QueryTrends", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/query/trends"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/QueryTrends", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/query/trends"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3177,7 +3177,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/QueryFunnel", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/query/funnel"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/QueryFunnel", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/query/funnel"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3194,7 +3194,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/QueryRetention", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/query/retention"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/QueryRetention", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/query/retention"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3211,7 +3211,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/QueryPaths", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/query/paths"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/QueryPaths", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/query/paths"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3228,7 +3228,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/QueryEvents", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/query/events"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/QueryEvents", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/query/events"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3245,7 +3245,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListEventNames", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/event-names"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListEventNames", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/event-names"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3262,7 +3262,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListSessions", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/sessions"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListSessions", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/sessions"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3279,7 +3279,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/GetSession", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/sessions/{session_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/GetSession", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/sessions/{session_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3296,7 +3296,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/GetSessionChunks", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/sessions/{session_id}/chunks"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/GetSessionChunks", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/sessions/{session_id}/chunks"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3313,7 +3313,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteSession", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/sessions/{session_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteSession", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/sessions/{session_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3330,7 +3330,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListPersons", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/persons"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListPersons", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/persons"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3347,7 +3347,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/GetPerson", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/persons/{distinct_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/GetPerson", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/persons/{distinct_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3364,7 +3364,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeletePerson", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/persons/{distinct_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeletePerson", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/persons/{distinct_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3381,7 +3381,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListCohorts", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/cohorts"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListCohorts", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/cohorts"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3398,7 +3398,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CreateCohort", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/cohorts"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CreateCohort", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/cohorts"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3415,7 +3415,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteCohort", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/cohorts/{cohort_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteCohort", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/cohorts/{cohort_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3432,7 +3432,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListFeatureFlags", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/feature-flags"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/ListFeatureFlags", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/feature-flags"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3449,7 +3449,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CreateFeatureFlag", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/feature-flags"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CreateFeatureFlag", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/feature-flags"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3466,7 +3466,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/UpdateFeatureFlag", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/feature-flags/{flag_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/UpdateFeatureFlag", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/feature-flags/{flag_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3483,7 +3483,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteFeatureFlag", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/feature-flags/{flag_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/DeleteFeatureFlag", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/feature-flags/{flag_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3500,7 +3500,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/EvaluateFlags", runtime.WithHTTPPathPattern("/api/v1/projects/{project_id}/feature-flags/evaluate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/EvaluateFlags", runtime.WithHTTPPathPattern("/openclick/api/v1/projects/{project_id}/feature-flags/evaluate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3517,7 +3517,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/Decide", runtime.WithHTTPPathPattern("/api/v1/decide"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/Decide", runtime.WithHTTPPathPattern("/openclick/api/v1/decide"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3534,7 +3534,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CaptureEvent", runtime.WithHTTPPathPattern("/api/v1/e"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/CaptureEvent", runtime.WithHTTPPathPattern("/openclick/api/v1/e"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3551,7 +3551,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/BatchCapture", runtime.WithHTTPPathPattern("/api/v1/batch"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/BatchCapture", runtime.WithHTTPPathPattern("/openclick/api/v1/batch"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3568,7 +3568,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/Identify", runtime.WithHTTPPathPattern("/api/v1/identify"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/Identify", runtime.WithHTTPPathPattern("/openclick/api/v1/identify"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3585,7 +3585,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/Alias", runtime.WithHTTPPathPattern("/api/v1/alias"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/Alias", runtime.WithHTTPPathPattern("/openclick/api/v1/alias"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3602,7 +3602,7 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/IngestReplay", runtime.WithHTTPPathPattern("/api/v1/replay"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/v1.BaseService/IngestReplay", runtime.WithHTTPPathPattern("/openclick/api/v1/replay"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3619,49 +3619,49 @@ func RegisterBaseServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 }
 
 var (
-	pattern_BaseService_Ping_0                = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "ping"}, ""))
-	pattern_BaseService_ListPermissions_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "permissions"}, ""))
-	pattern_BaseService_ListProjects_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "projects"}, ""))
-	pattern_BaseService_CreateProject_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "projects"}, ""))
-	pattern_BaseService_GetProject_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "projects", "project_id"}, ""))
-	pattern_BaseService_UpdateProject_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "projects", "project_id"}, ""))
-	pattern_BaseService_DeleteProject_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "projects", "project_id"}, ""))
-	pattern_BaseService_AddMember_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "project_id", "members"}, ""))
-	pattern_BaseService_RemoveMember_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "projects", "project_id", "members", "user_id"}, ""))
-	pattern_BaseService_ListDashboards_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "project_id", "dashboards"}, ""))
-	pattern_BaseService_CreateDashboard_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "project_id", "dashboards"}, ""))
-	pattern_BaseService_GetDashboard_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "projects", "project_id", "dashboards", "dashboard_id"}, ""))
-	pattern_BaseService_DeleteDashboard_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "projects", "project_id", "dashboards", "dashboard_id"}, ""))
-	pattern_BaseService_CreateDashboardItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"api", "v1", "projects", "project_id", "dashboards", "dashboard_id", "items"}, ""))
-	pattern_BaseService_UpdateDashboardItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7}, []string{"api", "v1", "projects", "project_id", "dashboards", "dashboard_id", "items", "item_id"}, ""))
-	pattern_BaseService_DeleteDashboardItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7}, []string{"api", "v1", "projects", "project_id", "dashboards", "dashboard_id", "items", "item_id"}, ""))
-	pattern_BaseService_QueryTrends_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 2, 5}, []string{"api", "v1", "projects", "project_id", "query", "trends"}, ""))
-	pattern_BaseService_QueryFunnel_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 2, 5}, []string{"api", "v1", "projects", "project_id", "query", "funnel"}, ""))
-	pattern_BaseService_QueryRetention_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 2, 5}, []string{"api", "v1", "projects", "project_id", "query", "retention"}, ""))
-	pattern_BaseService_QueryPaths_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 2, 5}, []string{"api", "v1", "projects", "project_id", "query", "paths"}, ""))
-	pattern_BaseService_QueryEvents_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 2, 5}, []string{"api", "v1", "projects", "project_id", "query", "events"}, ""))
-	pattern_BaseService_ListEventNames_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "project_id", "event-names"}, ""))
-	pattern_BaseService_ListSessions_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "project_id", "sessions"}, ""))
-	pattern_BaseService_GetSession_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "projects", "project_id", "sessions", "session_id"}, ""))
-	pattern_BaseService_GetSessionChunks_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"api", "v1", "projects", "project_id", "sessions", "session_id", "chunks"}, ""))
-	pattern_BaseService_DeleteSession_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "projects", "project_id", "sessions", "session_id"}, ""))
-	pattern_BaseService_ListPersons_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "project_id", "persons"}, ""))
-	pattern_BaseService_GetPerson_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "projects", "project_id", "persons", "distinct_id"}, ""))
-	pattern_BaseService_DeletePerson_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "projects", "project_id", "persons", "distinct_id"}, ""))
-	pattern_BaseService_ListCohorts_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "project_id", "cohorts"}, ""))
-	pattern_BaseService_CreateCohort_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "project_id", "cohorts"}, ""))
-	pattern_BaseService_DeleteCohort_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "projects", "project_id", "cohorts", "cohort_id"}, ""))
-	pattern_BaseService_ListFeatureFlags_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "project_id", "feature-flags"}, ""))
-	pattern_BaseService_CreateFeatureFlag_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "projects", "project_id", "feature-flags"}, ""))
-	pattern_BaseService_UpdateFeatureFlag_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "projects", "project_id", "feature-flags", "flag_id"}, ""))
-	pattern_BaseService_DeleteFeatureFlag_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "projects", "project_id", "feature-flags", "flag_id"}, ""))
-	pattern_BaseService_EvaluateFlags_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 2, 5}, []string{"api", "v1", "projects", "project_id", "feature-flags", "evaluate"}, ""))
-	pattern_BaseService_Decide_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "decide"}, ""))
-	pattern_BaseService_CaptureEvent_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "e"}, ""))
-	pattern_BaseService_BatchCapture_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "batch"}, ""))
-	pattern_BaseService_Identify_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "identify"}, ""))
-	pattern_BaseService_Alias_0               = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "alias"}, ""))
-	pattern_BaseService_IngestReplay_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "replay"}, ""))
+	pattern_BaseService_Ping_0                = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"openclick", "api", "v1", "ping"}, ""))
+	pattern_BaseService_ListPermissions_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"openclick", "api", "v1", "permissions"}, ""))
+	pattern_BaseService_ListProjects_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"openclick", "api", "v1", "projects"}, ""))
+	pattern_BaseService_CreateProject_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"openclick", "api", "v1", "projects"}, ""))
+	pattern_BaseService_GetProject_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"openclick", "api", "v1", "projects", "project_id"}, ""))
+	pattern_BaseService_UpdateProject_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"openclick", "api", "v1", "projects", "project_id"}, ""))
+	pattern_BaseService_DeleteProject_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"openclick", "api", "v1", "projects", "project_id"}, ""))
+	pattern_BaseService_AddMember_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"openclick", "api", "v1", "projects", "project_id", "members"}, ""))
+	pattern_BaseService_RemoveMember_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "members", "user_id"}, ""))
+	pattern_BaseService_ListDashboards_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"openclick", "api", "v1", "projects", "project_id", "dashboards"}, ""))
+	pattern_BaseService_CreateDashboard_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"openclick", "api", "v1", "projects", "project_id", "dashboards"}, ""))
+	pattern_BaseService_GetDashboard_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "dashboards", "dashboard_id"}, ""))
+	pattern_BaseService_DeleteDashboard_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "dashboards", "dashboard_id"}, ""))
+	pattern_BaseService_CreateDashboardItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7}, []string{"openclick", "api", "v1", "projects", "project_id", "dashboards", "dashboard_id", "items"}, ""))
+	pattern_BaseService_UpdateDashboardItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"openclick", "api", "v1", "projects", "project_id", "dashboards", "dashboard_id", "items", "item_id"}, ""))
+	pattern_BaseService_DeleteDashboardItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"openclick", "api", "v1", "projects", "project_id", "dashboards", "dashboard_id", "items", "item_id"}, ""))
+	pattern_BaseService_QueryTrends_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 2, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "query", "trends"}, ""))
+	pattern_BaseService_QueryFunnel_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 2, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "query", "funnel"}, ""))
+	pattern_BaseService_QueryRetention_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 2, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "query", "retention"}, ""))
+	pattern_BaseService_QueryPaths_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 2, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "query", "paths"}, ""))
+	pattern_BaseService_QueryEvents_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 2, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "query", "events"}, ""))
+	pattern_BaseService_ListEventNames_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"openclick", "api", "v1", "projects", "project_id", "event-names"}, ""))
+	pattern_BaseService_ListSessions_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"openclick", "api", "v1", "projects", "project_id", "sessions"}, ""))
+	pattern_BaseService_GetSession_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "sessions", "session_id"}, ""))
+	pattern_BaseService_GetSessionChunks_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7}, []string{"openclick", "api", "v1", "projects", "project_id", "sessions", "session_id", "chunks"}, ""))
+	pattern_BaseService_DeleteSession_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "sessions", "session_id"}, ""))
+	pattern_BaseService_ListPersons_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"openclick", "api", "v1", "projects", "project_id", "persons"}, ""))
+	pattern_BaseService_GetPerson_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "persons", "distinct_id"}, ""))
+	pattern_BaseService_DeletePerson_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "persons", "distinct_id"}, ""))
+	pattern_BaseService_ListCohorts_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"openclick", "api", "v1", "projects", "project_id", "cohorts"}, ""))
+	pattern_BaseService_CreateCohort_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"openclick", "api", "v1", "projects", "project_id", "cohorts"}, ""))
+	pattern_BaseService_DeleteCohort_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "cohorts", "cohort_id"}, ""))
+	pattern_BaseService_ListFeatureFlags_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"openclick", "api", "v1", "projects", "project_id", "feature-flags"}, ""))
+	pattern_BaseService_CreateFeatureFlag_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"openclick", "api", "v1", "projects", "project_id", "feature-flags"}, ""))
+	pattern_BaseService_UpdateFeatureFlag_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "feature-flags", "flag_id"}, ""))
+	pattern_BaseService_DeleteFeatureFlag_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "feature-flags", "flag_id"}, ""))
+	pattern_BaseService_EvaluateFlags_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 2, 6}, []string{"openclick", "api", "v1", "projects", "project_id", "feature-flags", "evaluate"}, ""))
+	pattern_BaseService_Decide_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"openclick", "api", "v1", "decide"}, ""))
+	pattern_BaseService_CaptureEvent_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"openclick", "api", "v1", "e"}, ""))
+	pattern_BaseService_BatchCapture_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"openclick", "api", "v1", "batch"}, ""))
+	pattern_BaseService_Identify_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"openclick", "api", "v1", "identify"}, ""))
+	pattern_BaseService_Alias_0               = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"openclick", "api", "v1", "alias"}, ""))
+	pattern_BaseService_IngestReplay_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"openclick", "api", "v1", "replay"}, ""))
 )
 
 var (

@@ -26,106 +26,106 @@ var File_proto_openclick_v1_openclick_proto protoreflect.FileDescriptor
 
 const file_proto_openclick_v1_openclick_proto_rawDesc = "" +
 	"\n" +
-	"\"proto/openclick/v1/openclick.proto\x12\x02v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17proto/common/ping.proto\x1a proto/openclick/v1/project.proto\x1a\"proto/openclick/v1/dashboard.proto\x1a\"proto/openclick/v1/analytics.proto\x1a\x1fproto/openclick/v1/person.proto\x1a%proto/openclick/v1/feature_flag.proto\x1a\x1fproto/openclick/v1/ingest.proto\x1a#proto/openclick/v1/permission.proto2\xfb2\n" +
-	"\vBaseService\x12x\n" +
-	"\x04Ping\x12\x0f.v1.PingRequest\x1a\x10.v1.PingResponse\"M\x92A6\n" +
-	"\x04Ping\x12\x0fPing the server\x1a\x1dCheck if the server is alive.\x82\xd3\xe4\x93\x02\x0e\x12\f/api/v1/ping\x12\x89\x01\n" +
-	"\x0fListPermissions\x12\x1a.v1.ListPermissionsRequest\x1a\x1b.v1.ListPermissionsResponse\"=\x92A\x1f\n" +
-	"\vPermissions\x12\x10List permissions\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/permissions\x12w\n" +
-	"\fListProjects\x12\x17.v1.ListProjectsRequest\x1a\x18.v1.ListProjectsResponse\"4\x92A\x19\n" +
-	"\bProjects\x12\rList projects\x82\xd3\xe4\x93\x02\x12\x12\x10/api/v1/projects\x12x\n" +
-	"\rCreateProject\x12\x18.v1.CreateProjectRequest\x1a\x13.v1.ProjectResponse\"8\x92A\x1a\n" +
-	"\bProjects\x12\x0eCreate project\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/projects\x12\x84\x01\n" +
+	"\"proto/openclick/v1/openclick.proto\x12\x02v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17proto/common/ping.proto\x1a proto/openclick/v1/project.proto\x1a\"proto/openclick/v1/dashboard.proto\x1a\"proto/openclick/v1/analytics.proto\x1a\x1fproto/openclick/v1/person.proto\x1a%proto/openclick/v1/feature_flag.proto\x1a\x1fproto/openclick/v1/ingest.proto\x1a#proto/openclick/v1/permission.proto2\xaf6\n" +
+	"\vBaseService\x12\x82\x01\n" +
+	"\x04Ping\x12\x0f.v1.PingRequest\x1a\x10.v1.PingResponse\"W\x92A6\n" +
+	"\x04Ping\x12\x0fPing the server\x1a\x1dCheck if the server is alive.\x82\xd3\xe4\x93\x02\x18\x12\x16/openclick/api/v1/ping\x12\x93\x01\n" +
+	"\x0fListPermissions\x12\x1a.v1.ListPermissionsRequest\x1a\x1b.v1.ListPermissionsResponse\"G\x92A\x1f\n" +
+	"\vPermissions\x12\x10List permissions\x82\xd3\xe4\x93\x02\x1f\x12\x1d/openclick/api/v1/permissions\x12\x81\x01\n" +
+	"\fListProjects\x12\x17.v1.ListProjectsRequest\x1a\x18.v1.ListProjectsResponse\">\x92A\x19\n" +
+	"\bProjects\x12\rList projects\x82\xd3\xe4\x93\x02\x1c\x12\x1a/openclick/api/v1/projects\x12\x82\x01\n" +
+	"\rCreateProject\x12\x18.v1.CreateProjectRequest\x1a\x13.v1.ProjectResponse\"B\x92A\x1a\n" +
+	"\bProjects\x12\x0eCreate project\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/openclick/api/v1/projects\x12\x8e\x01\n" +
 	"\n" +
-	"GetProject\x12\x15.v1.GetProjectRequest\x1a\x16.v1.GetProjectResponse\"G\x92A\x1f\n" +
-	"\bProjects\x12\x13Get project details\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/projects/{project_id}\x12\x85\x01\n" +
-	"\rUpdateProject\x12\x18.v1.UpdateProjectRequest\x1a\x13.v1.ProjectResponse\"E\x92A\x1a\n" +
-	"\bProjects\x12\x0eUpdate project\x82\xd3\xe4\x93\x02\":\x01*2\x1d/api/v1/projects/{project_id}\x12\x88\x01\n" +
-	"\rDeleteProject\x12\x18.v1.DeleteProjectRequest\x1a\x19.v1.DeleteProjectResponse\"B\x92A\x1a\n" +
-	"\bProjects\x12\x0eDelete project\x82\xd3\xe4\x93\x02\x1f*\x1d/api/v1/projects/{project_id}\x12\x93\x01\n" +
-	"\tAddMember\x12\x14.v1.AddMemberRequest\x1a\x15.v1.AddMemberResponse\"Y\x92A&\n" +
-	"\bProjects\x12\x1aAdd team member to project\x82\xd3\xe4\x93\x02*:\x01*\"%/api/v1/projects/{project_id}/members\x12\xa8\x01\n" +
-	"\fRemoveMember\x12\x17.v1.RemoveMemberRequest\x1a\x18.v1.RemoveMemberResponse\"e\x92A+\n" +
-	"\bProjects\x12\x1fRemove team member from project\x82\xd3\xe4\x93\x021*//api/v1/projects/{project_id}/members/{user_id}\x12\x99\x01\n" +
-	"\x0eListDashboards\x12\x19.v1.ListDashboardsRequest\x1a\x1a.v1.ListDashboardsResponse\"P\x92A\x1d\n" +
+	"GetProject\x12\x15.v1.GetProjectRequest\x1a\x16.v1.GetProjectResponse\"Q\x92A\x1f\n" +
+	"\bProjects\x12\x13Get project details\x82\xd3\xe4\x93\x02)\x12'/openclick/api/v1/projects/{project_id}\x12\x8f\x01\n" +
+	"\rUpdateProject\x12\x18.v1.UpdateProjectRequest\x1a\x13.v1.ProjectResponse\"O\x92A\x1a\n" +
+	"\bProjects\x12\x0eUpdate project\x82\xd3\xe4\x93\x02,:\x01*2'/openclick/api/v1/projects/{project_id}\x12\x92\x01\n" +
+	"\rDeleteProject\x12\x18.v1.DeleteProjectRequest\x1a\x19.v1.DeleteProjectResponse\"L\x92A\x1a\n" +
+	"\bProjects\x12\x0eDelete project\x82\xd3\xe4\x93\x02)*'/openclick/api/v1/projects/{project_id}\x12\x9d\x01\n" +
+	"\tAddMember\x12\x14.v1.AddMemberRequest\x1a\x15.v1.AddMemberResponse\"c\x92A&\n" +
+	"\bProjects\x12\x1aAdd team member to project\x82\xd3\xe4\x93\x024:\x01*\"//openclick/api/v1/projects/{project_id}/members\x12\xb2\x01\n" +
+	"\fRemoveMember\x12\x17.v1.RemoveMemberRequest\x1a\x18.v1.RemoveMemberResponse\"o\x92A+\n" +
+	"\bProjects\x12\x1fRemove team member from project\x82\xd3\xe4\x93\x02;*9/openclick/api/v1/projects/{project_id}/members/{user_id}\x12\xa3\x01\n" +
+	"\x0eListDashboards\x12\x19.v1.ListDashboardsRequest\x1a\x1a.v1.ListDashboardsResponse\"Z\x92A\x1d\n" +
 	"\n" +
-	"Dashboards\x12\x0fList dashboards\x82\xd3\xe4\x93\x02*\x12(/api/v1/projects/{project_id}/dashboards\x12\x9a\x01\n" +
-	"\x0fCreateDashboard\x12\x1a.v1.CreateDashboardRequest\x1a\x15.v1.DashboardResponse\"T\x92A\x1e\n" +
+	"Dashboards\x12\x0fList dashboards\x82\xd3\xe4\x93\x024\x122/openclick/api/v1/projects/{project_id}/dashboards\x12\xa4\x01\n" +
+	"\x0fCreateDashboard\x12\x1a.v1.CreateDashboardRequest\x1a\x15.v1.DashboardResponse\"^\x92A\x1e\n" +
 	"\n" +
-	"Dashboards\x12\x10Create dashboard\x82\xd3\xe4\x93\x02-:\x01*\"(/api/v1/projects/{project_id}/dashboards\x12\xa8\x01\n" +
-	"\fGetDashboard\x12\x17.v1.GetDashboardRequest\x1a\x18.v1.GetDashboardResponse\"e\x92A#\n" +
+	"Dashboards\x12\x10Create dashboard\x82\xd3\xe4\x93\x027:\x01*\"2/openclick/api/v1/projects/{project_id}/dashboards\x12\xb2\x01\n" +
+	"\fGetDashboard\x12\x17.v1.GetDashboardRequest\x1a\x18.v1.GetDashboardResponse\"o\x92A#\n" +
 	"\n" +
-	"Dashboards\x12\x15Get dashboard details\x82\xd3\xe4\x93\x029\x127/api/v1/projects/{project_id}/dashboards/{dashboard_id}\x12\xac\x01\n" +
-	"\x0fDeleteDashboard\x12\x1a.v1.DeleteDashboardRequest\x1a\x1b.v1.DeleteDashboardResponse\"`\x92A\x1e\n" +
+	"Dashboards\x12\x15Get dashboard details\x82\xd3\xe4\x93\x02C\x12A/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}\x12\xb6\x01\n" +
+	"\x0fDeleteDashboard\x12\x1a.v1.DeleteDashboardRequest\x1a\x1b.v1.DeleteDashboardResponse\"j\x92A\x1e\n" +
 	"\n" +
-	"Dashboards\x12\x10Delete dashboard\x82\xd3\xe4\x93\x029*7/api/v1/projects/{project_id}/dashboards/{dashboard_id}\x12\xc0\x01\n" +
-	"\x13CreateDashboardItem\x12\x1e.v1.CreateDashboardItemRequest\x1a\x19.v1.DashboardItemResponse\"n\x92A#\n" +
+	"Dashboards\x12\x10Delete dashboard\x82\xd3\xe4\x93\x02C*A/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}\x12\xca\x01\n" +
+	"\x13CreateDashboardItem\x12\x1e.v1.CreateDashboardItemRequest\x1a\x19.v1.DashboardItemResponse\"x\x92A#\n" +
 	"\n" +
-	"Dashboards\x12\x15Create dashboard item\x82\xd3\xe4\x93\x02B:\x01*\"=/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items\x12\xca\x01\n" +
-	"\x13UpdateDashboardItem\x12\x1e.v1.UpdateDashboardItemRequest\x1a\x19.v1.DashboardItemResponse\"x\x92A#\n" +
+	"Dashboards\x12\x15Create dashboard item\x82\xd3\xe4\x93\x02L:\x01*\"G/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items\x12\xd5\x01\n" +
+	"\x13UpdateDashboardItem\x12\x1e.v1.UpdateDashboardItemRequest\x1a\x19.v1.DashboardItemResponse\"\x82\x01\x92A#\n" +
 	"\n" +
-	"Dashboards\x12\x15Update dashboard item\x82\xd3\xe4\x93\x02L:\x01*2G/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}\x12\xcd\x01\n" +
-	"\x13DeleteDashboardItem\x12\x1e.v1.DeleteDashboardItemRequest\x1a\x1f.v1.DeleteDashboardItemResponse\"u\x92A#\n" +
+	"Dashboards\x12\x15Update dashboard item\x82\xd3\xe4\x93\x02V:\x01*2Q/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}\x12\xd7\x01\n" +
+	"\x13DeleteDashboardItem\x12\x1e.v1.DeleteDashboardItemRequest\x1a\x1f.v1.DeleteDashboardItemResponse\"\x7f\x92A#\n" +
 	"\n" +
-	"Dashboards\x12\x15Delete dashboard item\x82\xd3\xe4\x93\x02I*G/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}\x12\x91\x01\n" +
-	"\vQueryTrends\x12\x16.v1.QueryTrendsRequest\x1a\x17.v1.QueryTrendsResponse\"Q\x92A\x19\n" +
-	"\tAnalytics\x12\fQuery trends\x82\xd3\xe4\x93\x02/:\x01*\"*/api/v1/projects/{project_id}/query/trends\x12\x91\x01\n" +
-	"\vQueryFunnel\x12\x16.v1.QueryFunnelRequest\x1a\x17.v1.QueryFunnelResponse\"Q\x92A\x19\n" +
-	"\tAnalytics\x12\fQuery funnel\x82\xd3\xe4\x93\x02/:\x01*\"*/api/v1/projects/{project_id}/query/funnel\x12\xa0\x01\n" +
-	"\x0eQueryRetention\x12\x19.v1.QueryRetentionRequest\x1a\x1a.v1.QueryRetentionResponse\"W\x92A\x1c\n" +
-	"\tAnalytics\x12\x0fQuery retention\x82\xd3\xe4\x93\x022:\x01*\"-/api/v1/projects/{project_id}/query/retention\x12\x8c\x01\n" +
+	"Dashboards\x12\x15Delete dashboard item\x82\xd3\xe4\x93\x02S*Q/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}\x12\x9b\x01\n" +
+	"\vQueryTrends\x12\x16.v1.QueryTrendsRequest\x1a\x17.v1.QueryTrendsResponse\"[\x92A\x19\n" +
+	"\tAnalytics\x12\fQuery trends\x82\xd3\xe4\x93\x029:\x01*\"4/openclick/api/v1/projects/{project_id}/query/trends\x12\x9b\x01\n" +
+	"\vQueryFunnel\x12\x16.v1.QueryFunnelRequest\x1a\x17.v1.QueryFunnelResponse\"[\x92A\x19\n" +
+	"\tAnalytics\x12\fQuery funnel\x82\xd3\xe4\x93\x029:\x01*\"4/openclick/api/v1/projects/{project_id}/query/funnel\x12\xaa\x01\n" +
+	"\x0eQueryRetention\x12\x19.v1.QueryRetentionRequest\x1a\x1a.v1.QueryRetentionResponse\"a\x92A\x1c\n" +
+	"\tAnalytics\x12\x0fQuery retention\x82\xd3\xe4\x93\x02<:\x01*\"7/openclick/api/v1/projects/{project_id}/query/retention\x12\x96\x01\n" +
 	"\n" +
-	"QueryPaths\x12\x15.v1.QueryPathsRequest\x1a\x16.v1.QueryPathsResponse\"O\x92A\x18\n" +
-	"\tAnalytics\x12\vQuery paths\x82\xd3\xe4\x93\x02.:\x01*\")/api/v1/projects/{project_id}/query/paths\x12\x91\x01\n" +
-	"\vQueryEvents\x12\x16.v1.QueryEventsRequest\x1a\x17.v1.QueryEventsResponse\"Q\x92A\x19\n" +
-	"\tAnalytics\x12\fQuery events\x82\xd3\xe4\x93\x02/:\x01*\"*/api/v1/projects/{project_id}/query/events\x12\xb1\x01\n" +
-	"\x0eListEventNames\x12\x19.v1.ListEventNamesRequest\x1a\x1a.v1.ListEventNamesResponse\"h\x92A4\n" +
-	"\tAnalytics\x12'List distinct event names for a project\x82\xd3\xe4\x93\x02+\x12)/api/v1/projects/{project_id}/event-names\x12\x8e\x01\n" +
-	"\fListSessions\x12\x17.v1.ListSessionsRequest\x1a\x18.v1.ListSessionsResponse\"K\x92A\x1a\n" +
-	"\tAnalytics\x12\rList sessions\x82\xd3\xe4\x93\x02(\x12&/api/v1/projects/{project_id}/sessions\x12\x90\x01\n" +
+	"QueryPaths\x12\x15.v1.QueryPathsRequest\x1a\x16.v1.QueryPathsResponse\"Y\x92A\x18\n" +
+	"\tAnalytics\x12\vQuery paths\x82\xd3\xe4\x93\x028:\x01*\"3/openclick/api/v1/projects/{project_id}/query/paths\x12\x9b\x01\n" +
+	"\vQueryEvents\x12\x16.v1.QueryEventsRequest\x1a\x17.v1.QueryEventsResponse\"[\x92A\x19\n" +
+	"\tAnalytics\x12\fQuery events\x82\xd3\xe4\x93\x029:\x01*\"4/openclick/api/v1/projects/{project_id}/query/events\x12\xbb\x01\n" +
+	"\x0eListEventNames\x12\x19.v1.ListEventNamesRequest\x1a\x1a.v1.ListEventNamesResponse\"r\x92A4\n" +
+	"\tAnalytics\x12'List distinct event names for a project\x82\xd3\xe4\x93\x025\x123/openclick/api/v1/projects/{project_id}/event-names\x12\x98\x01\n" +
+	"\fListSessions\x12\x17.v1.ListSessionsRequest\x1a\x18.v1.ListSessionsResponse\"U\x92A\x1a\n" +
+	"\tAnalytics\x12\rList sessions\x82\xd3\xe4\x93\x022\x120/openclick/api/v1/projects/{project_id}/sessions\x12\x9a\x01\n" +
 	"\n" +
-	"GetSession\x12\x15.v1.GetSessionRequest\x1a\x13.v1.SessionResponse\"V\x92A\x18\n" +
-	"\tAnalytics\x12\vGet session\x82\xd3\xe4\x93\x025\x123/api/v1/projects/{project_id}/sessions/{session_id}\x12\xb3\x01\n" +
-	"\x10GetSessionChunks\x12\x1b.v1.GetSessionChunksRequest\x1a\x1c.v1.GetSessionChunksResponse\"d\x92A\x1f\n" +
-	"\tAnalytics\x12\x12Get session chunks\x82\xd3\xe4\x93\x02<\x12:/api/v1/projects/{project_id}/sessions/{session_id}/chunks\x12\x9f\x01\n" +
-	"\rDeleteSession\x12\x18.v1.DeleteSessionRequest\x1a\x19.v1.DeleteSessionResponse\"Y\x92A\x1b\n" +
-	"\tAnalytics\x12\x0eDelete session\x82\xd3\xe4\x93\x025*3/api/v1/projects/{project_id}/sessions/{session_id}\x12\x87\x01\n" +
-	"\vListPersons\x12\x16.v1.ListPersonsRequest\x1a\x17.v1.ListPersonsResponse\"G\x92A\x17\n" +
-	"\aPersons\x12\fList persons\x82\xd3\xe4\x93\x02'\x12%/api/v1/projects/{project_id}/persons\x12\x8d\x01\n" +
-	"\tGetPerson\x12\x14.v1.GetPersonRequest\x1a\x15.v1.GetPersonResponse\"S\x92A\x15\n" +
+	"GetSession\x12\x15.v1.GetSessionRequest\x1a\x13.v1.SessionResponse\"`\x92A\x18\n" +
+	"\tAnalytics\x12\vGet session\x82\xd3\xe4\x93\x02?\x12=/openclick/api/v1/projects/{project_id}/sessions/{session_id}\x12\xbd\x01\n" +
+	"\x10GetSessionChunks\x12\x1b.v1.GetSessionChunksRequest\x1a\x1c.v1.GetSessionChunksResponse\"n\x92A\x1f\n" +
+	"\tAnalytics\x12\x12Get session chunks\x82\xd3\xe4\x93\x02F\x12D/openclick/api/v1/projects/{project_id}/sessions/{session_id}/chunks\x12\xa9\x01\n" +
+	"\rDeleteSession\x12\x18.v1.DeleteSessionRequest\x1a\x19.v1.DeleteSessionResponse\"c\x92A\x1b\n" +
+	"\tAnalytics\x12\x0eDelete session\x82\xd3\xe4\x93\x02?*=/openclick/api/v1/projects/{project_id}/sessions/{session_id}\x12\x91\x01\n" +
+	"\vListPersons\x12\x16.v1.ListPersonsRequest\x1a\x17.v1.ListPersonsResponse\"Q\x92A\x17\n" +
+	"\aPersons\x12\fList persons\x82\xd3\xe4\x93\x021\x12//openclick/api/v1/projects/{project_id}/persons\x12\x97\x01\n" +
+	"\tGetPerson\x12\x14.v1.GetPersonRequest\x1a\x15.v1.GetPersonResponse\"]\x92A\x15\n" +
 	"\aPersons\x12\n" +
-	"Get person\x82\xd3\xe4\x93\x025\x123/api/v1/projects/{project_id}/persons/{distinct_id}\x12\x99\x01\n" +
-	"\fDeletePerson\x12\x17.v1.DeletePersonRequest\x1a\x18.v1.DeletePersonResponse\"V\x92A\x18\n" +
-	"\aPersons\x12\rDelete person\x82\xd3\xe4\x93\x025*3/api/v1/projects/{project_id}/persons/{distinct_id}\x12\x87\x01\n" +
-	"\vListCohorts\x12\x16.v1.ListCohortsRequest\x1a\x17.v1.ListCohortsResponse\"G\x92A\x17\n" +
-	"\aCohorts\x12\fList cohorts\x82\xd3\xe4\x93\x02'\x12%/api/v1/projects/{project_id}/cohorts\x12\x88\x01\n" +
-	"\fCreateCohort\x12\x17.v1.CreateCohortRequest\x1a\x12.v1.CohortResponse\"K\x92A\x18\n" +
-	"\aCohorts\x12\rCreate cohort\x82\xd3\xe4\x93\x02*:\x01*\"%/api/v1/projects/{project_id}/cohorts\x12\x97\x01\n" +
-	"\fDeleteCohort\x12\x17.v1.DeleteCohortRequest\x1a\x18.v1.DeleteCohortResponse\"T\x92A\x18\n" +
-	"\aCohorts\x12\rDelete cohort\x82\xd3\xe4\x93\x023*1/api/v1/projects/{project_id}/cohorts/{cohort_id}\x12\xa8\x01\n" +
-	"\x10ListFeatureFlags\x12\x1b.v1.ListFeatureFlagsRequest\x1a\x1c.v1.ListFeatureFlagsResponse\"Y\x92A#\n" +
-	"\rFeature Flags\x12\x12List feature flags\x82\xd3\xe4\x93\x02-\x12+/api/v1/projects/{project_id}/feature-flags\x12\xa9\x01\n" +
-	"\x11CreateFeatureFlag\x12\x1c.v1.CreateFeatureFlagRequest\x1a\x17.v1.FeatureFlagResponse\"]\x92A$\n" +
-	"\rFeature Flags\x12\x13Create feature flag\x82\xd3\xe4\x93\x020:\x01*\"+/api/v1/projects/{project_id}/feature-flags\x12\xb3\x01\n" +
-	"\x11UpdateFeatureFlag\x12\x1c.v1.UpdateFeatureFlagRequest\x1a\x17.v1.FeatureFlagResponse\"g\x92A$\n" +
-	"\rFeature Flags\x12\x13Update feature flag\x82\xd3\xe4\x93\x02::\x01*25/api/v1/projects/{project_id}/feature-flags/{flag_id}\x12\xb6\x01\n" +
-	"\x11DeleteFeatureFlag\x12\x1c.v1.DeleteFeatureFlagRequest\x1a\x1d.v1.DeleteFeatureFlagResponse\"d\x92A$\n" +
-	"\rFeature Flags\x12\x13Delete feature flag\x82\xd3\xe4\x93\x027*5/api/v1/projects/{project_id}/feature-flags/{flag_id}\x12\xa7\x01\n" +
-	"\rEvaluateFlags\x12\x18.v1.EvaluateFlagsRequest\x1a\x19.v1.EvaluateFlagsResponse\"a\x92A\x1f\n" +
-	"\rFeature Flags\x12\x0eEvaluate flags\x82\xd3\xe4\x93\x029:\x01*\"4/api/v1/projects/{project_id}/feature-flags/evaluate\x12g\n" +
-	"\x06Decide\x12\x11.v1.DecideRequest\x1a\x12.v1.DecideResponse\"6\x92A\x1d\n" +
-	"\rFeature Flags\x12\fDecide flags\x82\xd3\xe4\x93\x02\x10\x12\x0e/api/v1/decide\x12t\n" +
-	"\fCaptureEvent\x12\x17.v1.CaptureEventRequest\x1a\x18.v1.CaptureEventResponse\"1\x92A\x1a\n" +
-	"\tIngestion\x12\rCapture event\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/api/v1/e\x12\x7f\n" +
-	"\fBatchCapture\x12\x17.v1.BatchCaptureRequest\x1a\x18.v1.BatchCaptureResponse\"<\x92A!\n" +
-	"\tIngestion\x12\x14Batch capture events\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/batch\x12o\n" +
-	"\bIdentify\x12\x13.v1.IdentifyRequest\x1a\x14.v1.IdentifyResponse\"8\x92A\x1a\n" +
-	"\tIngestion\x12\rIdentify user\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/identify\x12`\n" +
-	"\x05Alias\x12\x10.v1.AliasRequest\x1a\x11.v1.AliasResponse\"2\x92A\x17\n" +
+	"Get person\x82\xd3\xe4\x93\x02?\x12=/openclick/api/v1/projects/{project_id}/persons/{distinct_id}\x12\xa3\x01\n" +
+	"\fDeletePerson\x12\x17.v1.DeletePersonRequest\x1a\x18.v1.DeletePersonResponse\"`\x92A\x18\n" +
+	"\aPersons\x12\rDelete person\x82\xd3\xe4\x93\x02?*=/openclick/api/v1/projects/{project_id}/persons/{distinct_id}\x12\x91\x01\n" +
+	"\vListCohorts\x12\x16.v1.ListCohortsRequest\x1a\x17.v1.ListCohortsResponse\"Q\x92A\x17\n" +
+	"\aCohorts\x12\fList cohorts\x82\xd3\xe4\x93\x021\x12//openclick/api/v1/projects/{project_id}/cohorts\x12\x92\x01\n" +
+	"\fCreateCohort\x12\x17.v1.CreateCohortRequest\x1a\x12.v1.CohortResponse\"U\x92A\x18\n" +
+	"\aCohorts\x12\rCreate cohort\x82\xd3\xe4\x93\x024:\x01*\"//openclick/api/v1/projects/{project_id}/cohorts\x12\xa1\x01\n" +
+	"\fDeleteCohort\x12\x17.v1.DeleteCohortRequest\x1a\x18.v1.DeleteCohortResponse\"^\x92A\x18\n" +
+	"\aCohorts\x12\rDelete cohort\x82\xd3\xe4\x93\x02=*;/openclick/api/v1/projects/{project_id}/cohorts/{cohort_id}\x12\xb2\x01\n" +
+	"\x10ListFeatureFlags\x12\x1b.v1.ListFeatureFlagsRequest\x1a\x1c.v1.ListFeatureFlagsResponse\"c\x92A#\n" +
+	"\rFeature Flags\x12\x12List feature flags\x82\xd3\xe4\x93\x027\x125/openclick/api/v1/projects/{project_id}/feature-flags\x12\xb3\x01\n" +
+	"\x11CreateFeatureFlag\x12\x1c.v1.CreateFeatureFlagRequest\x1a\x17.v1.FeatureFlagResponse\"g\x92A$\n" +
+	"\rFeature Flags\x12\x13Create feature flag\x82\xd3\xe4\x93\x02::\x01*\"5/openclick/api/v1/projects/{project_id}/feature-flags\x12\xbd\x01\n" +
+	"\x11UpdateFeatureFlag\x12\x1c.v1.UpdateFeatureFlagRequest\x1a\x17.v1.FeatureFlagResponse\"q\x92A$\n" +
+	"\rFeature Flags\x12\x13Update feature flag\x82\xd3\xe4\x93\x02D:\x01*2?/openclick/api/v1/projects/{project_id}/feature-flags/{flag_id}\x12\xc0\x01\n" +
+	"\x11DeleteFeatureFlag\x12\x1c.v1.DeleteFeatureFlagRequest\x1a\x1d.v1.DeleteFeatureFlagResponse\"n\x92A$\n" +
+	"\rFeature Flags\x12\x13Delete feature flag\x82\xd3\xe4\x93\x02A*?/openclick/api/v1/projects/{project_id}/feature-flags/{flag_id}\x12\xb1\x01\n" +
+	"\rEvaluateFlags\x12\x18.v1.EvaluateFlagsRequest\x1a\x19.v1.EvaluateFlagsResponse\"k\x92A\x1f\n" +
+	"\rFeature Flags\x12\x0eEvaluate flags\x82\xd3\xe4\x93\x02C:\x01*\">/openclick/api/v1/projects/{project_id}/feature-flags/evaluate\x12q\n" +
+	"\x06Decide\x12\x11.v1.DecideRequest\x1a\x12.v1.DecideResponse\"@\x92A\x1d\n" +
+	"\rFeature Flags\x12\fDecide flags\x82\xd3\xe4\x93\x02\x1a\x12\x18/openclick/api/v1/decide\x12~\n" +
+	"\fCaptureEvent\x12\x17.v1.CaptureEventRequest\x1a\x18.v1.CaptureEventResponse\";\x92A\x1a\n" +
+	"\tIngestion\x12\rCapture event\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/openclick/api/v1/e\x12\x89\x01\n" +
+	"\fBatchCapture\x12\x17.v1.BatchCaptureRequest\x1a\x18.v1.BatchCaptureResponse\"F\x92A!\n" +
+	"\tIngestion\x12\x14Batch capture events\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/openclick/api/v1/batch\x12y\n" +
+	"\bIdentify\x12\x13.v1.IdentifyRequest\x1a\x14.v1.IdentifyResponse\"B\x92A\x1a\n" +
+	"\tIngestion\x12\rIdentify user\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/openclick/api/v1/identify\x12j\n" +
+	"\x05Alias\x12\x10.v1.AliasRequest\x1a\x11.v1.AliasResponse\"<\x92A\x17\n" +
 	"\tIngestion\x12\n" +
-	"Alias user\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/alias\x12\x7f\n" +
-	"\fIngestReplay\x12\x17.v1.IngestReplayRequest\x1a\x18.v1.IngestReplayResponse\"<\x92A \n" +
-	"\tIngestion\x12\x13Ingest replay chunk\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/v1/replayB\x82\x03\x92A\xee\x02\x12\xf0\x01\n" +
+	"Alias user\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/openclick/api/v1/alias\x12\x89\x01\n" +
+	"\fIngestReplay\x12\x17.v1.IngestReplayRequest\x1a\x18.v1.IngestReplayResponse\"F\x92A \n" +
+	"\tIngestion\x12\x13Ingest replay chunk\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/openclick/api/v1/replayB\x82\x03\x92A\xee\x02\x12\xf0\x01\n" +
 	"\x0eOpenClick APIs\x12\xd5\x01**OpenClick** is an open-source, self-hostable product analytics platform built for speed and low memory footprint. It provides event tracking, session replay, funnel analysis, feature flags, and cohort analytics.2\x06v1.0.0Z<\n" +
 	"\x19\n" +
 	"\x06UserID\x12\x0f\b\x02\x1a\tx-user-id \x02\n" +

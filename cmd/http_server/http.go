@@ -63,7 +63,7 @@ func (a *HTTPServer) Run(ctx context.Context) error {
 		}),
 	)
 
-	api.RegisterSwaggerHandler(ctx, mux, "/api/v1/swagger", "./api/docs/proto", "/openclick/v1/openclick.swagger.json")
+	api.RegisterSwaggerHandler(ctx, mux, "/openclick/api/v1/swagger", "./api/docs/proto", "/openclick/v1/openclick.swagger.json")
 	err := openclick_v1.RegisterBaseServiceHandlerServer(ctx, mux, service)
 	if err != nil {
 		logger.Panic(ctx, "failed to register ping service : %v", err)
@@ -71,14 +71,14 @@ func (a *HTTPServer) Run(ctx context.Context) error {
 
 	// Register debug endpoints if enabled
 	if a.cfg.Debug.Enabled {
-		debug.RegisterDebugHandlersWithGateway(ctx, &a.cfg.Debug, mux, a.cfg.Logger.AppName, string(a.cfg.Logger.Build), "/api/v1")
+		debug.RegisterDebugHandlersWithGateway(ctx, &a.cfg.Debug, mux, a.cfg.Logger.AppName, string(a.cfg.Logger.Build), "/openclick/api/v1")
 	}
 
 	finalHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
 
 		// Direct API requests to grpc-gateway mux
-		if len(path) >= 4 && path[:4] == "/api" {
+		if len(path) >= 12 && path[:12] == "/openclick/api" {
 			mux.ServeHTTP(w, r)
 			return
 		}

@@ -61,7 +61,7 @@ service BaseService {
     // Ping is a simple GET request that returns a Pong message.
     rpc Ping (PingRequest) returns (PingResponse) {
         option (google.api.http) = {
-            get: "/api/v1/ping"
+            get: "/openclick/api/v1/ping"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Ping"
@@ -73,7 +73,7 @@ service BaseService {
     // Permissions
     rpc ListPermissions (ListPermissionsRequest) returns (ListPermissionsResponse) {
         option (google.api.http) = {
-            get: "/api/v1/permissions"
+            get: "/openclick/api/v1/permissions"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Permissions"
@@ -84,7 +84,7 @@ service BaseService {
     // Projects
     rpc ListProjects (ListProjectsRequest) returns (ListProjectsResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects"
+            get: "/openclick/api/v1/projects"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Projects"
@@ -94,7 +94,7 @@ service BaseService {
 
     rpc CreateProject (CreateProjectRequest) returns (ProjectResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects"
+            post: "/openclick/api/v1/projects"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -105,7 +105,7 @@ service BaseService {
 
     rpc GetProject (GetProjectRequest) returns (GetProjectResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}"
+            get: "/openclick/api/v1/projects/{project_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Projects"
@@ -115,7 +115,7 @@ service BaseService {
 
     rpc UpdateProject (UpdateProjectRequest) returns (ProjectResponse) {
         option (google.api.http) = {
-            patch: "/api/v1/projects/{project_id}"
+            patch: "/openclick/api/v1/projects/{project_id}"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -126,7 +126,7 @@ service BaseService {
 
     rpc DeleteProject (DeleteProjectRequest) returns (DeleteProjectResponse) {
         option (google.api.http) = {
-            delete: "/api/v1/projects/{project_id}"
+            delete: "/openclick/api/v1/projects/{project_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Projects"
@@ -136,7 +136,7 @@ service BaseService {
 
     rpc AddMember (AddMemberRequest) returns (AddMemberResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/members"
+            post: "/openclick/api/v1/projects/{project_id}/members"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -147,7 +147,7 @@ service BaseService {
 
     rpc RemoveMember (RemoveMemberRequest) returns (RemoveMemberResponse) {
         option (google.api.http) = {
-            delete: "/api/v1/projects/{project_id}/members/{user_id}"
+            delete: "/openclick/api/v1/projects/{project_id}/members/{user_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Projects"
@@ -158,7 +158,7 @@ service BaseService {
     // Dashboards
     rpc ListDashboards (ListDashboardsRequest) returns (ListDashboardsResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}/dashboards"
+            get: "/openclick/api/v1/projects/{project_id}/dashboards"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Dashboards"
@@ -168,7 +168,7 @@ service BaseService {
 
     rpc CreateDashboard (CreateDashboardRequest) returns (DashboardResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/dashboards"
+            post: "/openclick/api/v1/projects/{project_id}/dashboards"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -179,7 +179,7 @@ service BaseService {
 
     rpc GetDashboard (GetDashboardRequest) returns (GetDashboardResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}/dashboards/{dashboard_id}"
+            get: "/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Dashboards"
@@ -189,7 +189,7 @@ service BaseService {
 
     rpc DeleteDashboard (DeleteDashboardRequest) returns (DeleteDashboardResponse) {
         option (google.api.http) = {
-            delete: "/api/v1/projects/{project_id}/dashboards/{dashboard_id}"
+            delete: "/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Dashboards"
@@ -199,7 +199,7 @@ service BaseService {
 
     rpc CreateDashboardItem (CreateDashboardItemRequest) returns (DashboardItemResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items"
+            post: "/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -210,7 +210,7 @@ service BaseService {
 
     rpc UpdateDashboardItem (UpdateDashboardItemRequest) returns (DashboardItemResponse) {
         option (google.api.http) = {
-            patch: "/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"
+            patch: "/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -221,7 +221,7 @@ service BaseService {
 
     rpc DeleteDashboardItem (DeleteDashboardItemRequest) returns (DeleteDashboardItemResponse) {
         option (google.api.http) = {
-            delete: "/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"
+            delete: "/openclick/api/v1/projects/{project_id}/dashboards/{dashboard_id}/items/{item_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Dashboards"
@@ -232,7 +232,7 @@ service BaseService {
     // Analytics
     rpc QueryTrends (QueryTrendsRequest) returns (QueryTrendsResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/query/trends"
+            post: "/openclick/api/v1/projects/{project_id}/query/trends"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -243,7 +243,7 @@ service BaseService {
 
     rpc QueryFunnel (QueryFunnelRequest) returns (QueryFunnelResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/query/funnel"
+            post: "/openclick/api/v1/projects/{project_id}/query/funnel"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -254,7 +254,7 @@ service BaseService {
 
     rpc QueryRetention (QueryRetentionRequest) returns (QueryRetentionResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/query/retention"
+            post: "/openclick/api/v1/projects/{project_id}/query/retention"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -265,7 +265,7 @@ service BaseService {
 
     rpc QueryPaths (QueryPathsRequest) returns (QueryPathsResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/query/paths"
+            post: "/openclick/api/v1/projects/{project_id}/query/paths"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -276,7 +276,7 @@ service BaseService {
 
     rpc QueryEvents (QueryEventsRequest) returns (QueryEventsResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/query/events"
+            post: "/openclick/api/v1/projects/{project_id}/query/events"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -287,7 +287,7 @@ service BaseService {
 
     rpc ListEventNames (ListEventNamesRequest) returns (ListEventNamesResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}/event-names"
+            get: "/openclick/api/v1/projects/{project_id}/event-names"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Analytics"
@@ -297,7 +297,7 @@ service BaseService {
 
     rpc ListSessions (ListSessionsRequest) returns (ListSessionsResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}/sessions"
+            get: "/openclick/api/v1/projects/{project_id}/sessions"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Analytics"
@@ -307,7 +307,7 @@ service BaseService {
 
     rpc GetSession (GetSessionRequest) returns (SessionResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}/sessions/{session_id}"
+            get: "/openclick/api/v1/projects/{project_id}/sessions/{session_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Analytics"
@@ -317,7 +317,7 @@ service BaseService {
 
     rpc GetSessionChunks (GetSessionChunksRequest) returns (GetSessionChunksResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}/sessions/{session_id}/chunks"
+            get: "/openclick/api/v1/projects/{project_id}/sessions/{session_id}/chunks"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Analytics"
@@ -327,7 +327,7 @@ service BaseService {
 
     rpc DeleteSession (DeleteSessionRequest) returns (DeleteSessionResponse) {
         option (google.api.http) = {
-            delete: "/api/v1/projects/{project_id}/sessions/{session_id}"
+            delete: "/openclick/api/v1/projects/{project_id}/sessions/{session_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Analytics"
@@ -338,7 +338,7 @@ service BaseService {
     // Persons & Cohorts
     rpc ListPersons (ListPersonsRequest) returns (ListPersonsResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}/persons"
+            get: "/openclick/api/v1/projects/{project_id}/persons"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Persons"
@@ -348,7 +348,7 @@ service BaseService {
 
     rpc GetPerson (GetPersonRequest) returns (GetPersonResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}/persons/{distinct_id}"
+            get: "/openclick/api/v1/projects/{project_id}/persons/{distinct_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Persons"
@@ -358,7 +358,7 @@ service BaseService {
 
     rpc DeletePerson (DeletePersonRequest) returns (DeletePersonResponse) {
         option (google.api.http) = {
-            delete: "/api/v1/projects/{project_id}/persons/{distinct_id}"
+            delete: "/openclick/api/v1/projects/{project_id}/persons/{distinct_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Persons"
@@ -368,7 +368,7 @@ service BaseService {
 
     rpc ListCohorts (ListCohortsRequest) returns (ListCohortsResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}/cohorts"
+            get: "/openclick/api/v1/projects/{project_id}/cohorts"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Cohorts"
@@ -378,7 +378,7 @@ service BaseService {
 
     rpc CreateCohort (CreateCohortRequest) returns (CohortResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/cohorts"
+            post: "/openclick/api/v1/projects/{project_id}/cohorts"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -389,7 +389,7 @@ service BaseService {
 
     rpc DeleteCohort (DeleteCohortRequest) returns (DeleteCohortResponse) {
         option (google.api.http) = {
-            delete: "/api/v1/projects/{project_id}/cohorts/{cohort_id}"
+            delete: "/openclick/api/v1/projects/{project_id}/cohorts/{cohort_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Cohorts"
@@ -400,7 +400,7 @@ service BaseService {
     // Feature Flags
     rpc ListFeatureFlags (ListFeatureFlagsRequest) returns (ListFeatureFlagsResponse) {
         option (google.api.http) = {
-            get: "/api/v1/projects/{project_id}/feature-flags"
+            get: "/openclick/api/v1/projects/{project_id}/feature-flags"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Feature Flags"
@@ -410,7 +410,7 @@ service BaseService {
 
     rpc CreateFeatureFlag (CreateFeatureFlagRequest) returns (FeatureFlagResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/feature-flags"
+            post: "/openclick/api/v1/projects/{project_id}/feature-flags"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -421,7 +421,7 @@ service BaseService {
 
     rpc UpdateFeatureFlag (UpdateFeatureFlagRequest) returns (FeatureFlagResponse) {
         option (google.api.http) = {
-            patch: "/api/v1/projects/{project_id}/feature-flags/{flag_id}"
+            patch: "/openclick/api/v1/projects/{project_id}/feature-flags/{flag_id}"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -432,7 +432,7 @@ service BaseService {
 
     rpc DeleteFeatureFlag (DeleteFeatureFlagRequest) returns (DeleteFeatureFlagResponse) {
         option (google.api.http) = {
-            delete: "/api/v1/projects/{project_id}/feature-flags/{flag_id}"
+            delete: "/openclick/api/v1/projects/{project_id}/feature-flags/{flag_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Feature Flags"
@@ -442,7 +442,7 @@ service BaseService {
 
     rpc EvaluateFlags (EvaluateFlagsRequest) returns (EvaluateFlagsResponse) {
         option (google.api.http) = {
-            post: "/api/v1/projects/{project_id}/feature-flags/evaluate"
+            post: "/openclick/api/v1/projects/{project_id}/feature-flags/evaluate"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -453,7 +453,7 @@ service BaseService {
 
     rpc Decide (DecideRequest) returns (DecideResponse) {
         option (google.api.http) = {
-            get: "/api/v1/decide"
+            get: "/openclick/api/v1/decide"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: "Feature Flags"
@@ -464,7 +464,7 @@ service BaseService {
     // Ingestion
     rpc CaptureEvent (CaptureEventRequest) returns (CaptureEventResponse) {
         option (google.api.http) = {
-            post: "/api/v1/e"
+            post: "/openclick/api/v1/e"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -475,7 +475,7 @@ service BaseService {
 
     rpc BatchCapture (BatchCaptureRequest) returns (BatchCaptureResponse) {
         option (google.api.http) = {
-            post: "/api/v1/batch"
+            post: "/openclick/api/v1/batch"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -486,7 +486,7 @@ service BaseService {
 
     rpc Identify (IdentifyRequest) returns (IdentifyResponse) {
         option (google.api.http) = {
-            post: "/api/v1/identify"
+            post: "/openclick/api/v1/identify"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -497,7 +497,7 @@ service BaseService {
 
     rpc Alias (AliasRequest) returns (AliasResponse) {
         option (google.api.http) = {
-            post: "/api/v1/alias"
+            post: "/openclick/api/v1/alias"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -508,7 +508,7 @@ service BaseService {
 
     rpc IngestReplay (IngestReplayRequest) returns (IngestReplayResponse) {
         option (google.api.http) = {
-            post: "/api/v1/replay"
+            post: "/openclick/api/v1/replay"
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
