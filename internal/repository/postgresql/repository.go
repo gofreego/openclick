@@ -616,6 +616,103 @@ func (r *Repository) DeleteDashboardItem(ctx context.Context, dashboardID, itemI
 // Cohorts
 // ─────────────────────────────────────────────────────────────────────────────
 
+// cohortFilterCfg mirrors the JSON structure stored in cohorts.filters.
+type cohortFilterCfg struct {
+	Groups []struct {
+		Properties []struct {
+			Key      string `json:"key"`
+			Value    any    `json:"value"`
+			Operator string `json:"operator"`
+			Type     string `json:"type"`
+		} `json:"properties"`
+	} `json:"groups"`
+}
+
+// countPersonsMatchingFilters counts persons in a project that satisfy the
+// cohort's filter conditions. Groups are OR-combined; properties within a
+// group are AND-combined.
+func (r *Repository) countPersonsMatchingFilters(ctx context.Context, projectID string, filtersJSON []byte) (int, error) {
+	baseCount := func() (int, error) {
+		var n int
+		err := r.connManager.Primary().QueryRowContext(ctx,
+			`SELECT COUNT(*) FROM persons WHERE project_id = $1`, projectID).Scan(&n)
+		return n, err
+	}
+
+	if len(filtersJSON) == 0 {
+		return baseCount()
+	}
+	s := strings.TrimSpace(string(filtersJSON))
+	if s == "{}" || s == "null" || s == "" {
+		return baseCount()
+	}
+
+	var cfg cohortFilterCfg
+	if err := json.Unmarshal(filtersJSON, &cfg); err != nil || len(cfg.Groups) == 0 {
+		return baseCount()
+	}
+
+	args := []interface{}{projectID}
+	idx := 2
+	var groupClauses []string
+
+	for _, group := range cfg.Groups {
+		var propClauses []string
+		for _, prop := range group.Properties {
+			// Reject keys that could break out of the jsonb operator expression.
+			if !isSafePropertyKey(prop.Key) {
+				continue
+			}
+			switch prop.Operator {
+			case "exact":
+				propClauses = append(propClauses, fmt.Sprintf("properties->>'%s' = $%d", prop.Key, idx))
+				args = append(args, fmt.Sprintf("%v", prop.Value))
+				idx++
+			case "contains":
+				propClauses = append(propClauses, fmt.Sprintf("properties->>'%s' ILIKE $%d", prop.Key, idx))
+				args = append(args, "%"+fmt.Sprintf("%v", prop.Value)+"%")
+				idx++
+			case "gt":
+				propClauses = append(propClauses, fmt.Sprintf("(properties->>'%s')::numeric > $%d", prop.Key, idx))
+				args = append(args, prop.Value)
+				idx++
+			case "lt":
+				propClauses = append(propClauses, fmt.Sprintf("(properties->>'%s')::numeric < $%d", prop.Key, idx))
+				args = append(args, prop.Value)
+				idx++
+			}
+		}
+		if len(propClauses) > 0 {
+			groupClauses = append(groupClauses, "("+strings.Join(propClauses, " AND ")+")")
+		}
+	}
+
+	where := "project_id = $1"
+	if len(groupClauses) > 0 {
+		where += " AND (" + strings.Join(groupClauses, " OR ") + ")"
+	}
+
+	var count int
+	err := r.connManager.Primary().QueryRowContext(ctx,
+		"SELECT COUNT(*) FROM persons WHERE "+where, args...).Scan(&count)
+	return count, err
+}
+
+// isSafePropertyKey ensures the key contains only characters safe to embed in
+// a JSONB operator expression (properties->>'key').
+func isSafePropertyKey(key string) bool {
+	if key == "" {
+		return false
+	}
+	for _, c := range key {
+		if !((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+			(c >= '0' && c <= '9') || c == '_' || c == '-' || c == '.' || c == '@' || c == '$') {
+			return false
+		}
+	}
+	return true
+}
+
 // CreateCohort inserts a new cohort
 func (r *Repository) CreateCohort(ctx context.Context, c *dao.Cohort) (*dao.Cohort, error) {
 	filtersJSON, _ := json.Marshal(c.Filters)
@@ -626,13 +723,18 @@ func (r *Repository) CreateCohort(ctx context.Context, c *dao.Cohort) (*dao.Coho
 	if err != nil {
 		return nil, fmt.Errorf("create cohort: %w", err)
 	}
+	count, err := r.countPersonsMatchingFilters(ctx, c.ProjectID, filtersJSON)
+	if err != nil {
+		logger.Error(ctx, "count persons for cohort: %v", err)
+	}
+	c.PersonCount = count
 	return c, nil
 }
 
 // ListCohorts returns all cohorts for a project
 func (r *Repository) ListCohorts(ctx context.Context, f *filter.CohortFilter) ([]*dao.Cohort, error) {
 	rows, err := r.connManager.Primary().QueryContext(ctx,
-		`SELECT id, project_id, name, filters, person_count, created_at FROM cohorts WHERE project_id = $1 ORDER BY created_at DESC`,
+		`SELECT id, project_id, name, filters, created_at FROM cohorts WHERE project_id = $1 ORDER BY created_at DESC`,
 		f.ProjectID,
 	)
 	if err != nil {
@@ -643,11 +745,16 @@ func (r *Repository) ListCohorts(ctx context.Context, f *filter.CohortFilter) ([
 	for rows.Next() {
 		var c dao.Cohort
 		var filtersJSON []byte
-		if err := rows.Scan(&c.ID, &c.ProjectID, &c.Name, &filtersJSON, &c.PersonCount, &c.CreatedAt); err != nil {
+		if err := rows.Scan(&c.ID, &c.ProjectID, &c.Name, &filtersJSON, &c.CreatedAt); err != nil {
 			logger.Error(ctx, "scan cohort: %v", err)
 			continue
 		}
 		c.Filters = filtersJSON
+		count, err := r.countPersonsMatchingFilters(ctx, c.ProjectID, filtersJSON)
+		if err != nil {
+			logger.Error(ctx, "count persons for cohort %s: %v", c.ID, err)
+		}
+		c.PersonCount = count
 		cohorts = append(cohorts, &c)
 	}
 	return cohorts, rows.Err()
