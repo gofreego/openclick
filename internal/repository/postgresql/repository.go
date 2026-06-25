@@ -618,9 +618,16 @@ func (r *Repository) DeleteDashboardItem(ctx context.Context, dashboardID, itemI
 
 // ListDevices returns paginated devices for a project.
 func (r *Repository) ListDevices(ctx context.Context, f *filter.DeviceFilter) ([]*dao.Device, int, error) {
+	base := `FROM devices WHERE project_id = $1`
+	args := []interface{}{f.ProjectID}
+	if f.DeviceID != "" {
+		base += ` AND id = $2`
+		args = append(args, f.DeviceID)
+	}
+
 	var total int
 	if err := r.connManager.Primary().QueryRowContext(ctx,
-		`SELECT COUNT(*) FROM devices WHERE project_id = $1`, f.ProjectID).Scan(&total); err != nil {
+		`SELECT COUNT(*) `+base, args...).Scan(&total); err != nil {
 		return nil, 0, fmt.Errorf("count devices: %w", err)
 	}
 	limit := f.Limit
@@ -630,10 +637,11 @@ func (r *Repository) ListDevices(ctx context.Context, f *filter.DeviceFilter) ([
 	if limit > 500 {
 		limit = 500
 	}
+	idx := len(args) + 1
+	args = append(args, limit, f.Offset)
 	rows, err := r.connManager.Primary().QueryContext(ctx,
-		`SELECT id, project_id, properties, created_at, updated_at FROM devices
-		 WHERE project_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`,
-		f.ProjectID, limit, f.Offset)
+		fmt.Sprintf(`SELECT id, project_id, properties, created_at, updated_at %s ORDER BY created_at DESC LIMIT $%d OFFSET $%d`, base, idx, idx+1),
+		args...)
 	if err != nil {
 		return nil, 0, fmt.Errorf("list devices: %w", err)
 	}

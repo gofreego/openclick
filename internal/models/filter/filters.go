@@ -133,6 +133,7 @@ type CohortFilter struct {
 // DeviceFilter for listing devices
 type DeviceFilter struct {
 	ProjectID string
+	DeviceID  string // exact match; empty means no filter
 	Limit     int
 	Offset    int
 }

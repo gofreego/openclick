@@ -216,8 +216,12 @@ func (s *Service) ListDevices(ctx context.Context, req *openclick_v1.ListDevices
 	if req.Offset != nil {
 		offset = int(*req.Offset)
 	}
+	deviceID := ""
+	if req.DeviceId != nil {
+		deviceID = *req.DeviceId
+	}
 	devices, total, err := s.repo.ListDevices(ctx, &filter.DeviceFilter{
-		ProjectID: req.ProjectId, Limit: limit, Offset: offset,
+		ProjectID: req.ProjectId, DeviceID: deviceID, Limit: limit, Offset: offset,
 	})
 	if err != nil {
 		logger.Error(ctx, "list devices: %v", err)

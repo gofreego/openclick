@@ -7,6 +7,7 @@ import (
 	repo "github.com/gofreego/openclick/internal/repository"
 	"github.com/gofreego/openclick/internal/service"
 
+	"github.com/gofreego/goutils/api"
 	"github.com/gofreego/goutils/api/debug"
 	"github.com/gofreego/goutils/configutils"
 	"github.com/gofreego/goutils/logger"
@@ -24,9 +25,13 @@ type Configuration struct {
 }
 
 type Server struct {
-	GRPCPort   int  `yaml:"GRPCPort"`
-	HTTPPort   int  `yaml:"HTTPPort"`
-	EnableCORS bool `yaml:"EnableCORS"`
+	GRPCPort int             `yaml:"GRPCPort"`
+	HTTPPort int             `yaml:"HTTPPort"`
+	CORS     *api.CORSConfig `yaml:"CORS"`
+}
+
+func (s *Server) GetCORSConfig() *api.CORSConfig {
+	return s.CORS
 }
 
 func LoadConfig(ctx context.Context, path string, env string) *Configuration {

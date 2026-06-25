@@ -5,7 +5,7 @@ go 1.24.1
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.46.0
 	github.com/envoyproxy/protoc-gen-validate v1.2.1
-	github.com/gofreego/goutils v1.4.0
+	github.com/gofreego/goutils v1.4.1-0.20260625130926-3d120401b37b
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
 	google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c

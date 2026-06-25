@@ -90,7 +90,11 @@ export interface DeviceResponse {
 export interface ListDevicesRequest {
   projectId: string;
   limit?: number | undefined;
-  offset?: number | undefined;
+  offset?:
+    | number
+    | undefined;
+  /** exact match search */
+  deviceId?: string | undefined;
 }
 
 export interface ListDevicesResponse {
@@ -1340,7 +1344,7 @@ export const DeviceResponse: MessageFns<DeviceResponse> = {
 };
 
 function createBaseListDevicesRequest(): ListDevicesRequest {
-  return { projectId: "", limit: undefined, offset: undefined };
+  return { projectId: "", limit: undefined, offset: undefined, deviceId: undefined };
 }
 
 export const ListDevicesRequest: MessageFns<ListDevicesRequest> = {
@@ -1353,6 +1357,9 @@ export const ListDevicesRequest: MessageFns<ListDevicesRequest> = {
     }
     if (message.offset !== undefined) {
       writer.uint32(24).int32(message.offset);
+    }
+    if (message.deviceId !== undefined) {
+      writer.uint32(34).string(message.deviceId);
     }
     return writer;
   },
@@ -1388,6 +1395,14 @@ export const ListDevicesRequest: MessageFns<ListDevicesRequest> = {
           message.offset = reader.int32();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.deviceId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1406,6 +1421,11 @@ export const ListDevicesRequest: MessageFns<ListDevicesRequest> = {
         : "",
       limit: isSet(object.limit) ? globalThis.Number(object.limit) : undefined,
       offset: isSet(object.offset) ? globalThis.Number(object.offset) : undefined,
+      deviceId: isSet(object.deviceId)
+        ? globalThis.String(object.deviceId)
+        : isSet(object.device_id)
+        ? globalThis.String(object.device_id)
+        : undefined,
     };
   },
 
@@ -1420,6 +1440,9 @@ export const ListDevicesRequest: MessageFns<ListDevicesRequest> = {
     if (message.offset !== undefined) {
       obj.offset = Math.round(message.offset);
     }
+    if (message.deviceId !== undefined) {
+      obj.deviceId = message.deviceId;
+    }
     return obj;
   },
 
@@ -1431,6 +1454,7 @@ export const ListDevicesRequest: MessageFns<ListDevicesRequest> = {
     message.projectId = object.projectId ?? "";
     message.limit = object.limit ?? undefined;
     message.offset = object.offset ?? undefined;
+    message.deviceId = object.deviceId ?? undefined;
     return message;
   },
 };

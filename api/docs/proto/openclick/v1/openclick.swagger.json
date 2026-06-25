@@ -881,6 +881,13 @@
             "required": false,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "deviceId",
+            "description": "exact match search",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [

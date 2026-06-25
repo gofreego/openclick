@@ -2,8 +2,9 @@ import { useState, useEffect, useCallback } from 'react'
 import {
   Box, Typography, Table, TableBody, TableCell, TableHead, TableRow,
   Paper, Chip, CircularProgress, Drawer, IconButton, Divider,
-  TablePagination,
+  TablePagination, TextField, InputAdornment,
 } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
 import { useTheme } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
 import {
@@ -56,7 +57,7 @@ function StatChart({ title, data }: { title: string; data: { value: string; coun
 
 function DeviceDrawer({ device, onClose }: { device: DeviceResponse | null; onClose: () => void }) {
   if (!device) return null
-  const props = device.properties?.fields ?? {}
+  const props = device.properties ?? {}
   return (
     <Drawer anchor="right" open={!!device} onClose={onClose} PaperProps={{ sx: { width: 480, p: 3 } }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -75,18 +76,18 @@ function DeviceDrawer({ device, onClose }: { device: DeviceResponse | null; onCl
               {PROP_LABELS[key] ?? key}
             </Typography>
             <Typography variant="body2" sx={{ textAlign: 'right', wordBreak: 'break-all', fontSize: 12 }}>
-              {String(val?.stringValue ?? val?.numberValue ?? val?.boolValue ?? '')}
+              {val != null ? String(val) : ''}
             </Typography>
           </Box>
         ))}
       </Box>
       <Divider sx={{ my: 2 }} />
       <Typography variant="caption" color="text.secondary">
-        First seen: {device.createdAt ? new Date(device.createdAt as any).toLocaleString() : '—'}
+        First seen: {device.createdAt ? device.createdAt.toLocaleString() : '—'}
       </Typography>
       <br />
       <Typography variant="caption" color="text.secondary">
-        Last seen: {device.updatedAt ? new Date(device.updatedAt as any).toLocaleString() : '—'}
+        Last seen: {device.updatedAt ? device.updatedAt.toLocaleString() : '—'}
       </Typography>
     </Drawer>
   )
@@ -100,12 +101,18 @@ export function DevicesTab({ projectId }: { projectId: string }) {
   const [stats, setStats] = useState<GetDeviceStatsResponse | null>(null)
   const [loading, setLoading] = useState(false)
   const [selected, setSelected] = useState<DeviceResponse | null>(null)
+  const [searchInput, setSearchInput] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
   const notify = useNotification()
 
   const loadDevices = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await deviceService.list(projectId, { limit: rowsPerPage, offset: page * rowsPerPage })
+      const res = await deviceService.list(projectId, {
+        deviceId: searchQuery || undefined,
+        limit: rowsPerPage,
+        offset: page * rowsPerPage,
+      })
       setDevices(res.results ?? [])
       setTotal(Number(res.total ?? 0))
     } catch {
@@ -113,7 +120,7 @@ export function DevicesTab({ projectId }: { projectId: string }) {
     } finally {
       setLoading(false)
     }
-  }, [projectId, page, rowsPerPage])
+  }, [projectId, page, rowsPerPage, searchQuery])
 
   const loadStats = useCallback(async () => {
     try {
@@ -125,11 +132,33 @@ export function DevicesTab({ projectId }: { projectId: string }) {
   useEffect(() => { loadDevices() }, [loadDevices])
   useEffect(() => { loadStats() }, [loadStats])
 
-  const getProp = (d: DeviceResponse, key: string) =>
-    (d.properties?.fields?.[key] as any)?.stringValue ?? ''
+  const getProp = (d: DeviceResponse, key: string): string => {
+    const v = d.properties?.[key]
+    return v != null ? String(v) : ''
+  }
 
   return (
     <Box>
+      <Box mb={2}>
+        <TextField
+          size="small"
+          placeholder="Search by device ID (exact match)..."
+          value={searchInput}
+          onChange={e => setSearchInput(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === 'Enter') { setSearchQuery(searchInput); setPage(0) }
+          }}
+          sx={{ width: 380 }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon fontSize="small" />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+
       {stats && (
         <Box display="grid" gridTemplateColumns="repeat(auto-fill, minmax(260px, 1fr))" gap={2} mb={3}>
           <StatChart title="Browsers" data={stats.browsers} />
@@ -190,7 +219,7 @@ export function DevicesTab({ projectId }: { projectId: string }) {
                     </TableCell>
                     <TableCell sx={{ fontSize: 12 }}>{getProp(d, '$lib') || '—'}</TableCell>
                     <TableCell sx={{ fontSize: 12, color: 'text.secondary' }}>
-                      {d.createdAt ? new Date(d.createdAt as any).toLocaleDateString() : '—'}
+                      {d.createdAt ? d.createdAt.toLocaleDateString() : '—'}
                     </TableCell>
                   </TableRow>
                 ))}

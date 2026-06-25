@@ -1898,6 +1898,10 @@ func (m *ListDevicesRequest) validate(all bool) error {
 		// no validation rules for Offset
 	}
 
+	if m.DeviceId != nil {
+		// no validation rules for DeviceId
+	}
+
 	if len(errors) > 0 {
 		return ListDevicesRequestMultiError(errors)
 	}

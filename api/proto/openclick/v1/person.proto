@@ -88,6 +88,7 @@ message ListDevicesRequest {
   string project_id = 1;
   optional int32 limit = 2;
   optional int32 offset = 3;
+  optional string device_id = 4; // exact match search
 }
 
 message ListDevicesResponse {

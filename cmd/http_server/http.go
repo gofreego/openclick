@@ -90,14 +90,10 @@ func (a *HTTPServer) Run(ctx context.Context) error {
 
 		http.NotFound(w, r)
 	})
-	var handler http.Handler = finalHandler
-	if a.cfg.Server.EnableCORS {
-		handler = api.CORSMiddleware(handler)
-	}
 
 	a.server = &http.Server{
 		Addr:    fmt.Sprintf(":%d", a.cfg.Server.HTTPPort),
-		Handler: logger.WithRequestMiddleware(logger.WithRequestTimeMiddleware(handler)),
+		Handler: logger.WithRequestMiddleware(logger.WithRequestTimeMiddleware(api.CorsMiddleware(finalHandler, a.cfg.Server.GetCORSConfig))),
 	}
 
 	logger.Info(ctx, "Starting HTTP server on port %d", a.cfg.Server.HTTPPort)

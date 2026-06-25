@@ -796,6 +796,7 @@ type ListDevicesRequest struct {
 	ProjectId     string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	Limit         *int32                 `protobuf:"varint,2,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
 	Offset        *int32                 `protobuf:"varint,3,opt,name=offset,proto3,oneof" json:"offset,omitempty"`
+	DeviceId      *string                `protobuf:"bytes,4,opt,name=device_id,json=deviceId,proto3,oneof" json:"device_id,omitempty"` // exact match search
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -849,6 +850,13 @@ func (x *ListDevicesRequest) GetOffset() int32 {
 		return *x.Offset
 	}
 	return 0
+}
+
+func (x *ListDevicesRequest) GetDeviceId() string {
+	if x != nil && x.DeviceId != nil {
+		return *x.DeviceId
+	}
+	return ""
 }
 
 type ListDevicesResponse struct {
@@ -1235,14 +1243,17 @@ const file_proto_openclick_v1_person_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\x80\x01\n" +
+	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xb0\x01\n" +
 	"\x12ListDevicesRequest\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tR\tprojectId\x12\x19\n" +
 	"\x05limit\x18\x02 \x01(\x05H\x00R\x05limit\x88\x01\x01\x12\x1b\n" +
-	"\x06offset\x18\x03 \x01(\x05H\x01R\x06offset\x88\x01\x01B\b\n" +
+	"\x06offset\x18\x03 \x01(\x05H\x01R\x06offset\x88\x01\x01\x12 \n" +
+	"\tdevice_id\x18\x04 \x01(\tH\x02R\bdeviceId\x88\x01\x01B\b\n" +
 	"\x06_limitB\t\n" +
-	"\a_offset\"Y\n" +
+	"\a_offsetB\f\n" +
+	"\n" +
+	"_device_id\"Y\n" +
 	"\x13ListDevicesResponse\x12,\n" +
 	"\aresults\x18\x01 \x03(\v2\x12.v1.DeviceResponseR\aresults\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x03R\x05total\"N\n" +
