@@ -3,6 +3,7 @@ import {
   Typography, Box, Paper, Button, TextField, MenuItem, Select,
   FormControl, InputLabel, CircularProgress, Autocomplete
 } from '@mui/material'
+import { useTheme, alpha } from '@mui/material/styles'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { analyticsService } from '../../services/analyticsService'
 import { SaveToDashboardButton } from './SaveToDashboardButton'
@@ -10,6 +11,7 @@ import type { RetentionCohort } from '../../apis/proto/openclick/v1/analytics'
 import { useNotification } from '@gofreego/tsutils'
 
 export function RetentionTab({ projectId }: { projectId: string }) {
+  const theme = useTheme()
   const [targetEvent, setTargetEvent] = useState('$pageview')
   const [returnEvent, setReturnEvent] = useState('$pageview')
   const [dateFrom, setDateFrom] = useState(() => {
@@ -119,8 +121,8 @@ export function RetentionTab({ projectId }: { projectId: string }) {
                     return (
                       <Box key={vi} component="td" sx={{
                         p: 1, textAlign: 'center', borderBottom: '1px solid', borderColor: 'divider',
-                        backgroundColor: `rgba(99, 102, 241, ${opacity})`,
-                        color: opacity > 0.5 ? 'white' : 'inherit',
+                        backgroundColor: alpha(theme.palette.primary.main, opacity),
+                        color: opacity > 0.5 ? theme.palette.primary.contrastText : theme.palette.text.primary,
                         fontWeight: 600,
                       }}>
                         {pct}%

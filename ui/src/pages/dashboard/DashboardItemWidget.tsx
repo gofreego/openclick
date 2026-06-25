@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Box, Typography, CircularProgress, Button } from '@mui/material'
+import { useTheme, alpha } from '@mui/material/styles'
 import {
   LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid,
-  Tooltip as RechartsTooltip, Legend, ResponsiveContainer
+  Tooltip as RechartsTooltip, Legend, LabelList, ResponsiveContainer
 } from 'recharts'
 import { analyticsService } from '../../services/analyticsService'
 import type { DashboardItem } from '../../services/dashboardService'
@@ -82,6 +83,18 @@ export function DashboardItemWidget({ projectId, item }: Props) {
 }
 
 function WidgetChart({ type, data }: { type: string; data: any }) {
+  const theme = useTheme()
+
+  const tooltipStyle = {
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.divider}`,
+    color: theme.palette.text.primary,
+  }
+  const axisProps = {
+    axisLine: { stroke: theme.palette.divider },
+    tickLine: { stroke: theme.palette.divider },
+  }
+
   if (type === 'trends') {
     const results = data.results || []
     if (!results.length) return <NoData />
@@ -92,11 +105,11 @@ function WidgetChart({ type, data }: { type: string; data: any }) {
     return (
       <ResponsiveContainer width="100%" height={200}>
         <LineChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="day" tick={{ fontSize: 10 }} />
-          <YAxis tick={{ fontSize: 10 }} />
-          <RechartsTooltip />
-          <Legend wrapperStyle={{ fontSize: 11 }} />
+          <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
+          <XAxis dataKey="day" tick={{ fontSize: 10, fill: theme.palette.text.secondary }} {...axisProps} />
+          <YAxis tick={{ fontSize: 10, fill: theme.palette.text.secondary }} {...axisProps} />
+          <RechartsTooltip contentStyle={tooltipStyle} />
+          <Legend wrapperStyle={{ fontSize: 11, color: theme.palette.text.secondary }} />
           {results.map((s: any, i: number) => (
             <Line key={i} type="monotone" dataKey={s.label || s.breakdownValue || 'Count'}
               stroke={COLORS[i % COLORS.length]} strokeWidth={2} dot={false} />
@@ -115,14 +128,16 @@ function WidgetChart({ type, data }: { type: string; data: any }) {
     if (!chartData.length) return <NoData />
     return (
       <ResponsiveContainer width="100%" height={200}>
-        <BarChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" tick={{ fontSize: 10 }} />
-          <YAxis tick={{ fontSize: 10 }} />
-          <RechartsTooltip />
-          <Legend wrapperStyle={{ fontSize: 11 }} />
-          <Bar dataKey="count" name="Count" radius={[4, 4, 0, 0]}>
+        <BarChart data={chartData} margin={{ top: 24, right: 10, left: 0, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
+          <XAxis dataKey="name" tick={{ fontSize: 10, fill: theme.palette.text.primary }} {...axisProps} />
+          <YAxis tick={{ fontSize: 10, fill: theme.palette.text.secondary }} {...axisProps} />
+          <RechartsTooltip contentStyle={tooltipStyle}
+            formatter={(value: any, name: any) => name === 'count' ? [value, 'Users'] : [`${value}%`, 'Conversion Rate']} />
+          <Bar dataKey="count" name="count" radius={[4, 4, 0, 0]}>
             {chartData.map((_: any, i: number) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+            <LabelList dataKey="conversionRate" position="top" formatter={(v: any) => `${v}%`}
+              style={{ fontSize: 11, fontWeight: 700, fill: theme.palette.text.primary }} />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
@@ -149,8 +164,8 @@ function WidgetChart({ type, data }: { type: string; data: any }) {
                     <Box key={vi} component="td" sx={{
                       p: '2px 4px', textAlign: 'center',
                       borderBottom: '1px solid', borderColor: 'divider',
-                      backgroundColor: `rgba(99, 102, 241, ${opacity})`,
-                      color: opacity > 0.5 ? 'white' : 'inherit',
+                      backgroundColor: alpha(theme.palette.primary.main, opacity),
+                      color: opacity > 0.5 ? theme.palette.primary.contrastText : theme.palette.text.primary,
                       minWidth: 36,
                     }}>
                       {pct}%

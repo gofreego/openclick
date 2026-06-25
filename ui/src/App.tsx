@@ -25,8 +25,7 @@ import { FeatureFlagsPage } from './pages/feature_flags/FeatureFlagsPage'
 import { SettingsPage } from './pages/settings/SettingsPage'
 
 import { authService, sessionManager } from './services'
-
-const LOGIN_URL = import.meta.env.VITE_LOGIN_URL as string || 'https://admin.bappaapp.com/openauth/admin/v2/login'
+import { LOGIN_URL } from './utils/envs'
 
 function App() {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -35,11 +34,6 @@ function App() {
     authService.initializeAuth()
     setIsInitialized(true);
   }, [])
-
-  const handleLoginFailed = () => {
-    console.log("Login failed, redirecting to -> ", LOGIN_URL)
-    window.location.href = LOGIN_URL
-  }
 
   const menuItems = [
     {
@@ -92,7 +86,7 @@ function App() {
         <ProjectProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/openclick/login-callback" element={<LoginCallbackPage authService={authService} navigateTo="/openclick/dashboard" onLoginFailed={handleLoginFailed} />} />
+              <Route path="/openclick/login-callback" element={<LoginCallbackPage authService={authService} navigateTo="/openclick/dashboard"/>} />
               <Route
                 path="/"
                 element={

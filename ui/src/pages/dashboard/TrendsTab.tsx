@@ -3,6 +3,7 @@ import {
   Typography, Box, Paper, Button, TextField, MenuItem, Select,
   FormControl, InputLabel, CircularProgress, Autocomplete
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
@@ -15,6 +16,7 @@ import { COLORS } from './tabInfo'
 import { SaveToDashboardButton } from './SaveToDashboardButton'
 
 export function TrendsTab({ projectId }: { projectId: string }) {
+  const theme = useTheme()
   const [eventName, setEventName] = useState('$pageview')
   const [eventOptions, setEventOptions] = useState<string[]>([])
   const [dateFrom, setDateFrom] = useState(() => {
@@ -98,11 +100,17 @@ export function TrendsTab({ projectId }: { projectId: string }) {
           </Box>
           <ResponsiveContainer width="100%" height={350}>
             <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" tick={{ fontSize: 12 }} />
-              <YAxis tick={{ fontSize: 12 }} />
-              <RechartsTooltip />
-              <Legend />
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
+              <XAxis dataKey="day" tick={{ fontSize: 12, fill: theme.palette.text.secondary }}
+                axisLine={{ stroke: theme.palette.divider }} tickLine={{ stroke: theme.palette.divider }} />
+              <YAxis tick={{ fontSize: 12, fill: theme.palette.text.secondary }}
+                axisLine={{ stroke: theme.palette.divider }} tickLine={{ stroke: theme.palette.divider }} />
+              <RechartsTooltip contentStyle={{
+                backgroundColor: theme.palette.background.paper,
+                border: `1px solid ${theme.palette.divider}`,
+                color: theme.palette.text.primary,
+              }} />
+              <Legend wrapperStyle={{ color: theme.palette.text.secondary }} />
               {results.map((s, i) => (
                 <Line key={i} type="monotone" dataKey={s.label || s.breakdownValue || 'Count'}
                   stroke={COLORS[i % COLORS.length]} strokeWidth={2} dot={false} />

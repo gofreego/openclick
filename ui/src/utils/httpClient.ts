@@ -1,10 +1,16 @@
-import { HttpClient } from '@gofreego/tsutils'
+import { HttpClient, type HttpError } from '@gofreego/tsutils'
+import { API_BASE_URL, LOGIN_URL } from './envs'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.bappaapp.com'
+const onUnauthorized = (err: HttpError) => {
+  // log error
+  console.log("Unauthorized response received, redirecting to -> ", LOGIN_URL, err)
+  window.location.href = LOGIN_URL
+}
 
 export const httpClient = new HttpClient({
   baseURL: API_BASE_URL,
   timeout: 30000,
+  onUnauthorized,
 })
 
 export default httpClient

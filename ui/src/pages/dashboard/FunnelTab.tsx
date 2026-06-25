@@ -2,12 +2,13 @@ import { useState, useCallback, useEffect } from 'react'
 import {
   Typography, Box, Paper, Button, TextField, Chip, IconButton, CircularProgress, Autocomplete
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import {
   BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
-  Legend, ResponsiveContainer
+  ResponsiveContainer, LabelList
 } from 'recharts'
 import { analyticsService } from '../../services/analyticsService'
 import type { FunnelStepResult } from '../../apis/proto/openclick/v1/analytics'
@@ -16,6 +17,7 @@ import { COLORS } from './tabInfo'
 import { SaveToDashboardButton } from './SaveToDashboardButton'
 
 export function FunnelTab({ projectId }: { projectId: string }) {
+  const theme = useTheme()
   const [steps, setSteps] = useState([{ event: '$pageview', name: 'Page View' }, { event: '$click', name: 'Click' }])
   const [dateFrom, setDateFrom] = useState(() => {
     const d = new Date(); d.setDate(d.getDate() - 30); return d.toISOString().split('T')[0]
@@ -102,18 +104,42 @@ export function FunnelTab({ projectId }: { projectId: string }) {
             <SaveToDashboardButton projectId={projectId} type="funnel"
               query={{ steps, dateFrom, dateTo, conversionWindowDays: conversionWindow }} />
           </Box>
-          <ResponsiveContainer width="100%" height={350}>
-            <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-              <YAxis yAxisId="left" tick={{ fontSize: 12 }} />
-              <YAxis yAxisId="right" orientation="right" tickFormatter={(v: any) => `${v}%`} tick={{ fontSize: 12 }} />
-              <RechartsTooltip formatter={(value: any, name: any) => name === 'conversionRate' ? `${value}%` : value} />
-              <Legend />
-              <Bar yAxisId="left" dataKey="count" name="Count" radius={[4, 4, 0, 0]}>
+          <ResponsiveContainer width="100%" height={380}>
+            <BarChart data={chartData} margin={{ top: 40, right: 30, left: 20, bottom: 60 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: 13, fontWeight: 600, fill: theme.palette.text.primary }}
+                angle={-30}
+                textAnchor="end"
+                interval={0}
+                axisLine={{ stroke: theme.palette.divider }}
+                tickLine={{ stroke: theme.palette.divider }}
+              />
+              <YAxis
+                tick={{ fontSize: 12, fill: theme.palette.text.secondary }}
+                axisLine={{ stroke: theme.palette.divider }}
+                tickLine={{ stroke: theme.palette.divider }}
+              />
+              <RechartsTooltip
+                contentStyle={{
+                  backgroundColor: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.divider}`,
+                  color: theme.palette.text.primary,
+                }}
+                formatter={(value: any, name: any) =>
+                  name === 'count' ? [value, 'Users'] : [`${value}%`, 'Conversion Rate']
+                }
+              />
+              <Bar dataKey="count" name="count" radius={[4, 4, 0, 0]}>
                 {chartData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                <LabelList
+                  dataKey="conversionRate"
+                  position="top"
+                  formatter={(v: any) => `${v}%`}
+                  style={{ fontSize: 14, fontWeight: 700, fill: theme.palette.text.primary }}
+                />
               </Bar>
-              <Bar yAxisId="right" dataKey="conversionRate" name="Conversion Rate (%)" fill="#10b981" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </Paper>
