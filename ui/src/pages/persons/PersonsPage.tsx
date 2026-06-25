@@ -12,6 +12,7 @@ import { personService } from '../../services/personService'
 import type { Person, PersonDetail } from '../../services/personService'
 import { cohortService } from '../../services/cohortService'
 import type { Cohort } from '../../services/cohortService'
+import { DevicesTab } from './DevicesTab'
 import { useCurrentProject } from '../../contexts/ProjectContext'
 import { useNotification } from '@gofreego/tsutils'
 import { PageHeader } from '../../components/PageHeader'
@@ -327,6 +328,7 @@ export function PersonsPage() {
           <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)} sx={{ mb: 2 }}>
             <Tab label={<Box display="flex" alignItems="center" gap={0.5}>Persons<TabInfoButton info={PERSONS_TAB_INFO.persons} /></Box>} />
             <Tab label={<Box display="flex" alignItems="center" gap={0.5}>Cohorts<TabInfoButton info={PERSONS_TAB_INFO.cohorts} /></Box>} />
+            <Tab label="Devices" />
           </Tabs>
 
           {activeTab === 0 && (
@@ -398,6 +400,7 @@ export function PersonsPage() {
           )}
 
           {activeTab === 1 && <CohortsTab projectId={selectedProjectId} />}
+          {activeTab === 2 && <DevicesTab projectId={selectedProjectId} />}
         </>
       ) : (
         <Paper sx={{ p: 3, textAlign: 'center' }}>

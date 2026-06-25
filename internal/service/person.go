@@ -202,6 +202,73 @@ func (s *Service) DeleteCohort(ctx context.Context, req *openclick_v1.DeleteCoho
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Devices
+// ─────────────────────────────────────────────────────────────────────────────
+
+func (s *Service) ListDevices(ctx context.Context, req *openclick_v1.ListDevicesRequest) (*openclick_v1.ListDevicesResponse, error) {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, constants.PermPersonsRead); err != nil {
+		return nil, err
+	}
+	limit, offset := 50, 0
+	if req.Limit != nil {
+		limit = int(*req.Limit)
+	}
+	if req.Offset != nil {
+		offset = int(*req.Offset)
+	}
+	devices, total, err := s.repo.ListDevices(ctx, &filter.DeviceFilter{
+		ProjectID: req.ProjectId, Limit: limit, Offset: offset,
+	})
+	if err != nil {
+		logger.Error(ctx, "list devices: %v", err)
+		return nil, status.Error(codes.Internal, "failed to list devices")
+	}
+	var results []*openclick_v1.DeviceResponse
+	for _, d := range devices {
+		results = append(results, deviceToResponse(d))
+	}
+	if results == nil {
+		results = []*openclick_v1.DeviceResponse{}
+	}
+	return &openclick_v1.ListDevicesResponse{Results: results, Total: int64(total)}, nil
+}
+
+func (s *Service) GetDevice(ctx context.Context, req *openclick_v1.GetDeviceRequest) (*openclick_v1.GetDeviceResponse, error) {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, constants.PermPersonsRead); err != nil {
+		return nil, err
+	}
+	d, err := s.repo.GetDevice(ctx, req.ProjectId, req.DeviceId)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, "device not found")
+	}
+	return &openclick_v1.GetDeviceResponse{Device: deviceToResponse(d)}, nil
+}
+
+func (s *Service) GetDeviceStats(ctx context.Context, req *openclick_v1.GetDeviceStatsRequest) (*openclick_v1.GetDeviceStatsResponse, error) {
+	if err := s.checkPersonAuth(ctx, req.ProjectId, constants.PermPersonsRead); err != nil {
+		return nil, err
+	}
+	browsers, osList, deviceTypes, libs, err := s.repo.GetDeviceStats(ctx, req.ProjectId)
+	if err != nil {
+		logger.Error(ctx, "device stats: %v", err)
+		return nil, status.Error(codes.Internal, "failed to get device stats")
+	}
+	toProto := func(items []dao.StatItem) []*openclick_v1.DeviceStatItem {
+		out := make([]*openclick_v1.DeviceStatItem, 0, len(items))
+		for _, item := range items {
+			out = append(out, &openclick_v1.DeviceStatItem{Value: item.Value, Count: item.Count})
+		}
+		return out
+	}
+	return &openclick_v1.GetDeviceStatsResponse{
+		Browsers:    toProto(browsers),
+		OsList:      toProto(osList),
+		DeviceTypes: toProto(deviceTypes),
+		Libs:        toProto(libs),
+	}, nil
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -214,6 +281,20 @@ func (s *Service) checkPersonAuth(ctx context.Context, projectID, perm string) e
 		return status.Error(codes.PermissionDenied, "missing permission: "+perm)
 	}
 	return s.validateMembership(ctx, projectID, userID)
+}
+
+func deviceToResponse(d *dao.Device) *openclick_v1.DeviceResponse {
+	var props structpb.Struct
+	if len(d.Properties) > 0 {
+		_ = props.UnmarshalJSON(d.Properties)
+	}
+	return &openclick_v1.DeviceResponse{
+		Id:        d.ID,
+		ProjectId: d.ProjectID,
+		Properties: &props,
+		CreatedAt: timestamppb.New(d.CreatedAt),
+		UpdatedAt: timestamppb.New(d.UpdatedAt),
+	}
 }
 
 func personToResponse(p *dao.Person) *openclick_v1.PersonResponse {

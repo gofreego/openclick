@@ -79,6 +79,8 @@ import {
   IdentifyResponse,
   IngestReplayRequest,
   IngestReplayResponse,
+  RegisterDeviceRequest,
+  RegisterDeviceResponse,
 } from "./ingest";
 import { ListPermissionsRequest, ListPermissionsResponse } from "./permission";
 import {
@@ -88,10 +90,16 @@ import {
   DeleteCohortResponse,
   DeletePersonRequest,
   DeletePersonResponse,
+  GetDeviceRequest,
+  GetDeviceResponse,
+  GetDeviceStatsRequest,
+  GetDeviceStatsResponse,
   GetPersonRequest,
   GetPersonResponse,
   ListCohortsRequest,
   ListCohortsResponse,
+  ListDevicesRequest,
+  ListDevicesResponse,
   ListPersonsRequest,
   ListPersonsResponse,
 } from "./person";
@@ -436,6 +444,36 @@ export const BaseServiceService = {
       Buffer.from(DeleteCohortResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer): DeleteCohortResponse => DeleteCohortResponse.decode(value),
   },
+  /** Devices */
+  listDevices: {
+    path: "/v1.BaseService/ListDevices" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ListDevicesRequest): Buffer => Buffer.from(ListDevicesRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ListDevicesRequest => ListDevicesRequest.decode(value),
+    responseSerialize: (value: ListDevicesResponse): Buffer => Buffer.from(ListDevicesResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ListDevicesResponse => ListDevicesResponse.decode(value),
+  },
+  getDevice: {
+    path: "/v1.BaseService/GetDevice" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: GetDeviceRequest): Buffer => Buffer.from(GetDeviceRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): GetDeviceRequest => GetDeviceRequest.decode(value),
+    responseSerialize: (value: GetDeviceResponse): Buffer => Buffer.from(GetDeviceResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): GetDeviceResponse => GetDeviceResponse.decode(value),
+  },
+  getDeviceStats: {
+    path: "/v1.BaseService/GetDeviceStats" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: GetDeviceStatsRequest): Buffer =>
+      Buffer.from(GetDeviceStatsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): GetDeviceStatsRequest => GetDeviceStatsRequest.decode(value),
+    responseSerialize: (value: GetDeviceStatsResponse): Buffer =>
+      Buffer.from(GetDeviceStatsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): GetDeviceStatsResponse => GetDeviceStatsResponse.decode(value),
+  },
   /** Feature Flags */
   listFeatureFlags: {
     path: "/v1.BaseService/ListFeatureFlags" as const,
@@ -499,6 +537,17 @@ export const BaseServiceService = {
     responseDeserialize: (value: Buffer): DecideResponse => DecideResponse.decode(value),
   },
   /** Ingestion */
+  registerDevice: {
+    path: "/v1.BaseService/RegisterDevice" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: RegisterDeviceRequest): Buffer =>
+      Buffer.from(RegisterDeviceRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): RegisterDeviceRequest => RegisterDeviceRequest.decode(value),
+    responseSerialize: (value: RegisterDeviceResponse): Buffer =>
+      Buffer.from(RegisterDeviceResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): RegisterDeviceResponse => RegisterDeviceResponse.decode(value),
+  },
   captureEvent: {
     path: "/v1.BaseService/CaptureEvent" as const,
     requestStream: false as const,
@@ -588,6 +637,10 @@ export interface BaseServiceServer extends UntypedServiceImplementation {
   listCohorts: handleUnaryCall<ListCohortsRequest, ListCohortsResponse>;
   createCohort: handleUnaryCall<CreateCohortRequest, CohortResponse>;
   deleteCohort: handleUnaryCall<DeleteCohortRequest, DeleteCohortResponse>;
+  /** Devices */
+  listDevices: handleUnaryCall<ListDevicesRequest, ListDevicesResponse>;
+  getDevice: handleUnaryCall<GetDeviceRequest, GetDeviceResponse>;
+  getDeviceStats: handleUnaryCall<GetDeviceStatsRequest, GetDeviceStatsResponse>;
   /** Feature Flags */
   listFeatureFlags: handleUnaryCall<ListFeatureFlagsRequest, ListFeatureFlagsResponse>;
   createFeatureFlag: handleUnaryCall<CreateFeatureFlagRequest, FeatureFlagResponse>;
@@ -596,6 +649,7 @@ export interface BaseServiceServer extends UntypedServiceImplementation {
   evaluateFlags: handleUnaryCall<EvaluateFlagsRequest, EvaluateFlagsResponse>;
   decide: handleUnaryCall<DecideRequest, DecideResponse>;
   /** Ingestion */
+  registerDevice: handleUnaryCall<RegisterDeviceRequest, RegisterDeviceResponse>;
   captureEvent: handleUnaryCall<CaptureEventRequest, CaptureEventResponse>;
   batchCapture: handleUnaryCall<BatchCaptureRequest, BatchCaptureResponse>;
   identify: handleUnaryCall<IdentifyRequest, IdentifyResponse>;
@@ -1087,6 +1141,52 @@ export interface BaseServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: DeleteCohortResponse) => void,
   ): ClientUnaryCall;
+  /** Devices */
+  listDevices(
+    request: ListDevicesRequest,
+    callback: (error: ServiceError | null, response: ListDevicesResponse) => void,
+  ): ClientUnaryCall;
+  listDevices(
+    request: ListDevicesRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListDevicesResponse) => void,
+  ): ClientUnaryCall;
+  listDevices(
+    request: ListDevicesRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListDevicesResponse) => void,
+  ): ClientUnaryCall;
+  getDevice(
+    request: GetDeviceRequest,
+    callback: (error: ServiceError | null, response: GetDeviceResponse) => void,
+  ): ClientUnaryCall;
+  getDevice(
+    request: GetDeviceRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetDeviceResponse) => void,
+  ): ClientUnaryCall;
+  getDevice(
+    request: GetDeviceRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetDeviceResponse) => void,
+  ): ClientUnaryCall;
+  getDeviceStats(
+    request: GetDeviceStatsRequest,
+    callback: (error: ServiceError | null, response: GetDeviceStatsResponse) => void,
+  ): ClientUnaryCall;
+  getDeviceStats(
+    request: GetDeviceStatsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetDeviceStatsResponse) => void,
+  ): ClientUnaryCall;
+  getDeviceStats(
+    request: GetDeviceStatsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetDeviceStatsResponse) => void,
+  ): ClientUnaryCall;
   /** Feature Flags */
   listFeatureFlags(
     request: ListFeatureFlagsRequest,
@@ -1179,6 +1279,21 @@ export interface BaseServiceClient extends Client {
     callback: (error: ServiceError | null, response: DecideResponse) => void,
   ): ClientUnaryCall;
   /** Ingestion */
+  registerDevice(
+    request: RegisterDeviceRequest,
+    callback: (error: ServiceError | null, response: RegisterDeviceResponse) => void,
+  ): ClientUnaryCall;
+  registerDevice(
+    request: RegisterDeviceRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: RegisterDeviceResponse) => void,
+  ): ClientUnaryCall;
+  registerDevice(
+    request: RegisterDeviceRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: RegisterDeviceResponse) => void,
+  ): ClientUnaryCall;
   captureEvent(
     request: CaptureEventRequest,
     callback: (error: ServiceError | null, response: CaptureEventResponse) => void,

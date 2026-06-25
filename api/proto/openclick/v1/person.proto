@@ -73,3 +73,49 @@ message DeleteCohortRequest {
 
 message DeleteCohortResponse {
 }
+
+// ── Devices ──────────────────────────────────────────────────────────────────
+
+message DeviceResponse {
+  string id = 1;
+  string project_id = 2;
+  google.protobuf.Struct properties = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+message ListDevicesRequest {
+  string project_id = 1;
+  optional int32 limit = 2;
+  optional int32 offset = 3;
+}
+
+message ListDevicesResponse {
+  repeated DeviceResponse results = 1;
+  int64 total = 2;
+}
+
+message GetDeviceRequest {
+  string project_id = 1;
+  string device_id = 2;
+}
+
+message GetDeviceResponse {
+  DeviceResponse device = 1;
+}
+
+message DeviceStatItem {
+  string value = 1;
+  int64 count = 2;
+}
+
+message GetDeviceStatsRequest {
+  string project_id = 1;
+}
+
+message GetDeviceStatsResponse {
+  repeated DeviceStatItem browsers = 1;
+  repeated DeviceStatItem os_list = 2;
+  repeated DeviceStatItem device_types = 3;
+  repeated DeviceStatItem libs = 4;
+}

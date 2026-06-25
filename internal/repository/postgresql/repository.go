@@ -613,6 +613,110 @@ func (r *Repository) DeleteDashboardItem(ctx context.Context, dashboardID, itemI
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Devices
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ListDevices returns paginated devices for a project.
+func (r *Repository) ListDevices(ctx context.Context, f *filter.DeviceFilter) ([]*dao.Device, int, error) {
+	var total int
+	if err := r.connManager.Primary().QueryRowContext(ctx,
+		`SELECT COUNT(*) FROM devices WHERE project_id = $1`, f.ProjectID).Scan(&total); err != nil {
+		return nil, 0, fmt.Errorf("count devices: %w", err)
+	}
+	limit := f.Limit
+	if limit <= 0 {
+		limit = 50
+	}
+	if limit > 500 {
+		limit = 500
+	}
+	rows, err := r.connManager.Primary().QueryContext(ctx,
+		`SELECT id, project_id, properties, created_at, updated_at FROM devices
+		 WHERE project_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`,
+		f.ProjectID, limit, f.Offset)
+	if err != nil {
+		return nil, 0, fmt.Errorf("list devices: %w", err)
+	}
+	defer rows.Close()
+	var devices []*dao.Device
+	for rows.Next() {
+		var d dao.Device
+		var propsJSON []byte
+		if err := rows.Scan(&d.ID, &d.ProjectID, &propsJSON, &d.CreatedAt, &d.UpdatedAt); err != nil {
+			logger.Error(ctx, "scan device: %v", err)
+			continue
+		}
+		d.Properties = propsJSON
+		devices = append(devices, &d)
+	}
+	return devices, total, rows.Err()
+}
+
+// GetDevice returns a single device by ID.
+func (r *Repository) GetDevice(ctx context.Context, projectID, deviceID string) (*dao.Device, error) {
+	var d dao.Device
+	var propsJSON []byte
+	err := r.connManager.Primary().QueryRowContext(ctx,
+		`SELECT id, project_id, properties, created_at, updated_at FROM devices WHERE project_id = $1 AND id = $2`,
+		projectID, deviceID).Scan(&d.ID, &d.ProjectID, &propsJSON, &d.CreatedAt, &d.UpdatedAt)
+	if err != nil {
+		return nil, fmt.Errorf("get device: %w", err)
+	}
+	d.Properties = propsJSON
+	return &d, nil
+}
+
+// GetDeviceStats returns top-N value/count pairs for each key device property.
+func (r *Repository) GetDeviceStats(ctx context.Context, projectID string) (browsers, osList, deviceTypes, libs []dao.StatItem, err error) {
+	type target struct {
+		key  string
+		dest *[]dao.StatItem
+	}
+	for _, t := range []target{
+		{"$browser", &browsers},
+		{"$os", &osList},
+		{"$device_type", &deviceTypes},
+		{"$lib", &libs},
+	} {
+		rows, qErr := r.connManager.Primary().QueryContext(ctx, `
+			SELECT properties->>$2 AS val, COUNT(*) AS cnt
+			FROM devices
+			WHERE project_id = $1 AND properties->>$2 IS NOT NULL AND properties->>$2 != ''
+			GROUP BY val ORDER BY cnt DESC LIMIT 20
+		`, projectID, t.key)
+		if qErr != nil {
+			err = fmt.Errorf("device stats %s: %w", t.key, qErr)
+			return
+		}
+		for rows.Next() {
+			var item dao.StatItem
+			rows.Scan(&item.Value, &item.Count)
+			*t.dest = append(*t.dest, item)
+		}
+		rows.Close()
+	}
+	return
+}
+
+// UpsertDevice inserts or updates a device record. On conflict the stored
+// properties are merged with the incoming ones (incoming takes precedence).
+func (r *Repository) UpsertDevice(ctx context.Context, d *dao.Device) (*dao.Device, error) {
+	propsJSON, _ := json.Marshal(d.Properties)
+	err := r.connManager.Primary().QueryRowContext(ctx, `
+		INSERT INTO devices (id, project_id, properties)
+		VALUES ($1, $2, $3)
+		ON CONFLICT (project_id, id) DO UPDATE
+		  SET properties = devices.properties || EXCLUDED.properties,
+		      updated_at = NOW()
+		RETURNING created_at, updated_at
+	`, d.ID, d.ProjectID, propsJSON).Scan(&d.CreatedAt, &d.UpdatedAt)
+	if err != nil {
+		return nil, fmt.Errorf("upsert device: %w", err)
+	}
+	return d, nil
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Cohorts
 // ─────────────────────────────────────────────────────────────────────────────
 

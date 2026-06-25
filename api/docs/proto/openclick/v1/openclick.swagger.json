@@ -124,6 +124,39 @@
         ]
       }
     },
+    "/openclick/api/v1/device/register": {
+      "post": {
+        "summary": "Register a device and get a device_id for use in subsequent events",
+        "operationId": "BaseService_RegisterDevice",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RegisterDeviceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1RegisterDeviceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Ingestion"
+        ]
+      }
+    },
     "/openclick/api/v1/e": {
       "post": {
         "summary": "Capture event",
@@ -776,6 +809,119 @@
         ],
         "tags": [
           "Dashboards"
+        ]
+      }
+    },
+    "/openclick/api/v1/projects/{projectId}/device-stats": {
+      "get": {
+        "summary": "Get device distribution stats",
+        "operationId": "BaseService_GetDeviceStats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetDeviceStatsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Devices"
+        ]
+      }
+    },
+    "/openclick/api/v1/projects/{projectId}/devices": {
+      "get": {
+        "summary": "List devices",
+        "operationId": "BaseService_ListDevices",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListDevicesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Devices"
+        ]
+      }
+    },
+    "/openclick/api/v1/projects/{projectId}/devices/{deviceId}": {
+      "get": {
+        "summary": "Get device",
+        "operationId": "BaseService_GetDevice",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetDeviceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Devices"
         ]
       }
     },
@@ -2020,6 +2166,9 @@
         },
         "sessionId": {
           "type": "string"
+        },
+        "deviceId": {
+          "type": "string"
         }
       }
     },
@@ -2043,6 +2192,9 @@
           "type": "object"
         },
         "sessionId": {
+          "type": "string"
+        },
+        "deviceId": {
           "type": "string"
         }
       }
@@ -2163,6 +2315,40 @@
     "v1DeleteSessionResponse": {
       "type": "object"
     },
+    "v1DeviceResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string"
+        },
+        "properties": {
+          "type": "object"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1DeviceStatItem": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "count": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "v1EvaluateFlagsResponse": {
       "type": "object",
       "properties": {
@@ -2275,6 +2461,47 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1DashboardItemResponse"
+          }
+        }
+      }
+    },
+    "v1GetDeviceResponse": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "$ref": "#/definitions/v1DeviceResponse"
+        }
+      }
+    },
+    "v1GetDeviceStatsResponse": {
+      "type": "object",
+      "properties": {
+        "browsers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DeviceStatItem"
+          }
+        },
+        "osList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DeviceStatItem"
+          }
+        },
+        "deviceTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DeviceStatItem"
+          }
+        },
+        "libs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DeviceStatItem"
           }
         }
       }
@@ -2421,6 +2648,22 @@
             "type": "object",
             "$ref": "#/definitions/v1DashboardResponse"
           }
+        }
+      }
+    },
+    "v1ListDevicesResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DeviceResponse"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -2693,6 +2936,26 @@
             "type": "object",
             "$ref": "#/definitions/v1TrendsSeries"
           }
+        }
+      }
+    },
+    "v1RegisterDeviceRequest": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string"
+        },
+        "properties": {
+          "type": "object",
+          "description": "device properties: $browser, $os, $screen_*, $lib, etc."
+        }
+      }
+    },
+    "v1RegisterDeviceResponse": {
+      "type": "object",
+      "properties": {
+        "deviceId": {
+          "type": "string"
         }
       }
     },

@@ -24,8 +24,9 @@ import { PersonsPage } from './pages/persons/PersonsPage'
 import { FeatureFlagsPage } from './pages/feature_flags/FeatureFlagsPage'
 import { SettingsPage } from './pages/settings/SettingsPage'
 
-import { authService, sessionManager } from './services'
+import { authService } from './services'
 import { LOGIN_URL } from './utils/envs'
+import { sessionManager } from './utils/httpClient'
 
 function App() {
   const [isInitialized, setIsInitialized] = useState(false);

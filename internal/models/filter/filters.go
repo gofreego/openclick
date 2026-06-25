@@ -129,3 +129,10 @@ type DashboardFilter struct {
 type CohortFilter struct {
 	ProjectID string
 }
+
+// DeviceFilter for listing devices
+type DeviceFilter struct {
+	ProjectID string
+	Limit     int
+	Offset    int
+}

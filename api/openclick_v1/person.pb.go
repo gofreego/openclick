@@ -715,6 +715,454 @@ func (*DeleteCohortResponse) Descriptor() ([]byte, []int) {
 	return file_proto_openclick_v1_person_proto_rawDescGZIP(), []int{12}
 }
 
+type DeviceResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	ProjectId     string                 `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	Properties    *structpb.Struct       `protobuf:"bytes,3,opt,name=properties,proto3" json:"properties,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeviceResponse) Reset() {
+	*x = DeviceResponse{}
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeviceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeviceResponse) ProtoMessage() {}
+
+func (x *DeviceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeviceResponse.ProtoReflect.Descriptor instead.
+func (*DeviceResponse) Descriptor() ([]byte, []int) {
+	return file_proto_openclick_v1_person_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *DeviceResponse) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DeviceResponse) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *DeviceResponse) GetProperties() *structpb.Struct {
+	if x != nil {
+		return x.Properties
+	}
+	return nil
+}
+
+func (x *DeviceResponse) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *DeviceResponse) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+type ListDevicesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProjectId     string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	Limit         *int32                 `protobuf:"varint,2,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
+	Offset        *int32                 `protobuf:"varint,3,opt,name=offset,proto3,oneof" json:"offset,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListDevicesRequest) Reset() {
+	*x = ListDevicesRequest{}
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListDevicesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListDevicesRequest) ProtoMessage() {}
+
+func (x *ListDevicesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListDevicesRequest.ProtoReflect.Descriptor instead.
+func (*ListDevicesRequest) Descriptor() ([]byte, []int) {
+	return file_proto_openclick_v1_person_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *ListDevicesRequest) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *ListDevicesRequest) GetLimit() int32 {
+	if x != nil && x.Limit != nil {
+		return *x.Limit
+	}
+	return 0
+}
+
+func (x *ListDevicesRequest) GetOffset() int32 {
+	if x != nil && x.Offset != nil {
+		return *x.Offset
+	}
+	return 0
+}
+
+type ListDevicesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Results       []*DeviceResponse      `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
+	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListDevicesResponse) Reset() {
+	*x = ListDevicesResponse{}
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListDevicesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListDevicesResponse) ProtoMessage() {}
+
+func (x *ListDevicesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListDevicesResponse.ProtoReflect.Descriptor instead.
+func (*ListDevicesResponse) Descriptor() ([]byte, []int) {
+	return file_proto_openclick_v1_person_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ListDevicesResponse) GetResults() []*DeviceResponse {
+	if x != nil {
+		return x.Results
+	}
+	return nil
+}
+
+func (x *ListDevicesResponse) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+type GetDeviceRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProjectId     string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	DeviceId      string                 `protobuf:"bytes,2,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetDeviceRequest) Reset() {
+	*x = GetDeviceRequest{}
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDeviceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDeviceRequest) ProtoMessage() {}
+
+func (x *GetDeviceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDeviceRequest.ProtoReflect.Descriptor instead.
+func (*GetDeviceRequest) Descriptor() ([]byte, []int) {
+	return file_proto_openclick_v1_person_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetDeviceRequest) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *GetDeviceRequest) GetDeviceId() string {
+	if x != nil {
+		return x.DeviceId
+	}
+	return ""
+}
+
+type GetDeviceResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Device        *DeviceResponse        `protobuf:"bytes,1,opt,name=device,proto3" json:"device,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetDeviceResponse) Reset() {
+	*x = GetDeviceResponse{}
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDeviceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDeviceResponse) ProtoMessage() {}
+
+func (x *GetDeviceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDeviceResponse.ProtoReflect.Descriptor instead.
+func (*GetDeviceResponse) Descriptor() ([]byte, []int) {
+	return file_proto_openclick_v1_person_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *GetDeviceResponse) GetDevice() *DeviceResponse {
+	if x != nil {
+		return x.Device
+	}
+	return nil
+}
+
+type DeviceStatItem struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Value         string                 `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
+	Count         int64                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeviceStatItem) Reset() {
+	*x = DeviceStatItem{}
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeviceStatItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeviceStatItem) ProtoMessage() {}
+
+func (x *DeviceStatItem) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeviceStatItem.ProtoReflect.Descriptor instead.
+func (*DeviceStatItem) Descriptor() ([]byte, []int) {
+	return file_proto_openclick_v1_person_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *DeviceStatItem) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+func (x *DeviceStatItem) GetCount() int64 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+type GetDeviceStatsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProjectId     string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetDeviceStatsRequest) Reset() {
+	*x = GetDeviceStatsRequest{}
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDeviceStatsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDeviceStatsRequest) ProtoMessage() {}
+
+func (x *GetDeviceStatsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDeviceStatsRequest.ProtoReflect.Descriptor instead.
+func (*GetDeviceStatsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_openclick_v1_person_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *GetDeviceStatsRequest) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+type GetDeviceStatsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Browsers      []*DeviceStatItem      `protobuf:"bytes,1,rep,name=browsers,proto3" json:"browsers,omitempty"`
+	OsList        []*DeviceStatItem      `protobuf:"bytes,2,rep,name=os_list,json=osList,proto3" json:"os_list,omitempty"`
+	DeviceTypes   []*DeviceStatItem      `protobuf:"bytes,3,rep,name=device_types,json=deviceTypes,proto3" json:"device_types,omitempty"`
+	Libs          []*DeviceStatItem      `protobuf:"bytes,4,rep,name=libs,proto3" json:"libs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetDeviceStatsResponse) Reset() {
+	*x = GetDeviceStatsResponse{}
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDeviceStatsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDeviceStatsResponse) ProtoMessage() {}
+
+func (x *GetDeviceStatsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_openclick_v1_person_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDeviceStatsResponse.ProtoReflect.Descriptor instead.
+func (*GetDeviceStatsResponse) Descriptor() ([]byte, []int) {
+	return file_proto_openclick_v1_person_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *GetDeviceStatsResponse) GetBrowsers() []*DeviceStatItem {
+	if x != nil {
+		return x.Browsers
+	}
+	return nil
+}
+
+func (x *GetDeviceStatsResponse) GetOsList() []*DeviceStatItem {
+	if x != nil {
+		return x.OsList
+	}
+	return nil
+}
+
+func (x *GetDeviceStatsResponse) GetDeviceTypes() []*DeviceStatItem {
+	if x != nil {
+		return x.DeviceTypes
+	}
+	return nil
+}
+
+func (x *GetDeviceStatsResponse) GetLibs() []*DeviceStatItem {
+	if x != nil {
+		return x.Libs
+	}
+	return nil
+}
+
 var File_proto_openclick_v1_person_proto protoreflect.FileDescriptor
 
 const file_proto_openclick_v1_person_proto_rawDesc = "" +
@@ -776,7 +1224,45 @@ const file_proto_openclick_v1_person_proto_rawDesc = "" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tR\tprojectId\x12\x1b\n" +
 	"\tcohort_id\x18\x02 \x01(\tR\bcohortId\"\x16\n" +
-	"\x14DeleteCohortResponseB\x10Z\x0e./openclick_v1b\x06proto3"
+	"\x14DeleteCohortResponse\"\xee\x01\n" +
+	"\x0eDeviceResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\x02 \x01(\tR\tprojectId\x127\n" +
+	"\n" +
+	"properties\x18\x03 \x01(\v2\x17.google.protobuf.StructR\n" +
+	"properties\x129\n" +
+	"\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\x80\x01\n" +
+	"\x12ListDevicesRequest\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\x12\x19\n" +
+	"\x05limit\x18\x02 \x01(\x05H\x00R\x05limit\x88\x01\x01\x12\x1b\n" +
+	"\x06offset\x18\x03 \x01(\x05H\x01R\x06offset\x88\x01\x01B\b\n" +
+	"\x06_limitB\t\n" +
+	"\a_offset\"Y\n" +
+	"\x13ListDevicesResponse\x12,\n" +
+	"\aresults\x18\x01 \x03(\v2\x12.v1.DeviceResponseR\aresults\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total\"N\n" +
+	"\x10GetDeviceRequest\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\x12\x1b\n" +
+	"\tdevice_id\x18\x02 \x01(\tR\bdeviceId\"?\n" +
+	"\x11GetDeviceResponse\x12*\n" +
+	"\x06device\x18\x01 \x01(\v2\x12.v1.DeviceResponseR\x06device\"<\n" +
+	"\x0eDeviceStatItem\x12\x14\n" +
+	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\x03R\x05count\"6\n" +
+	"\x15GetDeviceStatsRequest\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\"\xd4\x01\n" +
+	"\x16GetDeviceStatsResponse\x12.\n" +
+	"\bbrowsers\x18\x01 \x03(\v2\x12.v1.DeviceStatItemR\bbrowsers\x12+\n" +
+	"\aos_list\x18\x02 \x03(\v2\x12.v1.DeviceStatItemR\x06osList\x125\n" +
+	"\fdevice_types\x18\x03 \x03(\v2\x12.v1.DeviceStatItemR\vdeviceTypes\x12&\n" +
+	"\x04libs\x18\x04 \x03(\v2\x12.v1.DeviceStatItemR\x04libsB\x10Z\x0e./openclick_v1b\x06proto3"
 
 var (
 	file_proto_openclick_v1_person_proto_rawDescOnce sync.Once
@@ -790,40 +1276,57 @@ func file_proto_openclick_v1_person_proto_rawDescGZIP() []byte {
 	return file_proto_openclick_v1_person_proto_rawDescData
 }
 
-var file_proto_openclick_v1_person_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_proto_openclick_v1_person_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_proto_openclick_v1_person_proto_goTypes = []any{
-	(*PersonResponse)(nil),        // 0: v1.PersonResponse
-	(*ListPersonsRequest)(nil),    // 1: v1.ListPersonsRequest
-	(*ListPersonsResponse)(nil),   // 2: v1.ListPersonsResponse
-	(*GetPersonRequest)(nil),      // 3: v1.GetPersonRequest
-	(*GetPersonResponse)(nil),     // 4: v1.GetPersonResponse
-	(*DeletePersonRequest)(nil),   // 5: v1.DeletePersonRequest
-	(*DeletePersonResponse)(nil),  // 6: v1.DeletePersonResponse
-	(*CohortResponse)(nil),        // 7: v1.CohortResponse
-	(*ListCohortsRequest)(nil),    // 8: v1.ListCohortsRequest
-	(*ListCohortsResponse)(nil),   // 9: v1.ListCohortsResponse
-	(*CreateCohortRequest)(nil),   // 10: v1.CreateCohortRequest
-	(*DeleteCohortRequest)(nil),   // 11: v1.DeleteCohortRequest
-	(*DeleteCohortResponse)(nil),  // 12: v1.DeleteCohortResponse
-	(*structpb.Struct)(nil),       // 13: google.protobuf.Struct
-	(*timestamppb.Timestamp)(nil), // 14: google.protobuf.Timestamp
-	(*EventResult)(nil),           // 15: v1.EventResult
+	(*PersonResponse)(nil),         // 0: v1.PersonResponse
+	(*ListPersonsRequest)(nil),     // 1: v1.ListPersonsRequest
+	(*ListPersonsResponse)(nil),    // 2: v1.ListPersonsResponse
+	(*GetPersonRequest)(nil),       // 3: v1.GetPersonRequest
+	(*GetPersonResponse)(nil),      // 4: v1.GetPersonResponse
+	(*DeletePersonRequest)(nil),    // 5: v1.DeletePersonRequest
+	(*DeletePersonResponse)(nil),   // 6: v1.DeletePersonResponse
+	(*CohortResponse)(nil),         // 7: v1.CohortResponse
+	(*ListCohortsRequest)(nil),     // 8: v1.ListCohortsRequest
+	(*ListCohortsResponse)(nil),    // 9: v1.ListCohortsResponse
+	(*CreateCohortRequest)(nil),    // 10: v1.CreateCohortRequest
+	(*DeleteCohortRequest)(nil),    // 11: v1.DeleteCohortRequest
+	(*DeleteCohortResponse)(nil),   // 12: v1.DeleteCohortResponse
+	(*DeviceResponse)(nil),         // 13: v1.DeviceResponse
+	(*ListDevicesRequest)(nil),     // 14: v1.ListDevicesRequest
+	(*ListDevicesResponse)(nil),    // 15: v1.ListDevicesResponse
+	(*GetDeviceRequest)(nil),       // 16: v1.GetDeviceRequest
+	(*GetDeviceResponse)(nil),      // 17: v1.GetDeviceResponse
+	(*DeviceStatItem)(nil),         // 18: v1.DeviceStatItem
+	(*GetDeviceStatsRequest)(nil),  // 19: v1.GetDeviceStatsRequest
+	(*GetDeviceStatsResponse)(nil), // 20: v1.GetDeviceStatsResponse
+	(*structpb.Struct)(nil),        // 21: google.protobuf.Struct
+	(*timestamppb.Timestamp)(nil),  // 22: google.protobuf.Timestamp
+	(*EventResult)(nil),            // 23: v1.EventResult
 }
 var file_proto_openclick_v1_person_proto_depIdxs = []int32{
-	13, // 0: v1.PersonResponse.properties:type_name -> google.protobuf.Struct
-	14, // 1: v1.PersonResponse.created_at:type_name -> google.protobuf.Timestamp
+	21, // 0: v1.PersonResponse.properties:type_name -> google.protobuf.Struct
+	22, // 1: v1.PersonResponse.created_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: v1.ListPersonsResponse.results:type_name -> v1.PersonResponse
 	0,  // 3: v1.GetPersonResponse.person:type_name -> v1.PersonResponse
-	15, // 4: v1.GetPersonResponse.recent_events:type_name -> v1.EventResult
-	13, // 5: v1.CohortResponse.filters:type_name -> google.protobuf.Struct
-	14, // 6: v1.CohortResponse.created_at:type_name -> google.protobuf.Timestamp
+	23, // 4: v1.GetPersonResponse.recent_events:type_name -> v1.EventResult
+	21, // 5: v1.CohortResponse.filters:type_name -> google.protobuf.Struct
+	22, // 6: v1.CohortResponse.created_at:type_name -> google.protobuf.Timestamp
 	7,  // 7: v1.ListCohortsResponse.results:type_name -> v1.CohortResponse
-	13, // 8: v1.CreateCohortRequest.filters:type_name -> google.protobuf.Struct
-	9,  // [9:9] is the sub-list for method output_type
-	9,  // [9:9] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	21, // 8: v1.CreateCohortRequest.filters:type_name -> google.protobuf.Struct
+	21, // 9: v1.DeviceResponse.properties:type_name -> google.protobuf.Struct
+	22, // 10: v1.DeviceResponse.created_at:type_name -> google.protobuf.Timestamp
+	22, // 11: v1.DeviceResponse.updated_at:type_name -> google.protobuf.Timestamp
+	13, // 12: v1.ListDevicesResponse.results:type_name -> v1.DeviceResponse
+	13, // 13: v1.GetDeviceResponse.device:type_name -> v1.DeviceResponse
+	18, // 14: v1.GetDeviceStatsResponse.browsers:type_name -> v1.DeviceStatItem
+	18, // 15: v1.GetDeviceStatsResponse.os_list:type_name -> v1.DeviceStatItem
+	18, // 16: v1.GetDeviceStatsResponse.device_types:type_name -> v1.DeviceStatItem
+	18, // 17: v1.GetDeviceStatsResponse.libs:type_name -> v1.DeviceStatItem
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_proto_openclick_v1_person_proto_init() }
@@ -833,13 +1336,14 @@ func file_proto_openclick_v1_person_proto_init() {
 	}
 	file_proto_openclick_v1_analytics_proto_init()
 	file_proto_openclick_v1_person_proto_msgTypes[1].OneofWrappers = []any{}
+	file_proto_openclick_v1_person_proto_msgTypes[14].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_openclick_v1_person_proto_rawDesc), len(file_proto_openclick_v1_person_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

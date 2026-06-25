@@ -79,6 +79,50 @@ export interface DeleteCohortRequest {
 export interface DeleteCohortResponse {
 }
 
+export interface DeviceResponse {
+  id: string;
+  projectId: string;
+  properties: { [key: string]: any } | undefined;
+  createdAt: Date | undefined;
+  updatedAt: Date | undefined;
+}
+
+export interface ListDevicesRequest {
+  projectId: string;
+  limit?: number | undefined;
+  offset?: number | undefined;
+}
+
+export interface ListDevicesResponse {
+  results: DeviceResponse[];
+  total: string;
+}
+
+export interface GetDeviceRequest {
+  projectId: string;
+  deviceId: string;
+}
+
+export interface GetDeviceResponse {
+  device: DeviceResponse | undefined;
+}
+
+export interface DeviceStatItem {
+  value: string;
+  count: string;
+}
+
+export interface GetDeviceStatsRequest {
+  projectId: string;
+}
+
+export interface GetDeviceStatsResponse {
+  browsers: DeviceStatItem[];
+  osList: DeviceStatItem[];
+  deviceTypes: DeviceStatItem[];
+  libs: DeviceStatItem[];
+}
+
 function createBasePersonResponse(): PersonResponse {
   return { id: "", distinctId: "", properties: undefined, createdAt: undefined };
 }
@@ -1155,6 +1199,718 @@ export const DeleteCohortResponse: MessageFns<DeleteCohortResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<DeleteCohortResponse>, I>>(_: I): DeleteCohortResponse {
     const message = createBaseDeleteCohortResponse();
+    return message;
+  },
+};
+
+function createBaseDeviceResponse(): DeviceResponse {
+  return { id: "", projectId: "", properties: undefined, createdAt: undefined, updatedAt: undefined };
+}
+
+export const DeviceResponse: MessageFns<DeviceResponse> = {
+  encode(message: DeviceResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.projectId !== "") {
+      writer.uint32(18).string(message.projectId);
+    }
+    if (message.properties !== undefined) {
+      Struct.encode(Struct.wrap(message.properties), writer.uint32(26).fork()).join();
+    }
+    if (message.createdAt !== undefined) {
+      Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(34).fork()).join();
+    }
+    if (message.updatedAt !== undefined) {
+      Timestamp.encode(toTimestamp(message.updatedAt), writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeviceResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeviceResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.properties = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.updatedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeviceResponse {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      projectId: isSet(object.projectId)
+        ? globalThis.String(object.projectId)
+        : isSet(object.project_id)
+        ? globalThis.String(object.project_id)
+        : "",
+      properties: isObject(object.properties) ? object.properties : undefined,
+      createdAt: isSet(object.createdAt)
+        ? fromJsonTimestamp(object.createdAt)
+        : isSet(object.created_at)
+        ? fromJsonTimestamp(object.created_at)
+        : undefined,
+      updatedAt: isSet(object.updatedAt)
+        ? fromJsonTimestamp(object.updatedAt)
+        : isSet(object.updated_at)
+        ? fromJsonTimestamp(object.updated_at)
+        : undefined,
+    };
+  },
+
+  toJSON(message: DeviceResponse): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.properties !== undefined) {
+      obj.properties = message.properties;
+    }
+    if (message.createdAt !== undefined) {
+      obj.createdAt = message.createdAt.toISOString();
+    }
+    if (message.updatedAt !== undefined) {
+      obj.updatedAt = message.updatedAt.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeviceResponse>, I>>(base?: I): DeviceResponse {
+    return DeviceResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeviceResponse>, I>>(object: I): DeviceResponse {
+    const message = createBaseDeviceResponse();
+    message.id = object.id ?? "";
+    message.projectId = object.projectId ?? "";
+    message.properties = object.properties ?? undefined;
+    message.createdAt = object.createdAt ?? undefined;
+    message.updatedAt = object.updatedAt ?? undefined;
+    return message;
+  },
+};
+
+function createBaseListDevicesRequest(): ListDevicesRequest {
+  return { projectId: "", limit: undefined, offset: undefined };
+}
+
+export const ListDevicesRequest: MessageFns<ListDevicesRequest> = {
+  encode(message: ListDevicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    if (message.limit !== undefined) {
+      writer.uint32(16).int32(message.limit);
+    }
+    if (message.offset !== undefined) {
+      writer.uint32(24).int32(message.offset);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListDevicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListDevicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.limit = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.offset = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListDevicesRequest {
+    return {
+      projectId: isSet(object.projectId)
+        ? globalThis.String(object.projectId)
+        : isSet(object.project_id)
+        ? globalThis.String(object.project_id)
+        : "",
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : undefined,
+      offset: isSet(object.offset) ? globalThis.Number(object.offset) : undefined,
+    };
+  },
+
+  toJSON(message: ListDevicesRequest): unknown {
+    const obj: any = {};
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.limit !== undefined) {
+      obj.limit = Math.round(message.limit);
+    }
+    if (message.offset !== undefined) {
+      obj.offset = Math.round(message.offset);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListDevicesRequest>, I>>(base?: I): ListDevicesRequest {
+    return ListDevicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListDevicesRequest>, I>>(object: I): ListDevicesRequest {
+    const message = createBaseListDevicesRequest();
+    message.projectId = object.projectId ?? "";
+    message.limit = object.limit ?? undefined;
+    message.offset = object.offset ?? undefined;
+    return message;
+  },
+};
+
+function createBaseListDevicesResponse(): ListDevicesResponse {
+  return { results: [], total: "0" };
+}
+
+export const ListDevicesResponse: MessageFns<ListDevicesResponse> = {
+  encode(message: ListDevicesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.results) {
+      DeviceResponse.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.total !== "0") {
+      writer.uint32(16).int64(message.total);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListDevicesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListDevicesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.results.push(DeviceResponse.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.total = reader.int64().toString();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListDevicesResponse {
+    return {
+      results: globalThis.Array.isArray(object?.results)
+        ? object.results.map((e: any) => DeviceResponse.fromJSON(e))
+        : [],
+      total: isSet(object.total) ? globalThis.String(object.total) : "0",
+    };
+  },
+
+  toJSON(message: ListDevicesResponse): unknown {
+    const obj: any = {};
+    if (message.results?.length) {
+      obj.results = message.results.map((e) => DeviceResponse.toJSON(e));
+    }
+    if (message.total !== "0") {
+      obj.total = message.total;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListDevicesResponse>, I>>(base?: I): ListDevicesResponse {
+    return ListDevicesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListDevicesResponse>, I>>(object: I): ListDevicesResponse {
+    const message = createBaseListDevicesResponse();
+    message.results = object.results?.map((e) => DeviceResponse.fromPartial(e)) || [];
+    message.total = object.total ?? "0";
+    return message;
+  },
+};
+
+function createBaseGetDeviceRequest(): GetDeviceRequest {
+  return { projectId: "", deviceId: "" };
+}
+
+export const GetDeviceRequest: MessageFns<GetDeviceRequest> = {
+  encode(message: GetDeviceRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    if (message.deviceId !== "") {
+      writer.uint32(18).string(message.deviceId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetDeviceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetDeviceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.deviceId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetDeviceRequest {
+    return {
+      projectId: isSet(object.projectId)
+        ? globalThis.String(object.projectId)
+        : isSet(object.project_id)
+        ? globalThis.String(object.project_id)
+        : "",
+      deviceId: isSet(object.deviceId)
+        ? globalThis.String(object.deviceId)
+        : isSet(object.device_id)
+        ? globalThis.String(object.device_id)
+        : "",
+    };
+  },
+
+  toJSON(message: GetDeviceRequest): unknown {
+    const obj: any = {};
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.deviceId !== "") {
+      obj.deviceId = message.deviceId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetDeviceRequest>, I>>(base?: I): GetDeviceRequest {
+    return GetDeviceRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetDeviceRequest>, I>>(object: I): GetDeviceRequest {
+    const message = createBaseGetDeviceRequest();
+    message.projectId = object.projectId ?? "";
+    message.deviceId = object.deviceId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetDeviceResponse(): GetDeviceResponse {
+  return { device: undefined };
+}
+
+export const GetDeviceResponse: MessageFns<GetDeviceResponse> = {
+  encode(message: GetDeviceResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.device !== undefined) {
+      DeviceResponse.encode(message.device, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetDeviceResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetDeviceResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.device = DeviceResponse.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetDeviceResponse {
+    return { device: isSet(object.device) ? DeviceResponse.fromJSON(object.device) : undefined };
+  },
+
+  toJSON(message: GetDeviceResponse): unknown {
+    const obj: any = {};
+    if (message.device !== undefined) {
+      obj.device = DeviceResponse.toJSON(message.device);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetDeviceResponse>, I>>(base?: I): GetDeviceResponse {
+    return GetDeviceResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetDeviceResponse>, I>>(object: I): GetDeviceResponse {
+    const message = createBaseGetDeviceResponse();
+    message.device = (object.device !== undefined && object.device !== null)
+      ? DeviceResponse.fromPartial(object.device)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseDeviceStatItem(): DeviceStatItem {
+  return { value: "", count: "0" };
+}
+
+export const DeviceStatItem: MessageFns<DeviceStatItem> = {
+  encode(message: DeviceStatItem, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.value !== "") {
+      writer.uint32(10).string(message.value);
+    }
+    if (message.count !== "0") {
+      writer.uint32(16).int64(message.count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeviceStatItem {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeviceStatItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.value = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.count = reader.int64().toString();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeviceStatItem {
+    return {
+      value: isSet(object.value) ? globalThis.String(object.value) : "",
+      count: isSet(object.count) ? globalThis.String(object.count) : "0",
+    };
+  },
+
+  toJSON(message: DeviceStatItem): unknown {
+    const obj: any = {};
+    if (message.value !== "") {
+      obj.value = message.value;
+    }
+    if (message.count !== "0") {
+      obj.count = message.count;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeviceStatItem>, I>>(base?: I): DeviceStatItem {
+    return DeviceStatItem.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeviceStatItem>, I>>(object: I): DeviceStatItem {
+    const message = createBaseDeviceStatItem();
+    message.value = object.value ?? "";
+    message.count = object.count ?? "0";
+    return message;
+  },
+};
+
+function createBaseGetDeviceStatsRequest(): GetDeviceStatsRequest {
+  return { projectId: "" };
+}
+
+export const GetDeviceStatsRequest: MessageFns<GetDeviceStatsRequest> = {
+  encode(message: GetDeviceStatsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetDeviceStatsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetDeviceStatsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetDeviceStatsRequest {
+    return {
+      projectId: isSet(object.projectId)
+        ? globalThis.String(object.projectId)
+        : isSet(object.project_id)
+        ? globalThis.String(object.project_id)
+        : "",
+    };
+  },
+
+  toJSON(message: GetDeviceStatsRequest): unknown {
+    const obj: any = {};
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetDeviceStatsRequest>, I>>(base?: I): GetDeviceStatsRequest {
+    return GetDeviceStatsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetDeviceStatsRequest>, I>>(object: I): GetDeviceStatsRequest {
+    const message = createBaseGetDeviceStatsRequest();
+    message.projectId = object.projectId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetDeviceStatsResponse(): GetDeviceStatsResponse {
+  return { browsers: [], osList: [], deviceTypes: [], libs: [] };
+}
+
+export const GetDeviceStatsResponse: MessageFns<GetDeviceStatsResponse> = {
+  encode(message: GetDeviceStatsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.browsers) {
+      DeviceStatItem.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.osList) {
+      DeviceStatItem.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.deviceTypes) {
+      DeviceStatItem.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.libs) {
+      DeviceStatItem.encode(v!, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetDeviceStatsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetDeviceStatsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.browsers.push(DeviceStatItem.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.osList.push(DeviceStatItem.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.deviceTypes.push(DeviceStatItem.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.libs.push(DeviceStatItem.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetDeviceStatsResponse {
+    return {
+      browsers: globalThis.Array.isArray(object?.browsers)
+        ? object.browsers.map((e: any) => DeviceStatItem.fromJSON(e))
+        : [],
+      osList: globalThis.Array.isArray(object?.osList)
+        ? object.osList.map((e: any) => DeviceStatItem.fromJSON(e))
+        : globalThis.Array.isArray(object?.os_list)
+        ? object.os_list.map((e: any) => DeviceStatItem.fromJSON(e))
+        : [],
+      deviceTypes: globalThis.Array.isArray(object?.deviceTypes)
+        ? object.deviceTypes.map((e: any) => DeviceStatItem.fromJSON(e))
+        : globalThis.Array.isArray(object?.device_types)
+        ? object.device_types.map((e: any) => DeviceStatItem.fromJSON(e))
+        : [],
+      libs: globalThis.Array.isArray(object?.libs) ? object.libs.map((e: any) => DeviceStatItem.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: GetDeviceStatsResponse): unknown {
+    const obj: any = {};
+    if (message.browsers?.length) {
+      obj.browsers = message.browsers.map((e) => DeviceStatItem.toJSON(e));
+    }
+    if (message.osList?.length) {
+      obj.osList = message.osList.map((e) => DeviceStatItem.toJSON(e));
+    }
+    if (message.deviceTypes?.length) {
+      obj.deviceTypes = message.deviceTypes.map((e) => DeviceStatItem.toJSON(e));
+    }
+    if (message.libs?.length) {
+      obj.libs = message.libs.map((e) => DeviceStatItem.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetDeviceStatsResponse>, I>>(base?: I): GetDeviceStatsResponse {
+    return GetDeviceStatsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetDeviceStatsResponse>, I>>(object: I): GetDeviceStatsResponse {
+    const message = createBaseGetDeviceStatsResponse();
+    message.browsers = object.browsers?.map((e) => DeviceStatItem.fromPartial(e)) || [];
+    message.osList = object.osList?.map((e) => DeviceStatItem.fromPartial(e)) || [];
+    message.deviceTypes = object.deviceTypes?.map((e) => DeviceStatItem.fromPartial(e)) || [];
+    message.libs = object.libs?.map((e) => DeviceStatItem.fromPartial(e)) || [];
     return message;
   },
 };

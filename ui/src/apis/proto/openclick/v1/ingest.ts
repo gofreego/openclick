@@ -11,6 +11,18 @@ import { Timestamp } from "../../../google/protobuf/timestamp";
 
 export const protobufPackage = "v1";
 
+export interface RegisterDeviceRequest {
+  apiKey?:
+    | string
+    | undefined;
+  /** device properties: $browser, $os, $screen_*, $lib, etc. */
+  properties: { [key: string]: any } | undefined;
+}
+
+export interface RegisterDeviceResponse {
+  deviceId: string;
+}
+
 export interface CaptureEventRequest {
   apiKey?: string | undefined;
   event: string;
@@ -18,6 +30,7 @@ export interface CaptureEventRequest {
   timestamp?: Date | undefined;
   properties: { [key: string]: any } | undefined;
   sessionId?: string | undefined;
+  deviceId?: string | undefined;
 }
 
 export interface CaptureEventResponse {
@@ -30,6 +43,7 @@ export interface BatchEvent {
   timestamp?: Date | undefined;
   properties: { [key: string]: any } | undefined;
   sessionId?: string | undefined;
+  deviceId?: string | undefined;
 }
 
 export interface BatchCaptureRequest {
@@ -80,6 +94,150 @@ export interface IngestReplayResponse {
   status: number;
 }
 
+function createBaseRegisterDeviceRequest(): RegisterDeviceRequest {
+  return { apiKey: undefined, properties: undefined };
+}
+
+export const RegisterDeviceRequest: MessageFns<RegisterDeviceRequest> = {
+  encode(message: RegisterDeviceRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.apiKey !== undefined) {
+      writer.uint32(10).string(message.apiKey);
+    }
+    if (message.properties !== undefined) {
+      Struct.encode(Struct.wrap(message.properties), writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RegisterDeviceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRegisterDeviceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.apiKey = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.properties = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RegisterDeviceRequest {
+    return {
+      apiKey: isSet(object.apiKey)
+        ? globalThis.String(object.apiKey)
+        : isSet(object.api_key)
+        ? globalThis.String(object.api_key)
+        : undefined,
+      properties: isObject(object.properties) ? object.properties : undefined,
+    };
+  },
+
+  toJSON(message: RegisterDeviceRequest): unknown {
+    const obj: any = {};
+    if (message.apiKey !== undefined) {
+      obj.apiKey = message.apiKey;
+    }
+    if (message.properties !== undefined) {
+      obj.properties = message.properties;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RegisterDeviceRequest>, I>>(base?: I): RegisterDeviceRequest {
+    return RegisterDeviceRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RegisterDeviceRequest>, I>>(object: I): RegisterDeviceRequest {
+    const message = createBaseRegisterDeviceRequest();
+    message.apiKey = object.apiKey ?? undefined;
+    message.properties = object.properties ?? undefined;
+    return message;
+  },
+};
+
+function createBaseRegisterDeviceResponse(): RegisterDeviceResponse {
+  return { deviceId: "" };
+}
+
+export const RegisterDeviceResponse: MessageFns<RegisterDeviceResponse> = {
+  encode(message: RegisterDeviceResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.deviceId !== "") {
+      writer.uint32(10).string(message.deviceId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RegisterDeviceResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRegisterDeviceResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.deviceId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RegisterDeviceResponse {
+    return {
+      deviceId: isSet(object.deviceId)
+        ? globalThis.String(object.deviceId)
+        : isSet(object.device_id)
+        ? globalThis.String(object.device_id)
+        : "",
+    };
+  },
+
+  toJSON(message: RegisterDeviceResponse): unknown {
+    const obj: any = {};
+    if (message.deviceId !== "") {
+      obj.deviceId = message.deviceId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RegisterDeviceResponse>, I>>(base?: I): RegisterDeviceResponse {
+    return RegisterDeviceResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RegisterDeviceResponse>, I>>(object: I): RegisterDeviceResponse {
+    const message = createBaseRegisterDeviceResponse();
+    message.deviceId = object.deviceId ?? "";
+    return message;
+  },
+};
+
 function createBaseCaptureEventRequest(): CaptureEventRequest {
   return {
     apiKey: undefined,
@@ -88,6 +246,7 @@ function createBaseCaptureEventRequest(): CaptureEventRequest {
     timestamp: undefined,
     properties: undefined,
     sessionId: undefined,
+    deviceId: undefined,
   };
 }
 
@@ -110,6 +269,9 @@ export const CaptureEventRequest: MessageFns<CaptureEventRequest> = {
     }
     if (message.sessionId !== undefined) {
       writer.uint32(50).string(message.sessionId);
+    }
+    if (message.deviceId !== undefined) {
+      writer.uint32(58).string(message.deviceId);
     }
     return writer;
   },
@@ -169,6 +331,14 @@ export const CaptureEventRequest: MessageFns<CaptureEventRequest> = {
           message.sessionId = reader.string();
           continue;
         }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.deviceId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -198,6 +368,11 @@ export const CaptureEventRequest: MessageFns<CaptureEventRequest> = {
         : isSet(object.session_id)
         ? globalThis.String(object.session_id)
         : undefined,
+      deviceId: isSet(object.deviceId)
+        ? globalThis.String(object.deviceId)
+        : isSet(object.device_id)
+        ? globalThis.String(object.device_id)
+        : undefined,
     };
   },
 
@@ -221,6 +396,9 @@ export const CaptureEventRequest: MessageFns<CaptureEventRequest> = {
     if (message.sessionId !== undefined) {
       obj.sessionId = message.sessionId;
     }
+    if (message.deviceId !== undefined) {
+      obj.deviceId = message.deviceId;
+    }
     return obj;
   },
 
@@ -235,6 +413,7 @@ export const CaptureEventRequest: MessageFns<CaptureEventRequest> = {
     message.timestamp = object.timestamp ?? undefined;
     message.properties = object.properties ?? undefined;
     message.sessionId = object.sessionId ?? undefined;
+    message.deviceId = object.deviceId ?? undefined;
     return message;
   },
 };
@@ -298,7 +477,14 @@ export const CaptureEventResponse: MessageFns<CaptureEventResponse> = {
 };
 
 function createBaseBatchEvent(): BatchEvent {
-  return { event: "", distinctId: "", timestamp: undefined, properties: undefined, sessionId: undefined };
+  return {
+    event: "",
+    distinctId: "",
+    timestamp: undefined,
+    properties: undefined,
+    sessionId: undefined,
+    deviceId: undefined,
+  };
 }
 
 export const BatchEvent: MessageFns<BatchEvent> = {
@@ -317,6 +503,9 @@ export const BatchEvent: MessageFns<BatchEvent> = {
     }
     if (message.sessionId !== undefined) {
       writer.uint32(42).string(message.sessionId);
+    }
+    if (message.deviceId !== undefined) {
+      writer.uint32(50).string(message.deviceId);
     }
     return writer;
   },
@@ -368,6 +557,14 @@ export const BatchEvent: MessageFns<BatchEvent> = {
           message.sessionId = reader.string();
           continue;
         }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.deviceId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -392,6 +589,11 @@ export const BatchEvent: MessageFns<BatchEvent> = {
         : isSet(object.session_id)
         ? globalThis.String(object.session_id)
         : undefined,
+      deviceId: isSet(object.deviceId)
+        ? globalThis.String(object.deviceId)
+        : isSet(object.device_id)
+        ? globalThis.String(object.device_id)
+        : undefined,
     };
   },
 
@@ -412,6 +614,9 @@ export const BatchEvent: MessageFns<BatchEvent> = {
     if (message.sessionId !== undefined) {
       obj.sessionId = message.sessionId;
     }
+    if (message.deviceId !== undefined) {
+      obj.deviceId = message.deviceId;
+    }
     return obj;
   },
 
@@ -425,6 +630,7 @@ export const BatchEvent: MessageFns<BatchEvent> = {
     message.timestamp = object.timestamp ?? undefined;
     message.properties = object.properties ?? undefined;
     message.sessionId = object.sessionId ?? undefined;
+    message.deviceId = object.deviceId ?? undefined;
     return message;
   },
 };

@@ -51,12 +51,16 @@ const (
 	BaseService_ListCohorts_FullMethodName         = "/v1.BaseService/ListCohorts"
 	BaseService_CreateCohort_FullMethodName        = "/v1.BaseService/CreateCohort"
 	BaseService_DeleteCohort_FullMethodName        = "/v1.BaseService/DeleteCohort"
+	BaseService_ListDevices_FullMethodName         = "/v1.BaseService/ListDevices"
+	BaseService_GetDevice_FullMethodName           = "/v1.BaseService/GetDevice"
+	BaseService_GetDeviceStats_FullMethodName      = "/v1.BaseService/GetDeviceStats"
 	BaseService_ListFeatureFlags_FullMethodName    = "/v1.BaseService/ListFeatureFlags"
 	BaseService_CreateFeatureFlag_FullMethodName   = "/v1.BaseService/CreateFeatureFlag"
 	BaseService_UpdateFeatureFlag_FullMethodName   = "/v1.BaseService/UpdateFeatureFlag"
 	BaseService_DeleteFeatureFlag_FullMethodName   = "/v1.BaseService/DeleteFeatureFlag"
 	BaseService_EvaluateFlags_FullMethodName       = "/v1.BaseService/EvaluateFlags"
 	BaseService_Decide_FullMethodName              = "/v1.BaseService/Decide"
+	BaseService_RegisterDevice_FullMethodName      = "/v1.BaseService/RegisterDevice"
 	BaseService_CaptureEvent_FullMethodName        = "/v1.BaseService/CaptureEvent"
 	BaseService_BatchCapture_FullMethodName        = "/v1.BaseService/BatchCapture"
 	BaseService_Identify_FullMethodName            = "/v1.BaseService/Identify"
@@ -106,6 +110,10 @@ type BaseServiceClient interface {
 	ListCohorts(ctx context.Context, in *ListCohortsRequest, opts ...grpc.CallOption) (*ListCohortsResponse, error)
 	CreateCohort(ctx context.Context, in *CreateCohortRequest, opts ...grpc.CallOption) (*CohortResponse, error)
 	DeleteCohort(ctx context.Context, in *DeleteCohortRequest, opts ...grpc.CallOption) (*DeleteCohortResponse, error)
+	// Devices
+	ListDevices(ctx context.Context, in *ListDevicesRequest, opts ...grpc.CallOption) (*ListDevicesResponse, error)
+	GetDevice(ctx context.Context, in *GetDeviceRequest, opts ...grpc.CallOption) (*GetDeviceResponse, error)
+	GetDeviceStats(ctx context.Context, in *GetDeviceStatsRequest, opts ...grpc.CallOption) (*GetDeviceStatsResponse, error)
 	// Feature Flags
 	ListFeatureFlags(ctx context.Context, in *ListFeatureFlagsRequest, opts ...grpc.CallOption) (*ListFeatureFlagsResponse, error)
 	CreateFeatureFlag(ctx context.Context, in *CreateFeatureFlagRequest, opts ...grpc.CallOption) (*FeatureFlagResponse, error)
@@ -114,6 +122,7 @@ type BaseServiceClient interface {
 	EvaluateFlags(ctx context.Context, in *EvaluateFlagsRequest, opts ...grpc.CallOption) (*EvaluateFlagsResponse, error)
 	Decide(ctx context.Context, in *DecideRequest, opts ...grpc.CallOption) (*DecideResponse, error)
 	// Ingestion
+	RegisterDevice(ctx context.Context, in *RegisterDeviceRequest, opts ...grpc.CallOption) (*RegisterDeviceResponse, error)
 	CaptureEvent(ctx context.Context, in *CaptureEventRequest, opts ...grpc.CallOption) (*CaptureEventResponse, error)
 	BatchCapture(ctx context.Context, in *BatchCaptureRequest, opts ...grpc.CallOption) (*BatchCaptureResponse, error)
 	Identify(ctx context.Context, in *IdentifyRequest, opts ...grpc.CallOption) (*IdentifyResponse, error)
@@ -449,6 +458,36 @@ func (c *baseServiceClient) DeleteCohort(ctx context.Context, in *DeleteCohortRe
 	return out, nil
 }
 
+func (c *baseServiceClient) ListDevices(ctx context.Context, in *ListDevicesRequest, opts ...grpc.CallOption) (*ListDevicesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListDevicesResponse)
+	err := c.cc.Invoke(ctx, BaseService_ListDevices_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) GetDevice(ctx context.Context, in *GetDeviceRequest, opts ...grpc.CallOption) (*GetDeviceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetDeviceResponse)
+	err := c.cc.Invoke(ctx, BaseService_GetDevice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) GetDeviceStats(ctx context.Context, in *GetDeviceStatsRequest, opts ...grpc.CallOption) (*GetDeviceStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetDeviceStatsResponse)
+	err := c.cc.Invoke(ctx, BaseService_GetDeviceStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *baseServiceClient) ListFeatureFlags(ctx context.Context, in *ListFeatureFlagsRequest, opts ...grpc.CallOption) (*ListFeatureFlagsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListFeatureFlagsResponse)
@@ -503,6 +542,16 @@ func (c *baseServiceClient) Decide(ctx context.Context, in *DecideRequest, opts 
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DecideResponse)
 	err := c.cc.Invoke(ctx, BaseService_Decide_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *baseServiceClient) RegisterDevice(ctx context.Context, in *RegisterDeviceRequest, opts ...grpc.CallOption) (*RegisterDeviceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RegisterDeviceResponse)
+	err := c.cc.Invoke(ctx, BaseService_RegisterDevice_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -601,6 +650,10 @@ type BaseServiceServer interface {
 	ListCohorts(context.Context, *ListCohortsRequest) (*ListCohortsResponse, error)
 	CreateCohort(context.Context, *CreateCohortRequest) (*CohortResponse, error)
 	DeleteCohort(context.Context, *DeleteCohortRequest) (*DeleteCohortResponse, error)
+	// Devices
+	ListDevices(context.Context, *ListDevicesRequest) (*ListDevicesResponse, error)
+	GetDevice(context.Context, *GetDeviceRequest) (*GetDeviceResponse, error)
+	GetDeviceStats(context.Context, *GetDeviceStatsRequest) (*GetDeviceStatsResponse, error)
 	// Feature Flags
 	ListFeatureFlags(context.Context, *ListFeatureFlagsRequest) (*ListFeatureFlagsResponse, error)
 	CreateFeatureFlag(context.Context, *CreateFeatureFlagRequest) (*FeatureFlagResponse, error)
@@ -609,6 +662,7 @@ type BaseServiceServer interface {
 	EvaluateFlags(context.Context, *EvaluateFlagsRequest) (*EvaluateFlagsResponse, error)
 	Decide(context.Context, *DecideRequest) (*DecideResponse, error)
 	// Ingestion
+	RegisterDevice(context.Context, *RegisterDeviceRequest) (*RegisterDeviceResponse, error)
 	CaptureEvent(context.Context, *CaptureEventRequest) (*CaptureEventResponse, error)
 	BatchCapture(context.Context, *BatchCaptureRequest) (*BatchCaptureResponse, error)
 	Identify(context.Context, *IdentifyRequest) (*IdentifyResponse, error)
@@ -720,6 +774,15 @@ func (UnimplementedBaseServiceServer) CreateCohort(context.Context, *CreateCohor
 func (UnimplementedBaseServiceServer) DeleteCohort(context.Context, *DeleteCohortRequest) (*DeleteCohortResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCohort not implemented")
 }
+func (UnimplementedBaseServiceServer) ListDevices(context.Context, *ListDevicesRequest) (*ListDevicesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDevices not implemented")
+}
+func (UnimplementedBaseServiceServer) GetDevice(context.Context, *GetDeviceRequest) (*GetDeviceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDevice not implemented")
+}
+func (UnimplementedBaseServiceServer) GetDeviceStats(context.Context, *GetDeviceStatsRequest) (*GetDeviceStatsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDeviceStats not implemented")
+}
 func (UnimplementedBaseServiceServer) ListFeatureFlags(context.Context, *ListFeatureFlagsRequest) (*ListFeatureFlagsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFeatureFlags not implemented")
 }
@@ -737,6 +800,9 @@ func (UnimplementedBaseServiceServer) EvaluateFlags(context.Context, *EvaluateFl
 }
 func (UnimplementedBaseServiceServer) Decide(context.Context, *DecideRequest) (*DecideResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Decide not implemented")
+}
+func (UnimplementedBaseServiceServer) RegisterDevice(context.Context, *RegisterDeviceRequest) (*RegisterDeviceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterDevice not implemented")
 }
 func (UnimplementedBaseServiceServer) CaptureEvent(context.Context, *CaptureEventRequest) (*CaptureEventResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CaptureEvent not implemented")
@@ -1350,6 +1416,60 @@ func _BaseService_DeleteCohort_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BaseService_ListDevices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListDevicesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).ListDevices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_ListDevices_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).ListDevices(ctx, req.(*ListDevicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_GetDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDeviceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).GetDevice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_GetDevice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).GetDevice(ctx, req.(*GetDeviceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_GetDeviceStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDeviceStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).GetDeviceStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_GetDeviceStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).GetDeviceStats(ctx, req.(*GetDeviceStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BaseService_ListFeatureFlags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListFeatureFlagsRequest)
 	if err := dec(in); err != nil {
@@ -1454,6 +1574,24 @@ func _BaseService_Decide_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BaseServiceServer).Decide(ctx, req.(*DecideRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BaseService_RegisterDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterDeviceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BaseServiceServer).RegisterDevice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BaseService_RegisterDevice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BaseServiceServer).RegisterDevice(ctx, req.(*RegisterDeviceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1684,6 +1822,18 @@ var BaseService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BaseService_DeleteCohort_Handler,
 		},
 		{
+			MethodName: "ListDevices",
+			Handler:    _BaseService_ListDevices_Handler,
+		},
+		{
+			MethodName: "GetDevice",
+			Handler:    _BaseService_GetDevice_Handler,
+		},
+		{
+			MethodName: "GetDeviceStats",
+			Handler:    _BaseService_GetDeviceStats_Handler,
+		},
+		{
 			MethodName: "ListFeatureFlags",
 			Handler:    _BaseService_ListFeatureFlags_Handler,
 		},
@@ -1706,6 +1856,10 @@ var BaseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Decide",
 			Handler:    _BaseService_Decide_Handler,
+		},
+		{
+			MethodName: "RegisterDevice",
+			Handler:    _BaseService_RegisterDevice_Handler,
 		},
 		{
 			MethodName: "CaptureEvent",

@@ -8,7 +8,8 @@ type Event struct {
 	UUID         string    `ch:"uuid"`
 	Event        string    `ch:"event"`
 	DistinctID   string    `ch:"distinct_id"`
-	Properties   string    `ch:"properties"`    // JSON stored as String
+	Properties   string    `ch:"properties"`    // JSON stored as String (device props stripped)
+	DeviceID     string    `ch:"device_id"`     // FK to devices table in PostgreSQL
 	Timestamp    time.Time `ch:"timestamp"`
 	SessionID    string    `ch:"session_id"`    // nullable
 	ElementsHash string    `ch:"elements_hash"` // nullable

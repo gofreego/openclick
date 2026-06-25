@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"sync"
 
 	"github.com/gofreego/openclick/api/openclick_v1"
 	"github.com/gofreego/openclick/internal/models/dao"
@@ -31,6 +32,12 @@ type Repository interface {
 	RemoveProjectMember(ctx context.Context, projectID, userID string) error
 	GetProjectMembers(ctx context.Context, projectID string) ([]*dao.ProjectMember, error)
 	IsProjectMember(ctx context.Context, projectID, userID string) (bool, error)
+
+	// Devices
+	UpsertDevice(ctx context.Context, d *dao.Device) (*dao.Device, error)
+	ListDevices(ctx context.Context, f *filter.DeviceFilter) ([]*dao.Device, int, error)
+	GetDevice(ctx context.Context, projectID, deviceID string) (*dao.Device, error)
+	GetDeviceStats(ctx context.Context, projectID string) (browsers, osList, deviceTypes, libs []dao.StatItem, err error)
 
 	// Persons
 	UpsertPerson(ctx context.Context, p *dao.Person) (*dao.Person, error)
@@ -92,6 +99,7 @@ type Service struct {
 	repo        Repository
 	analyticsDB AnalyticsRepository // may be nil if ClickHouse is not configured
 	ingest      *IngestBuffer
+	deviceCache sync.Map // tracks "projectID:deviceID" already upserted this session
 	openclick_v1.UnimplementedBaseServiceServer
 }
 

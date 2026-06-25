@@ -6,6 +6,15 @@ option go_package = "./openclick_v1";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
 
+message RegisterDeviceRequest {
+  optional string api_key = 1;
+  google.protobuf.Struct properties = 2; // device properties: $browser, $os, $screen_*, $lib, etc.
+}
+
+message RegisterDeviceResponse {
+  string device_id = 1;
+}
+
 message CaptureEventRequest {
   optional string api_key = 1;
   string event = 2;
@@ -13,6 +22,7 @@ message CaptureEventRequest {
   optional google.protobuf.Timestamp timestamp = 4;
   google.protobuf.Struct properties = 5;
   optional string session_id = 6;
+  optional string device_id = 7;
 }
 
 message CaptureEventResponse {
@@ -25,6 +35,7 @@ message BatchEvent {
   optional google.protobuf.Timestamp timestamp = 3;
   google.protobuf.Struct properties = 4;
   optional string session_id = 5;
+  optional string device_id = 6;
 }
 
 message BatchCaptureRequest {

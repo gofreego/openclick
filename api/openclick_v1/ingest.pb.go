@@ -23,6 +23,102 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type RegisterDeviceRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ApiKey        *string                `protobuf:"bytes,1,opt,name=api_key,json=apiKey,proto3,oneof" json:"api_key,omitempty"`
+	Properties    *structpb.Struct       `protobuf:"bytes,2,opt,name=properties,proto3" json:"properties,omitempty"` // device properties: $browser, $os, $screen_*, $lib, etc.
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegisterDeviceRequest) Reset() {
+	*x = RegisterDeviceRequest{}
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterDeviceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterDeviceRequest) ProtoMessage() {}
+
+func (x *RegisterDeviceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterDeviceRequest.ProtoReflect.Descriptor instead.
+func (*RegisterDeviceRequest) Descriptor() ([]byte, []int) {
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *RegisterDeviceRequest) GetApiKey() string {
+	if x != nil && x.ApiKey != nil {
+		return *x.ApiKey
+	}
+	return ""
+}
+
+func (x *RegisterDeviceRequest) GetProperties() *structpb.Struct {
+	if x != nil {
+		return x.Properties
+	}
+	return nil
+}
+
+type RegisterDeviceResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DeviceId      string                 `protobuf:"bytes,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegisterDeviceResponse) Reset() {
+	*x = RegisterDeviceResponse{}
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterDeviceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterDeviceResponse) ProtoMessage() {}
+
+func (x *RegisterDeviceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterDeviceResponse.ProtoReflect.Descriptor instead.
+func (*RegisterDeviceResponse) Descriptor() ([]byte, []int) {
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *RegisterDeviceResponse) GetDeviceId() string {
+	if x != nil {
+		return x.DeviceId
+	}
+	return ""
+}
+
 type CaptureEventRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ApiKey        *string                `protobuf:"bytes,1,opt,name=api_key,json=apiKey,proto3,oneof" json:"api_key,omitempty"`
@@ -31,13 +127,14 @@ type CaptureEventRequest struct {
 	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=timestamp,proto3,oneof" json:"timestamp,omitempty"`
 	Properties    *structpb.Struct       `protobuf:"bytes,5,opt,name=properties,proto3" json:"properties,omitempty"`
 	SessionId     *string                `protobuf:"bytes,6,opt,name=session_id,json=sessionId,proto3,oneof" json:"session_id,omitempty"`
+	DeviceId      *string                `protobuf:"bytes,7,opt,name=device_id,json=deviceId,proto3,oneof" json:"device_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CaptureEventRequest) Reset() {
 	*x = CaptureEventRequest{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[0]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -49,7 +146,7 @@ func (x *CaptureEventRequest) String() string {
 func (*CaptureEventRequest) ProtoMessage() {}
 
 func (x *CaptureEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[0]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -62,7 +159,7 @@ func (x *CaptureEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaptureEventRequest.ProtoReflect.Descriptor instead.
 func (*CaptureEventRequest) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{0}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CaptureEventRequest) GetApiKey() string {
@@ -107,6 +204,13 @@ func (x *CaptureEventRequest) GetSessionId() string {
 	return ""
 }
 
+func (x *CaptureEventRequest) GetDeviceId() string {
+	if x != nil && x.DeviceId != nil {
+		return *x.DeviceId
+	}
+	return ""
+}
+
 type CaptureEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Status        int32                  `protobuf:"varint,1,opt,name=status,proto3" json:"status,omitempty"`
@@ -116,7 +220,7 @@ type CaptureEventResponse struct {
 
 func (x *CaptureEventResponse) Reset() {
 	*x = CaptureEventResponse{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[1]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -128,7 +232,7 @@ func (x *CaptureEventResponse) String() string {
 func (*CaptureEventResponse) ProtoMessage() {}
 
 func (x *CaptureEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[1]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -141,7 +245,7 @@ func (x *CaptureEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaptureEventResponse.ProtoReflect.Descriptor instead.
 func (*CaptureEventResponse) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{1}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CaptureEventResponse) GetStatus() int32 {
@@ -158,13 +262,14 @@ type BatchEvent struct {
 	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=timestamp,proto3,oneof" json:"timestamp,omitempty"`
 	Properties    *structpb.Struct       `protobuf:"bytes,4,opt,name=properties,proto3" json:"properties,omitempty"`
 	SessionId     *string                `protobuf:"bytes,5,opt,name=session_id,json=sessionId,proto3,oneof" json:"session_id,omitempty"`
+	DeviceId      *string                `protobuf:"bytes,6,opt,name=device_id,json=deviceId,proto3,oneof" json:"device_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *BatchEvent) Reset() {
 	*x = BatchEvent{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[2]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -176,7 +281,7 @@ func (x *BatchEvent) String() string {
 func (*BatchEvent) ProtoMessage() {}
 
 func (x *BatchEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[2]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -189,7 +294,7 @@ func (x *BatchEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchEvent.ProtoReflect.Descriptor instead.
 func (*BatchEvent) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{2}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *BatchEvent) GetEvent() string {
@@ -227,6 +332,13 @@ func (x *BatchEvent) GetSessionId() string {
 	return ""
 }
 
+func (x *BatchEvent) GetDeviceId() string {
+	if x != nil && x.DeviceId != nil {
+		return *x.DeviceId
+	}
+	return ""
+}
+
 type BatchCaptureRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ApiKey        *string                `protobuf:"bytes,1,opt,name=api_key,json=apiKey,proto3,oneof" json:"api_key,omitempty"`
@@ -237,7 +349,7 @@ type BatchCaptureRequest struct {
 
 func (x *BatchCaptureRequest) Reset() {
 	*x = BatchCaptureRequest{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[3]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -249,7 +361,7 @@ func (x *BatchCaptureRequest) String() string {
 func (*BatchCaptureRequest) ProtoMessage() {}
 
 func (x *BatchCaptureRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[3]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -262,7 +374,7 @@ func (x *BatchCaptureRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchCaptureRequest.ProtoReflect.Descriptor instead.
 func (*BatchCaptureRequest) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{3}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *BatchCaptureRequest) GetApiKey() string {
@@ -289,7 +401,7 @@ type BatchCaptureResponse struct {
 
 func (x *BatchCaptureResponse) Reset() {
 	*x = BatchCaptureResponse{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[4]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -301,7 +413,7 @@ func (x *BatchCaptureResponse) String() string {
 func (*BatchCaptureResponse) ProtoMessage() {}
 
 func (x *BatchCaptureResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[4]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -314,7 +426,7 @@ func (x *BatchCaptureResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchCaptureResponse.ProtoReflect.Descriptor instead.
 func (*BatchCaptureResponse) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{4}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *BatchCaptureResponse) GetStatus() int32 {
@@ -342,7 +454,7 @@ type IdentifyRequest struct {
 
 func (x *IdentifyRequest) Reset() {
 	*x = IdentifyRequest{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[5]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -354,7 +466,7 @@ func (x *IdentifyRequest) String() string {
 func (*IdentifyRequest) ProtoMessage() {}
 
 func (x *IdentifyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[5]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -367,7 +479,7 @@ func (x *IdentifyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IdentifyRequest.ProtoReflect.Descriptor instead.
 func (*IdentifyRequest) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{5}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *IdentifyRequest) GetApiKey() string {
@@ -400,7 +512,7 @@ type IdentifyResponse struct {
 
 func (x *IdentifyResponse) Reset() {
 	*x = IdentifyResponse{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[6]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -412,7 +524,7 @@ func (x *IdentifyResponse) String() string {
 func (*IdentifyResponse) ProtoMessage() {}
 
 func (x *IdentifyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[6]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -425,7 +537,7 @@ func (x *IdentifyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IdentifyResponse.ProtoReflect.Descriptor instead.
 func (*IdentifyResponse) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{6}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *IdentifyResponse) GetStatus() int32 {
@@ -446,7 +558,7 @@ type AliasRequest struct {
 
 func (x *AliasRequest) Reset() {
 	*x = AliasRequest{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[7]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -458,7 +570,7 @@ func (x *AliasRequest) String() string {
 func (*AliasRequest) ProtoMessage() {}
 
 func (x *AliasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[7]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -471,7 +583,7 @@ func (x *AliasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AliasRequest.ProtoReflect.Descriptor instead.
 func (*AliasRequest) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{7}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *AliasRequest) GetApiKey() string {
@@ -504,7 +616,7 @@ type AliasResponse struct {
 
 func (x *AliasResponse) Reset() {
 	*x = AliasResponse{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[8]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -516,7 +628,7 @@ func (x *AliasResponse) String() string {
 func (*AliasResponse) ProtoMessage() {}
 
 func (x *AliasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[8]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -529,7 +641,7 @@ func (x *AliasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AliasResponse.ProtoReflect.Descriptor instead.
 func (*AliasResponse) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{8}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *AliasResponse) GetStatus() int32 {
@@ -553,7 +665,7 @@ type IngestReplayRequest struct {
 
 func (x *IngestReplayRequest) Reset() {
 	*x = IngestReplayRequest{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[9]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -565,7 +677,7 @@ func (x *IngestReplayRequest) String() string {
 func (*IngestReplayRequest) ProtoMessage() {}
 
 func (x *IngestReplayRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[9]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -578,7 +690,7 @@ func (x *IngestReplayRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngestReplayRequest.ProtoReflect.Descriptor instead.
 func (*IngestReplayRequest) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{9}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *IngestReplayRequest) GetApiKey() string {
@@ -632,7 +744,7 @@ type IngestReplayResponse struct {
 
 func (x *IngestReplayResponse) Reset() {
 	*x = IngestReplayResponse{}
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[10]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -644,7 +756,7 @@ func (x *IngestReplayResponse) String() string {
 func (*IngestReplayResponse) ProtoMessage() {}
 
 func (x *IngestReplayResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[10]
+	mi := &file_proto_openclick_v1_ingest_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -657,7 +769,7 @@ func (x *IngestReplayResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngestReplayResponse.ProtoReflect.Descriptor instead.
 func (*IngestReplayResponse) Descriptor() ([]byte, []int) {
-	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{10}
+	return file_proto_openclick_v1_ingest_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *IngestReplayResponse) GetStatus() int32 {
@@ -671,7 +783,16 @@ var File_proto_openclick_v1_ingest_proto protoreflect.FileDescriptor
 
 const file_proto_openclick_v1_ingest_proto_rawDesc = "" +
 	"\n" +
-	"\x1fproto/openclick/v1/ingest.proto\x12\x02v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xaf\x02\n" +
+	"\x1fproto/openclick/v1/ingest.proto\x12\x02v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/protobuf/struct.proto\"z\n" +
+	"\x15RegisterDeviceRequest\x12\x1c\n" +
+	"\aapi_key\x18\x01 \x01(\tH\x00R\x06apiKey\x88\x01\x01\x127\n" +
+	"\n" +
+	"properties\x18\x02 \x01(\v2\x17.google.protobuf.StructR\n" +
+	"propertiesB\n" +
+	"\n" +
+	"\b_api_key\"5\n" +
+	"\x16RegisterDeviceResponse\x12\x1b\n" +
+	"\tdevice_id\x18\x01 \x01(\tR\bdeviceId\"\xdf\x02\n" +
 	"\x13CaptureEventRequest\x12\x1c\n" +
 	"\aapi_key\x18\x01 \x01(\tH\x00R\x06apiKey\x88\x01\x01\x12\x14\n" +
 	"\x05event\x18\x02 \x01(\tR\x05event\x12\x1f\n" +
@@ -682,14 +803,17 @@ const file_proto_openclick_v1_ingest_proto_rawDesc = "" +
 	"properties\x18\x05 \x01(\v2\x17.google.protobuf.StructR\n" +
 	"properties\x12\"\n" +
 	"\n" +
-	"session_id\x18\x06 \x01(\tH\x02R\tsessionId\x88\x01\x01B\n" +
+	"session_id\x18\x06 \x01(\tH\x02R\tsessionId\x88\x01\x01\x12 \n" +
+	"\tdevice_id\x18\a \x01(\tH\x03R\bdeviceId\x88\x01\x01B\n" +
 	"\n" +
 	"\b_api_keyB\f\n" +
 	"\n" +
 	"_timestampB\r\n" +
-	"\v_session_id\".\n" +
+	"\v_session_idB\f\n" +
+	"\n" +
+	"_device_id\".\n" +
 	"\x14CaptureEventResponse\x12\x16\n" +
-	"\x06status\x18\x01 \x01(\x05R\x06status\"\xfc\x01\n" +
+	"\x06status\x18\x01 \x01(\x05R\x06status\"\xac\x02\n" +
 	"\n" +
 	"BatchEvent\x12\x14\n" +
 	"\x05event\x18\x01 \x01(\tR\x05event\x12\x1f\n" +
@@ -700,10 +824,13 @@ const file_proto_openclick_v1_ingest_proto_rawDesc = "" +
 	"properties\x18\x04 \x01(\v2\x17.google.protobuf.StructR\n" +
 	"properties\x12\"\n" +
 	"\n" +
-	"session_id\x18\x05 \x01(\tH\x01R\tsessionId\x88\x01\x01B\f\n" +
+	"session_id\x18\x05 \x01(\tH\x01R\tsessionId\x88\x01\x01\x12 \n" +
+	"\tdevice_id\x18\x06 \x01(\tH\x02R\bdeviceId\x88\x01\x01B\f\n" +
 	"\n" +
 	"_timestampB\r\n" +
-	"\v_session_id\"e\n" +
+	"\v_session_idB\f\n" +
+	"\n" +
+	"_device_id\"e\n" +
 	"\x13BatchCaptureRequest\x12\x1c\n" +
 	"\aapi_key\x18\x01 \x01(\tH\x00R\x06apiKey\x88\x01\x01\x12$\n" +
 	"\x05batch\x18\x02 \x03(\v2\x0e.v1.BatchEventR\x05batchB\n" +
@@ -762,36 +889,39 @@ func file_proto_openclick_v1_ingest_proto_rawDescGZIP() []byte {
 	return file_proto_openclick_v1_ingest_proto_rawDescData
 }
 
-var file_proto_openclick_v1_ingest_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_proto_openclick_v1_ingest_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_proto_openclick_v1_ingest_proto_goTypes = []any{
-	(*CaptureEventRequest)(nil),   // 0: v1.CaptureEventRequest
-	(*CaptureEventResponse)(nil),  // 1: v1.CaptureEventResponse
-	(*BatchEvent)(nil),            // 2: v1.BatchEvent
-	(*BatchCaptureRequest)(nil),   // 3: v1.BatchCaptureRequest
-	(*BatchCaptureResponse)(nil),  // 4: v1.BatchCaptureResponse
-	(*IdentifyRequest)(nil),       // 5: v1.IdentifyRequest
-	(*IdentifyResponse)(nil),      // 6: v1.IdentifyResponse
-	(*AliasRequest)(nil),          // 7: v1.AliasRequest
-	(*AliasResponse)(nil),         // 8: v1.AliasResponse
-	(*IngestReplayRequest)(nil),   // 9: v1.IngestReplayRequest
-	(*IngestReplayResponse)(nil),  // 10: v1.IngestReplayResponse
-	nil,                           // 11: v1.IngestReplayRequest.MetadataEntry
-	(*timestamppb.Timestamp)(nil), // 12: google.protobuf.Timestamp
-	(*structpb.Struct)(nil),       // 13: google.protobuf.Struct
+	(*RegisterDeviceRequest)(nil),  // 0: v1.RegisterDeviceRequest
+	(*RegisterDeviceResponse)(nil), // 1: v1.RegisterDeviceResponse
+	(*CaptureEventRequest)(nil),    // 2: v1.CaptureEventRequest
+	(*CaptureEventResponse)(nil),   // 3: v1.CaptureEventResponse
+	(*BatchEvent)(nil),             // 4: v1.BatchEvent
+	(*BatchCaptureRequest)(nil),    // 5: v1.BatchCaptureRequest
+	(*BatchCaptureResponse)(nil),   // 6: v1.BatchCaptureResponse
+	(*IdentifyRequest)(nil),        // 7: v1.IdentifyRequest
+	(*IdentifyResponse)(nil),       // 8: v1.IdentifyResponse
+	(*AliasRequest)(nil),           // 9: v1.AliasRequest
+	(*AliasResponse)(nil),          // 10: v1.AliasResponse
+	(*IngestReplayRequest)(nil),    // 11: v1.IngestReplayRequest
+	(*IngestReplayResponse)(nil),   // 12: v1.IngestReplayResponse
+	nil,                            // 13: v1.IngestReplayRequest.MetadataEntry
+	(*structpb.Struct)(nil),        // 14: google.protobuf.Struct
+	(*timestamppb.Timestamp)(nil),  // 15: google.protobuf.Timestamp
 }
 var file_proto_openclick_v1_ingest_proto_depIdxs = []int32{
-	12, // 0: v1.CaptureEventRequest.timestamp:type_name -> google.protobuf.Timestamp
-	13, // 1: v1.CaptureEventRequest.properties:type_name -> google.protobuf.Struct
-	12, // 2: v1.BatchEvent.timestamp:type_name -> google.protobuf.Timestamp
-	13, // 3: v1.BatchEvent.properties:type_name -> google.protobuf.Struct
-	2,  // 4: v1.BatchCaptureRequest.batch:type_name -> v1.BatchEvent
-	13, // 5: v1.IdentifyRequest.properties:type_name -> google.protobuf.Struct
-	11, // 6: v1.IngestReplayRequest.metadata:type_name -> v1.IngestReplayRequest.MetadataEntry
-	7,  // [7:7] is the sub-list for method output_type
-	7,  // [7:7] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	14, // 0: v1.RegisterDeviceRequest.properties:type_name -> google.protobuf.Struct
+	15, // 1: v1.CaptureEventRequest.timestamp:type_name -> google.protobuf.Timestamp
+	14, // 2: v1.CaptureEventRequest.properties:type_name -> google.protobuf.Struct
+	15, // 3: v1.BatchEvent.timestamp:type_name -> google.protobuf.Timestamp
+	14, // 4: v1.BatchEvent.properties:type_name -> google.protobuf.Struct
+	4,  // 5: v1.BatchCaptureRequest.batch:type_name -> v1.BatchEvent
+	14, // 6: v1.IdentifyRequest.properties:type_name -> google.protobuf.Struct
+	13, // 7: v1.IngestReplayRequest.metadata:type_name -> v1.IngestReplayRequest.MetadataEntry
+	8,  // [8:8] is the sub-list for method output_type
+	8,  // [8:8] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_proto_openclick_v1_ingest_proto_init() }
@@ -801,17 +931,18 @@ func file_proto_openclick_v1_ingest_proto_init() {
 	}
 	file_proto_openclick_v1_ingest_proto_msgTypes[0].OneofWrappers = []any{}
 	file_proto_openclick_v1_ingest_proto_msgTypes[2].OneofWrappers = []any{}
-	file_proto_openclick_v1_ingest_proto_msgTypes[3].OneofWrappers = []any{}
+	file_proto_openclick_v1_ingest_proto_msgTypes[4].OneofWrappers = []any{}
 	file_proto_openclick_v1_ingest_proto_msgTypes[5].OneofWrappers = []any{}
 	file_proto_openclick_v1_ingest_proto_msgTypes[7].OneofWrappers = []any{}
 	file_proto_openclick_v1_ingest_proto_msgTypes[9].OneofWrappers = []any{}
+	file_proto_openclick_v1_ingest_proto_msgTypes[11].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_openclick_v1_ingest_proto_rawDesc), len(file_proto_openclick_v1_ingest_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

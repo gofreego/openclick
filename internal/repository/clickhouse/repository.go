@@ -71,8 +71,8 @@ func (r *Repository) InsertEvents(ctx context.Context, events []*dao.Event) erro
 		return fmt.Errorf("begin tx: %w", err)
 	}
 	stmt, err := tx.PrepareContext(ctx, `
-		INSERT INTO events (project_id, uuid, event, distinct_id, properties, timestamp, session_id, elements_hash)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO events (project_id, uuid, event, distinct_id, properties, device_id, timestamp, session_id, elements_hash)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`)
 	if err != nil {
 		tx.Rollback()
@@ -82,7 +82,7 @@ func (r *Repository) InsertEvents(ctx context.Context, events []*dao.Event) erro
 
 	for _, e := range events {
 		_, err := stmt.ExecContext(ctx,
-			e.ProjectID, e.UUID, e.Event, e.DistinctID, e.Properties, e.Timestamp,
+			e.ProjectID, e.UUID, e.Event, e.DistinctID, e.Properties, e.DeviceID, e.Timestamp,
 			e.SessionID, e.ElementsHash,
 		)
 		if err != nil {

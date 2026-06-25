@@ -26,7 +26,7 @@ var File_proto_openclick_v1_openclick_proto protoreflect.FileDescriptor
 
 const file_proto_openclick_v1_openclick_proto_rawDesc = "" +
 	"\n" +
-	"\"proto/openclick/v1/openclick.proto\x12\x02v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17proto/common/ping.proto\x1a proto/openclick/v1/project.proto\x1a\"proto/openclick/v1/dashboard.proto\x1a\"proto/openclick/v1/analytics.proto\x1a\x1fproto/openclick/v1/person.proto\x1a%proto/openclick/v1/feature_flag.proto\x1a\x1fproto/openclick/v1/ingest.proto\x1a#proto/openclick/v1/permission.proto2\xaf6\n" +
+	"\"proto/openclick/v1/openclick.proto\x12\x02v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17proto/common/ping.proto\x1a proto/openclick/v1/project.proto\x1a\"proto/openclick/v1/dashboard.proto\x1a\"proto/openclick/v1/analytics.proto\x1a\x1fproto/openclick/v1/person.proto\x1a%proto/openclick/v1/feature_flag.proto\x1a\x1fproto/openclick/v1/ingest.proto\x1a#proto/openclick/v1/permission.proto2\xd8;\n" +
 	"\vBaseService\x12\x82\x01\n" +
 	"\x04Ping\x12\x0f.v1.PingRequest\x1a\x10.v1.PingResponse\"W\x92A6\n" +
 	"\x04Ping\x12\x0fPing the server\x1a\x1dCheck if the server is alive.\x82\xd3\xe4\x93\x02\x18\x12\x16/openclick/api/v1/ping\x12\x93\x01\n" +
@@ -102,7 +102,14 @@ const file_proto_openclick_v1_openclick_proto_rawDesc = "" +
 	"\fCreateCohort\x12\x17.v1.CreateCohortRequest\x1a\x12.v1.CohortResponse\"U\x92A\x18\n" +
 	"\aCohorts\x12\rCreate cohort\x82\xd3\xe4\x93\x024:\x01*\"//openclick/api/v1/projects/{project_id}/cohorts\x12\xa1\x01\n" +
 	"\fDeleteCohort\x12\x17.v1.DeleteCohortRequest\x1a\x18.v1.DeleteCohortResponse\"^\x92A\x18\n" +
-	"\aCohorts\x12\rDelete cohort\x82\xd3\xe4\x93\x02=*;/openclick/api/v1/projects/{project_id}/cohorts/{cohort_id}\x12\xb2\x01\n" +
+	"\aCohorts\x12\rDelete cohort\x82\xd3\xe4\x93\x02=*;/openclick/api/v1/projects/{project_id}/cohorts/{cohort_id}\x12\x91\x01\n" +
+	"\vListDevices\x12\x16.v1.ListDevicesRequest\x1a\x17.v1.ListDevicesResponse\"Q\x92A\x17\n" +
+	"\aDevices\x12\fList devices\x82\xd3\xe4\x93\x021\x12//openclick/api/v1/projects/{project_id}/devices\x12\x95\x01\n" +
+	"\tGetDevice\x12\x14.v1.GetDeviceRequest\x1a\x15.v1.GetDeviceResponse\"[\x92A\x15\n" +
+	"\aDevices\x12\n" +
+	"Get device\x82\xd3\xe4\x93\x02=\x12;/openclick/api/v1/projects/{project_id}/devices/{device_id}\x12\xb0\x01\n" +
+	"\x0eGetDeviceStats\x12\x19.v1.GetDeviceStatsRequest\x1a\x1a.v1.GetDeviceStatsResponse\"g\x92A(\n" +
+	"\aDevices\x12\x1dGet device distribution stats\x82\xd3\xe4\x93\x026\x124/openclick/api/v1/projects/{project_id}/device-stats\x12\xb2\x01\n" +
 	"\x10ListFeatureFlags\x12\x1b.v1.ListFeatureFlagsRequest\x1a\x1c.v1.ListFeatureFlagsResponse\"c\x92A#\n" +
 	"\rFeature Flags\x12\x12List feature flags\x82\xd3\xe4\x93\x027\x125/openclick/api/v1/projects/{project_id}/feature-flags\x12\xb3\x01\n" +
 	"\x11CreateFeatureFlag\x12\x1c.v1.CreateFeatureFlagRequest\x1a\x17.v1.FeatureFlagResponse\"g\x92A$\n" +
@@ -114,7 +121,9 @@ const file_proto_openclick_v1_openclick_proto_rawDesc = "" +
 	"\rEvaluateFlags\x12\x18.v1.EvaluateFlagsRequest\x1a\x19.v1.EvaluateFlagsResponse\"k\x92A\x1f\n" +
 	"\rFeature Flags\x12\x0eEvaluate flags\x82\xd3\xe4\x93\x02C:\x01*\">/openclick/api/v1/projects/{project_id}/feature-flags/evaluate\x12q\n" +
 	"\x06Decide\x12\x11.v1.DecideRequest\x1a\x12.v1.DecideResponse\"@\x92A\x1d\n" +
-	"\rFeature Flags\x12\fDecide flags\x82\xd3\xe4\x93\x02\x1a\x12\x18/openclick/api/v1/decide\x12~\n" +
+	"\rFeature Flags\x12\fDecide flags\x82\xd3\xe4\x93\x02\x1a\x12\x18/openclick/api/v1/decide\x12\xc7\x01\n" +
+	"\x0eRegisterDevice\x12\x19.v1.RegisterDeviceRequest\x1a\x1a.v1.RegisterDeviceResponse\"~\x92AO\n" +
+	"\tIngestion\x12BRegister a device and get a device_id for use in subsequent events\x82\xd3\xe4\x93\x02&:\x01*\"!/openclick/api/v1/device/register\x12~\n" +
 	"\fCaptureEvent\x12\x17.v1.CaptureEventRequest\x1a\x18.v1.CaptureEventResponse\";\x92A\x1a\n" +
 	"\tIngestion\x12\rCapture event\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/openclick/api/v1/e\x12\x89\x01\n" +
 	"\fBatchCapture\x12\x17.v1.BatchCaptureRequest\x1a\x18.v1.BatchCaptureResponse\"F\x92A!\n" +
@@ -171,57 +180,65 @@ var file_proto_openclick_v1_openclick_proto_goTypes = []any{
 	(*ListCohortsRequest)(nil),          // 29: v1.ListCohortsRequest
 	(*CreateCohortRequest)(nil),         // 30: v1.CreateCohortRequest
 	(*DeleteCohortRequest)(nil),         // 31: v1.DeleteCohortRequest
-	(*ListFeatureFlagsRequest)(nil),     // 32: v1.ListFeatureFlagsRequest
-	(*CreateFeatureFlagRequest)(nil),    // 33: v1.CreateFeatureFlagRequest
-	(*UpdateFeatureFlagRequest)(nil),    // 34: v1.UpdateFeatureFlagRequest
-	(*DeleteFeatureFlagRequest)(nil),    // 35: v1.DeleteFeatureFlagRequest
-	(*EvaluateFlagsRequest)(nil),        // 36: v1.EvaluateFlagsRequest
-	(*DecideRequest)(nil),               // 37: v1.DecideRequest
-	(*CaptureEventRequest)(nil),         // 38: v1.CaptureEventRequest
-	(*BatchCaptureRequest)(nil),         // 39: v1.BatchCaptureRequest
-	(*IdentifyRequest)(nil),             // 40: v1.IdentifyRequest
-	(*AliasRequest)(nil),                // 41: v1.AliasRequest
-	(*IngestReplayRequest)(nil),         // 42: v1.IngestReplayRequest
-	(*PingResponse)(nil),                // 43: v1.PingResponse
-	(*ListPermissionsResponse)(nil),     // 44: v1.ListPermissionsResponse
-	(*ListProjectsResponse)(nil),        // 45: v1.ListProjectsResponse
-	(*ProjectResponse)(nil),             // 46: v1.ProjectResponse
-	(*GetProjectResponse)(nil),          // 47: v1.GetProjectResponse
-	(*DeleteProjectResponse)(nil),       // 48: v1.DeleteProjectResponse
-	(*AddMemberResponse)(nil),           // 49: v1.AddMemberResponse
-	(*RemoveMemberResponse)(nil),        // 50: v1.RemoveMemberResponse
-	(*ListDashboardsResponse)(nil),      // 51: v1.ListDashboardsResponse
-	(*DashboardResponse)(nil),           // 52: v1.DashboardResponse
-	(*GetDashboardResponse)(nil),        // 53: v1.GetDashboardResponse
-	(*DeleteDashboardResponse)(nil),     // 54: v1.DeleteDashboardResponse
-	(*DashboardItemResponse)(nil),       // 55: v1.DashboardItemResponse
-	(*DeleteDashboardItemResponse)(nil), // 56: v1.DeleteDashboardItemResponse
-	(*QueryTrendsResponse)(nil),         // 57: v1.QueryTrendsResponse
-	(*QueryFunnelResponse)(nil),         // 58: v1.QueryFunnelResponse
-	(*QueryRetentionResponse)(nil),      // 59: v1.QueryRetentionResponse
-	(*QueryPathsResponse)(nil),          // 60: v1.QueryPathsResponse
-	(*QueryEventsResponse)(nil),         // 61: v1.QueryEventsResponse
-	(*ListEventNamesResponse)(nil),      // 62: v1.ListEventNamesResponse
-	(*ListSessionsResponse)(nil),        // 63: v1.ListSessionsResponse
-	(*SessionResponse)(nil),             // 64: v1.SessionResponse
-	(*GetSessionChunksResponse)(nil),    // 65: v1.GetSessionChunksResponse
-	(*DeleteSessionResponse)(nil),       // 66: v1.DeleteSessionResponse
-	(*ListPersonsResponse)(nil),         // 67: v1.ListPersonsResponse
-	(*GetPersonResponse)(nil),           // 68: v1.GetPersonResponse
-	(*DeletePersonResponse)(nil),        // 69: v1.DeletePersonResponse
-	(*ListCohortsResponse)(nil),         // 70: v1.ListCohortsResponse
-	(*CohortResponse)(nil),              // 71: v1.CohortResponse
-	(*DeleteCohortResponse)(nil),        // 72: v1.DeleteCohortResponse
-	(*ListFeatureFlagsResponse)(nil),    // 73: v1.ListFeatureFlagsResponse
-	(*FeatureFlagResponse)(nil),         // 74: v1.FeatureFlagResponse
-	(*DeleteFeatureFlagResponse)(nil),   // 75: v1.DeleteFeatureFlagResponse
-	(*EvaluateFlagsResponse)(nil),       // 76: v1.EvaluateFlagsResponse
-	(*DecideResponse)(nil),              // 77: v1.DecideResponse
-	(*CaptureEventResponse)(nil),        // 78: v1.CaptureEventResponse
-	(*BatchCaptureResponse)(nil),        // 79: v1.BatchCaptureResponse
-	(*IdentifyResponse)(nil),            // 80: v1.IdentifyResponse
-	(*AliasResponse)(nil),               // 81: v1.AliasResponse
-	(*IngestReplayResponse)(nil),        // 82: v1.IngestReplayResponse
+	(*ListDevicesRequest)(nil),          // 32: v1.ListDevicesRequest
+	(*GetDeviceRequest)(nil),            // 33: v1.GetDeviceRequest
+	(*GetDeviceStatsRequest)(nil),       // 34: v1.GetDeviceStatsRequest
+	(*ListFeatureFlagsRequest)(nil),     // 35: v1.ListFeatureFlagsRequest
+	(*CreateFeatureFlagRequest)(nil),    // 36: v1.CreateFeatureFlagRequest
+	(*UpdateFeatureFlagRequest)(nil),    // 37: v1.UpdateFeatureFlagRequest
+	(*DeleteFeatureFlagRequest)(nil),    // 38: v1.DeleteFeatureFlagRequest
+	(*EvaluateFlagsRequest)(nil),        // 39: v1.EvaluateFlagsRequest
+	(*DecideRequest)(nil),               // 40: v1.DecideRequest
+	(*RegisterDeviceRequest)(nil),       // 41: v1.RegisterDeviceRequest
+	(*CaptureEventRequest)(nil),         // 42: v1.CaptureEventRequest
+	(*BatchCaptureRequest)(nil),         // 43: v1.BatchCaptureRequest
+	(*IdentifyRequest)(nil),             // 44: v1.IdentifyRequest
+	(*AliasRequest)(nil),                // 45: v1.AliasRequest
+	(*IngestReplayRequest)(nil),         // 46: v1.IngestReplayRequest
+	(*PingResponse)(nil),                // 47: v1.PingResponse
+	(*ListPermissionsResponse)(nil),     // 48: v1.ListPermissionsResponse
+	(*ListProjectsResponse)(nil),        // 49: v1.ListProjectsResponse
+	(*ProjectResponse)(nil),             // 50: v1.ProjectResponse
+	(*GetProjectResponse)(nil),          // 51: v1.GetProjectResponse
+	(*DeleteProjectResponse)(nil),       // 52: v1.DeleteProjectResponse
+	(*AddMemberResponse)(nil),           // 53: v1.AddMemberResponse
+	(*RemoveMemberResponse)(nil),        // 54: v1.RemoveMemberResponse
+	(*ListDashboardsResponse)(nil),      // 55: v1.ListDashboardsResponse
+	(*DashboardResponse)(nil),           // 56: v1.DashboardResponse
+	(*GetDashboardResponse)(nil),        // 57: v1.GetDashboardResponse
+	(*DeleteDashboardResponse)(nil),     // 58: v1.DeleteDashboardResponse
+	(*DashboardItemResponse)(nil),       // 59: v1.DashboardItemResponse
+	(*DeleteDashboardItemResponse)(nil), // 60: v1.DeleteDashboardItemResponse
+	(*QueryTrendsResponse)(nil),         // 61: v1.QueryTrendsResponse
+	(*QueryFunnelResponse)(nil),         // 62: v1.QueryFunnelResponse
+	(*QueryRetentionResponse)(nil),      // 63: v1.QueryRetentionResponse
+	(*QueryPathsResponse)(nil),          // 64: v1.QueryPathsResponse
+	(*QueryEventsResponse)(nil),         // 65: v1.QueryEventsResponse
+	(*ListEventNamesResponse)(nil),      // 66: v1.ListEventNamesResponse
+	(*ListSessionsResponse)(nil),        // 67: v1.ListSessionsResponse
+	(*SessionResponse)(nil),             // 68: v1.SessionResponse
+	(*GetSessionChunksResponse)(nil),    // 69: v1.GetSessionChunksResponse
+	(*DeleteSessionResponse)(nil),       // 70: v1.DeleteSessionResponse
+	(*ListPersonsResponse)(nil),         // 71: v1.ListPersonsResponse
+	(*GetPersonResponse)(nil),           // 72: v1.GetPersonResponse
+	(*DeletePersonResponse)(nil),        // 73: v1.DeletePersonResponse
+	(*ListCohortsResponse)(nil),         // 74: v1.ListCohortsResponse
+	(*CohortResponse)(nil),              // 75: v1.CohortResponse
+	(*DeleteCohortResponse)(nil),        // 76: v1.DeleteCohortResponse
+	(*ListDevicesResponse)(nil),         // 77: v1.ListDevicesResponse
+	(*GetDeviceResponse)(nil),           // 78: v1.GetDeviceResponse
+	(*GetDeviceStatsResponse)(nil),      // 79: v1.GetDeviceStatsResponse
+	(*ListFeatureFlagsResponse)(nil),    // 80: v1.ListFeatureFlagsResponse
+	(*FeatureFlagResponse)(nil),         // 81: v1.FeatureFlagResponse
+	(*DeleteFeatureFlagResponse)(nil),   // 82: v1.DeleteFeatureFlagResponse
+	(*EvaluateFlagsResponse)(nil),       // 83: v1.EvaluateFlagsResponse
+	(*DecideResponse)(nil),              // 84: v1.DecideResponse
+	(*RegisterDeviceResponse)(nil),      // 85: v1.RegisterDeviceResponse
+	(*CaptureEventResponse)(nil),        // 86: v1.CaptureEventResponse
+	(*BatchCaptureResponse)(nil),        // 87: v1.BatchCaptureResponse
+	(*IdentifyResponse)(nil),            // 88: v1.IdentifyResponse
+	(*AliasResponse)(nil),               // 89: v1.AliasResponse
+	(*IngestReplayResponse)(nil),        // 90: v1.IngestReplayResponse
 }
 var file_proto_openclick_v1_openclick_proto_depIdxs = []int32{
 	0,  // 0: v1.BaseService.Ping:input_type -> v1.PingRequest
@@ -256,62 +273,70 @@ var file_proto_openclick_v1_openclick_proto_depIdxs = []int32{
 	29, // 29: v1.BaseService.ListCohorts:input_type -> v1.ListCohortsRequest
 	30, // 30: v1.BaseService.CreateCohort:input_type -> v1.CreateCohortRequest
 	31, // 31: v1.BaseService.DeleteCohort:input_type -> v1.DeleteCohortRequest
-	32, // 32: v1.BaseService.ListFeatureFlags:input_type -> v1.ListFeatureFlagsRequest
-	33, // 33: v1.BaseService.CreateFeatureFlag:input_type -> v1.CreateFeatureFlagRequest
-	34, // 34: v1.BaseService.UpdateFeatureFlag:input_type -> v1.UpdateFeatureFlagRequest
-	35, // 35: v1.BaseService.DeleteFeatureFlag:input_type -> v1.DeleteFeatureFlagRequest
-	36, // 36: v1.BaseService.EvaluateFlags:input_type -> v1.EvaluateFlagsRequest
-	37, // 37: v1.BaseService.Decide:input_type -> v1.DecideRequest
-	38, // 38: v1.BaseService.CaptureEvent:input_type -> v1.CaptureEventRequest
-	39, // 39: v1.BaseService.BatchCapture:input_type -> v1.BatchCaptureRequest
-	40, // 40: v1.BaseService.Identify:input_type -> v1.IdentifyRequest
-	41, // 41: v1.BaseService.Alias:input_type -> v1.AliasRequest
-	42, // 42: v1.BaseService.IngestReplay:input_type -> v1.IngestReplayRequest
-	43, // 43: v1.BaseService.Ping:output_type -> v1.PingResponse
-	44, // 44: v1.BaseService.ListPermissions:output_type -> v1.ListPermissionsResponse
-	45, // 45: v1.BaseService.ListProjects:output_type -> v1.ListProjectsResponse
-	46, // 46: v1.BaseService.CreateProject:output_type -> v1.ProjectResponse
-	47, // 47: v1.BaseService.GetProject:output_type -> v1.GetProjectResponse
-	46, // 48: v1.BaseService.UpdateProject:output_type -> v1.ProjectResponse
-	48, // 49: v1.BaseService.DeleteProject:output_type -> v1.DeleteProjectResponse
-	49, // 50: v1.BaseService.AddMember:output_type -> v1.AddMemberResponse
-	50, // 51: v1.BaseService.RemoveMember:output_type -> v1.RemoveMemberResponse
-	51, // 52: v1.BaseService.ListDashboards:output_type -> v1.ListDashboardsResponse
-	52, // 53: v1.BaseService.CreateDashboard:output_type -> v1.DashboardResponse
-	53, // 54: v1.BaseService.GetDashboard:output_type -> v1.GetDashboardResponse
-	54, // 55: v1.BaseService.DeleteDashboard:output_type -> v1.DeleteDashboardResponse
-	55, // 56: v1.BaseService.CreateDashboardItem:output_type -> v1.DashboardItemResponse
-	55, // 57: v1.BaseService.UpdateDashboardItem:output_type -> v1.DashboardItemResponse
-	56, // 58: v1.BaseService.DeleteDashboardItem:output_type -> v1.DeleteDashboardItemResponse
-	57, // 59: v1.BaseService.QueryTrends:output_type -> v1.QueryTrendsResponse
-	58, // 60: v1.BaseService.QueryFunnel:output_type -> v1.QueryFunnelResponse
-	59, // 61: v1.BaseService.QueryRetention:output_type -> v1.QueryRetentionResponse
-	60, // 62: v1.BaseService.QueryPaths:output_type -> v1.QueryPathsResponse
-	61, // 63: v1.BaseService.QueryEvents:output_type -> v1.QueryEventsResponse
-	62, // 64: v1.BaseService.ListEventNames:output_type -> v1.ListEventNamesResponse
-	63, // 65: v1.BaseService.ListSessions:output_type -> v1.ListSessionsResponse
-	64, // 66: v1.BaseService.GetSession:output_type -> v1.SessionResponse
-	65, // 67: v1.BaseService.GetSessionChunks:output_type -> v1.GetSessionChunksResponse
-	66, // 68: v1.BaseService.DeleteSession:output_type -> v1.DeleteSessionResponse
-	67, // 69: v1.BaseService.ListPersons:output_type -> v1.ListPersonsResponse
-	68, // 70: v1.BaseService.GetPerson:output_type -> v1.GetPersonResponse
-	69, // 71: v1.BaseService.DeletePerson:output_type -> v1.DeletePersonResponse
-	70, // 72: v1.BaseService.ListCohorts:output_type -> v1.ListCohortsResponse
-	71, // 73: v1.BaseService.CreateCohort:output_type -> v1.CohortResponse
-	72, // 74: v1.BaseService.DeleteCohort:output_type -> v1.DeleteCohortResponse
-	73, // 75: v1.BaseService.ListFeatureFlags:output_type -> v1.ListFeatureFlagsResponse
-	74, // 76: v1.BaseService.CreateFeatureFlag:output_type -> v1.FeatureFlagResponse
-	74, // 77: v1.BaseService.UpdateFeatureFlag:output_type -> v1.FeatureFlagResponse
-	75, // 78: v1.BaseService.DeleteFeatureFlag:output_type -> v1.DeleteFeatureFlagResponse
-	76, // 79: v1.BaseService.EvaluateFlags:output_type -> v1.EvaluateFlagsResponse
-	77, // 80: v1.BaseService.Decide:output_type -> v1.DecideResponse
-	78, // 81: v1.BaseService.CaptureEvent:output_type -> v1.CaptureEventResponse
-	79, // 82: v1.BaseService.BatchCapture:output_type -> v1.BatchCaptureResponse
-	80, // 83: v1.BaseService.Identify:output_type -> v1.IdentifyResponse
-	81, // 84: v1.BaseService.Alias:output_type -> v1.AliasResponse
-	82, // 85: v1.BaseService.IngestReplay:output_type -> v1.IngestReplayResponse
-	43, // [43:86] is the sub-list for method output_type
-	0,  // [0:43] is the sub-list for method input_type
+	32, // 32: v1.BaseService.ListDevices:input_type -> v1.ListDevicesRequest
+	33, // 33: v1.BaseService.GetDevice:input_type -> v1.GetDeviceRequest
+	34, // 34: v1.BaseService.GetDeviceStats:input_type -> v1.GetDeviceStatsRequest
+	35, // 35: v1.BaseService.ListFeatureFlags:input_type -> v1.ListFeatureFlagsRequest
+	36, // 36: v1.BaseService.CreateFeatureFlag:input_type -> v1.CreateFeatureFlagRequest
+	37, // 37: v1.BaseService.UpdateFeatureFlag:input_type -> v1.UpdateFeatureFlagRequest
+	38, // 38: v1.BaseService.DeleteFeatureFlag:input_type -> v1.DeleteFeatureFlagRequest
+	39, // 39: v1.BaseService.EvaluateFlags:input_type -> v1.EvaluateFlagsRequest
+	40, // 40: v1.BaseService.Decide:input_type -> v1.DecideRequest
+	41, // 41: v1.BaseService.RegisterDevice:input_type -> v1.RegisterDeviceRequest
+	42, // 42: v1.BaseService.CaptureEvent:input_type -> v1.CaptureEventRequest
+	43, // 43: v1.BaseService.BatchCapture:input_type -> v1.BatchCaptureRequest
+	44, // 44: v1.BaseService.Identify:input_type -> v1.IdentifyRequest
+	45, // 45: v1.BaseService.Alias:input_type -> v1.AliasRequest
+	46, // 46: v1.BaseService.IngestReplay:input_type -> v1.IngestReplayRequest
+	47, // 47: v1.BaseService.Ping:output_type -> v1.PingResponse
+	48, // 48: v1.BaseService.ListPermissions:output_type -> v1.ListPermissionsResponse
+	49, // 49: v1.BaseService.ListProjects:output_type -> v1.ListProjectsResponse
+	50, // 50: v1.BaseService.CreateProject:output_type -> v1.ProjectResponse
+	51, // 51: v1.BaseService.GetProject:output_type -> v1.GetProjectResponse
+	50, // 52: v1.BaseService.UpdateProject:output_type -> v1.ProjectResponse
+	52, // 53: v1.BaseService.DeleteProject:output_type -> v1.DeleteProjectResponse
+	53, // 54: v1.BaseService.AddMember:output_type -> v1.AddMemberResponse
+	54, // 55: v1.BaseService.RemoveMember:output_type -> v1.RemoveMemberResponse
+	55, // 56: v1.BaseService.ListDashboards:output_type -> v1.ListDashboardsResponse
+	56, // 57: v1.BaseService.CreateDashboard:output_type -> v1.DashboardResponse
+	57, // 58: v1.BaseService.GetDashboard:output_type -> v1.GetDashboardResponse
+	58, // 59: v1.BaseService.DeleteDashboard:output_type -> v1.DeleteDashboardResponse
+	59, // 60: v1.BaseService.CreateDashboardItem:output_type -> v1.DashboardItemResponse
+	59, // 61: v1.BaseService.UpdateDashboardItem:output_type -> v1.DashboardItemResponse
+	60, // 62: v1.BaseService.DeleteDashboardItem:output_type -> v1.DeleteDashboardItemResponse
+	61, // 63: v1.BaseService.QueryTrends:output_type -> v1.QueryTrendsResponse
+	62, // 64: v1.BaseService.QueryFunnel:output_type -> v1.QueryFunnelResponse
+	63, // 65: v1.BaseService.QueryRetention:output_type -> v1.QueryRetentionResponse
+	64, // 66: v1.BaseService.QueryPaths:output_type -> v1.QueryPathsResponse
+	65, // 67: v1.BaseService.QueryEvents:output_type -> v1.QueryEventsResponse
+	66, // 68: v1.BaseService.ListEventNames:output_type -> v1.ListEventNamesResponse
+	67, // 69: v1.BaseService.ListSessions:output_type -> v1.ListSessionsResponse
+	68, // 70: v1.BaseService.GetSession:output_type -> v1.SessionResponse
+	69, // 71: v1.BaseService.GetSessionChunks:output_type -> v1.GetSessionChunksResponse
+	70, // 72: v1.BaseService.DeleteSession:output_type -> v1.DeleteSessionResponse
+	71, // 73: v1.BaseService.ListPersons:output_type -> v1.ListPersonsResponse
+	72, // 74: v1.BaseService.GetPerson:output_type -> v1.GetPersonResponse
+	73, // 75: v1.BaseService.DeletePerson:output_type -> v1.DeletePersonResponse
+	74, // 76: v1.BaseService.ListCohorts:output_type -> v1.ListCohortsResponse
+	75, // 77: v1.BaseService.CreateCohort:output_type -> v1.CohortResponse
+	76, // 78: v1.BaseService.DeleteCohort:output_type -> v1.DeleteCohortResponse
+	77, // 79: v1.BaseService.ListDevices:output_type -> v1.ListDevicesResponse
+	78, // 80: v1.BaseService.GetDevice:output_type -> v1.GetDeviceResponse
+	79, // 81: v1.BaseService.GetDeviceStats:output_type -> v1.GetDeviceStatsResponse
+	80, // 82: v1.BaseService.ListFeatureFlags:output_type -> v1.ListFeatureFlagsResponse
+	81, // 83: v1.BaseService.CreateFeatureFlag:output_type -> v1.FeatureFlagResponse
+	81, // 84: v1.BaseService.UpdateFeatureFlag:output_type -> v1.FeatureFlagResponse
+	82, // 85: v1.BaseService.DeleteFeatureFlag:output_type -> v1.DeleteFeatureFlagResponse
+	83, // 86: v1.BaseService.EvaluateFlags:output_type -> v1.EvaluateFlagsResponse
+	84, // 87: v1.BaseService.Decide:output_type -> v1.DecideResponse
+	85, // 88: v1.BaseService.RegisterDevice:output_type -> v1.RegisterDeviceResponse
+	86, // 89: v1.BaseService.CaptureEvent:output_type -> v1.CaptureEventResponse
+	87, // 90: v1.BaseService.BatchCapture:output_type -> v1.BatchCaptureResponse
+	88, // 91: v1.BaseService.Identify:output_type -> v1.IdentifyResponse
+	89, // 92: v1.BaseService.Alias:output_type -> v1.AliasResponse
+	90, // 93: v1.BaseService.IngestReplay:output_type -> v1.IngestReplayResponse
+	47, // [47:94] is the sub-list for method output_type
+	0,  // [0:47] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

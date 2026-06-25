@@ -397,6 +397,37 @@ service BaseService {
         };
     }
 
+    // Devices
+    rpc ListDevices (ListDevicesRequest) returns (ListDevicesResponse) {
+        option (google.api.http) = {
+            get: "/openclick/api/v1/projects/{project_id}/devices"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Devices"
+            summary: "List devices"
+        };
+    }
+
+    rpc GetDevice (GetDeviceRequest) returns (GetDeviceResponse) {
+        option (google.api.http) = {
+            get: "/openclick/api/v1/projects/{project_id}/devices/{device_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Devices"
+            summary: "Get device"
+        };
+    }
+
+    rpc GetDeviceStats (GetDeviceStatsRequest) returns (GetDeviceStatsResponse) {
+        option (google.api.http) = {
+            get: "/openclick/api/v1/projects/{project_id}/device-stats"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Devices"
+            summary: "Get device distribution stats"
+        };
+    }
+
     // Feature Flags
     rpc ListFeatureFlags (ListFeatureFlagsRequest) returns (ListFeatureFlagsResponse) {
         option (google.api.http) = {
@@ -462,6 +493,17 @@ service BaseService {
     }
 
     // Ingestion
+    rpc RegisterDevice (RegisterDeviceRequest) returns (RegisterDeviceResponse) {
+        option (google.api.http) = {
+            post: "/openclick/api/v1/device/register"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: "Ingestion"
+            summary: "Register a device and get a device_id for use in subsequent events"
+        };
+    }
+
     rpc CaptureEvent (CaptureEventRequest) returns (CaptureEventResponse) {
         option (google.api.http) = {
             post: "/openclick/api/v1/e"
