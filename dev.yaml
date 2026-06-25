@@ -21,7 +21,8 @@ AppNames:
 Server:
   GRPCPort: 9094
   HTTPPort: 9093
-  EnableCORS: false
+  CORS:
+    Enabled: false
 Repository:
   Name : PostgreSQL
   PostgreSQL:
