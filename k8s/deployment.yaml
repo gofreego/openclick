@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openclick
+  labels:
+    app: openclick
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openclick
+  template:
+    metadata:
+      labels:
+        app: openclick
+    spec:
+      containers:
+        - name: openclick
+          image: 192.168.1.100:5000/openclick:pilot
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 9093
+            - name: grpc
+              containerPort: 9094
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi

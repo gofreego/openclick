@@ -1,0 +1,19 @@
+# Pilot-only internal hostname — no real public hostname for this service
+# directly, purely for validating the deployment via curl --resolve.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openclick
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: openclick-pilot.bappaapp.internal
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: openclick
+                port:
+                  name: http
