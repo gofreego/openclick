@@ -11,6 +11,7 @@ import (
 	"github.com/gofreego/openclick/internal/service"
 
 	"github.com/gofreego/goutils/logger"
+	"github.com/gofreego/goutils/metrics"
 	"google.golang.org/grpc"
 )
 
@@ -45,7 +46,7 @@ func (a *GRPCServer) Run(ctx context.Context) error {
 	service := service.NewService(ctx, &a.cfg.Service, repo, analyticsDB)
 
 	// Create a new gRPC server
-	a.server = grpc.NewServer()
+	a.server = grpc.NewServer(grpc.UnaryInterceptor(metrics.UnaryServerInterceptor()))
 
 	openclick_v1.RegisterBaseServiceServer(a.server, service)
 
