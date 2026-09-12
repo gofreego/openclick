@@ -47,8 +47,8 @@ COPY api/docs /app/api/docs
 RUN chmod +x application
 
 # Expose the ports the application uses
-EXPOSE 8085
-EXPOSE 8086
+EXPOSE 80
+EXPOSE 8081
 
 # Define the command to run your application
 CMD [ "/app/application" ]

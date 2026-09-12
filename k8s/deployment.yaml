@@ -20,9 +20,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - name: http
-              containerPort: 9093
+              containerPort: 80
             - name: grpc
-              containerPort: 9094
+              containerPort: 8081
           readinessProbe:
             tcpSocket:
               port: http

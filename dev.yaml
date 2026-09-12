@@ -19,8 +19,8 @@ AppNames:
 - HTTP_SERVER
 - GRPC_SERVER
 Server:
-  GRPCPort: 9094
-  HTTPPort: 9093
+  GRPCPort: 8081
+  HTTPPort: 80
   CORS:
     Enabled: false
 Repository:
