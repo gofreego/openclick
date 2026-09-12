@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: openclick
-          image: ghcr.io/gofreego/openclick:pilot-3bebb61
+          image: ghcr.io/gofreego/openclick:pilot-3a07794
           imagePullPolicy: Always
           ports:
             - name: http
