@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import { ThemeProvider, SidebarLayout, NotificationProvider, LoginCallbackPage, ProtectedRoute, SidebarHeader } from '@gofreego/tsutils'
+import { ThemeProvider, SidebarLayout, NotificationProvider, LoginCallbackPage, ProtectedRoute } from '@gofreego/tsutils'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Box, Typography } from '@mui/material'
+import HomeIcon from '@mui/icons-material/Home'
 
 
 // Icons
@@ -27,6 +29,35 @@ import { SettingsPage } from './pages/settings/SettingsPage'
 import { authService } from './services'
 import { LOGIN_URL } from './utils/envs'
 import { sessionManager } from './utils/httpClient'
+
+/**
+ * Same sidebar header as the other admins (catalog, payments): a home icon
+ * that returns to the admin portal, and this console's name.
+ */
+function SidebarHeader() {
+  return (
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, position: 'relative' }}>
+      <HomeIcon
+        sx={{ cursor: 'pointer' }}
+        onClick={() => window.location.href = '/'}
+      />
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'bold',
+          color: 'primary.main',
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontSize: '1.8rem',
+        }}
+      >
+        OpenClick
+      </Typography>
+      <Box sx={{ width: 24 }} />
+    </Box>
+  )
+}
 
 function App() {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -97,7 +128,7 @@ function App() {
                       isRouter={true}
                       isBrowserRouter={false}
                       style={{ height: '100vh' }}
-                      header={<SidebarHeader title="OpenClick" homePath="/openclick/dashboard" />}
+                      header={<SidebarHeader />}
                       footer={<ProjectSelector />}
                     />
                   </ProtectedRoute>
