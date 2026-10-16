@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: openclick
-          image: ghcr.io/gofreego/openclick:pilot-94226df
+          image: ghcr.io/gofreego/openclick:pilot-0557659
           imagePullPolicy: Always
           command:
             - /app/application
